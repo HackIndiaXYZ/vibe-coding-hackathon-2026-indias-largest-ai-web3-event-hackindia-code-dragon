@@ -1,0 +1,3112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>REN × NATSUKI — THE PROTOCOL</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap"
+        rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        /* ═══════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background: var(--black);
+        }
+
+        :root {
+            --black: #080808;
+            --black2: #0d0d0d;
+            --white: #f0ece4;
+            --white2: #c8c0b0;
+            --dim: #4a4a4a;
+            --dim2: #2a2a2a;
+            --accent: #ffffff;
+            --border: rgba(255, 255, 255, 0.08);
+            --border2: rgba(255, 255, 255, 0.15);
+            --green: #2a5a3a;
+            /* Natsuki terminal tint */
+            --mono: 'JetBrains Mono', monospace;
+            --serif: 'Playfair Display', serif;
+            --sans: 'Syne', sans-serif;
+            --italic: 'Cormorant Garamond', serif;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            cursor: none;
+            transition: filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        body.theme-natsuki {
+            filter: invert(1) hue-rotate(180deg) contrast(1.05);
+        }
+
+        /* ── CURSOR ── */
+        #cursor {
+            position: fixed;
+            z-index: 9999;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #fff;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            transition: width .2s, height .2s;
+        }
+
+        #cursor-ring {
+            position: fixed;
+            z-index: 9998;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+        }
+
+        /* ── CANVAS STARS ── */
+        #star-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── BG KANJI ── */
+        #bg-kanji {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Yu Mincho', 'Sawarabi Mincho', serif;
+            font-size: 85vh;
+            color: rgba(255, 255, 255, 0.025);
+            z-index: 1;
+            pointer-events: none;
+            user-select: none;
+            line-height: 1;
+        }
+
+        /* ── SIDEBAR TEXT ── */
+        .sidebar-text {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) rotate(180deg);
+            z-index: 20;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.4em;
+            color: rgba(255, 255, 255, 0.15);
+            pointer-events: none;
+            padding-left: 14px;
+            user-select: none;
+        }
+
+        .sidebar-text-right {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.4em;
+            color: rgba(255, 255, 255, 0.15);
+            pointer-events: none;
+            padding-right: 14px;
+            user-select: none;
+        }
+
+        /* ── CORNER BRACKETS ── */
+        .corner {
+            position: fixed;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .corner svg {
+            display: block;
+        }
+
+        .corner-tl {
+            top: 18px;
+            left: 18px;
+        }
+
+        .corner-tr {
+            top: 18px;
+            right: 18px;
+        }
+
+        .corner-bl {
+            bottom: 18px;
+            left: 18px;
+        }
+
+        .corner-br {
+            bottom: 18px;
+            right: 18px;
+        }
+
+        /* ── SYS STATUS PANEL (bottom-right) ── */
+        #sys-panel {
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            z-index: 50;
+            font-family: var(--mono);
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.35);
+            line-height: 1.8;
+            text-align: right;
+        }
+
+        #sys-panel .sp-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+        }
+
+        #sys-panel .sp-label {
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        #sys-panel .sp-val {
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.1em;
+        }
+
+        #sys-panel .bars {
+            display: flex;
+            gap: 2px;
+            align-items: flex-end;
+            margin-bottom: 6px;
+            justify-content: flex-end;
+        }
+
+        #sys-panel .bar {
+            width: 3px;
+            background: rgba(255, 255, 255, 0.3);
+            animation: barAnim 1.4s ease-in-out infinite;
+        }
+
+        #sys-panel .bar:nth-child(1) {
+            height: 6px;
+            animation-delay: 0s
+        }
+
+        #sys-panel .bar:nth-child(2) {
+            height: 10px;
+            animation-delay: .1s
+        }
+
+        #sys-panel .bar:nth-child(3) {
+            height: 14px;
+            animation-delay: .2s
+        }
+
+        #sys-panel .bar:nth-child(4) {
+            height: 8px;
+            animation-delay: .3s
+        }
+
+        #sys-panel .bar:nth-child(5) {
+            height: 12px;
+            animation-delay: .4s
+        }
+
+        #sys-panel .bar:nth-child(6) {
+            height: 5px;
+            animation-delay: .5s
+        }
+
+        @keyframes barAnim {
+
+            0%,
+            100% {
+                opacity: .3
+            }
+
+            50% {
+                opacity: 1
+            }
+        }
+
+        /* ── DESCEND ARROW ── */
+        #descend-wrap {
+            position: fixed;
+            left: 50%;
+            bottom: 60px;
+            transform: translateX(-50%);
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.4em;
+            color: rgba(255, 255, 255, 0.25);
+            writing-mode: vertical-rl;
+        }
+
+        #descend-wrap span {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+
+        #descend-wrap .arrow {
+            font-size: 14px;
+            animation: arrowBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes arrowBounce {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(6px)
+            }
+        }
+
+        /* ══════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════ */
+        #navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 40px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(8, 8, 8, 0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        .nav-logo {
+            font-family: var(--serif);
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-logo .bracket {
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 300;
+        }
+
+        .nav-logo .cursor-blink {
+            display: inline-block;
+            width: 2px;
+            height: 18px;
+            background: #fff;
+            margin-left: 2px;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            transition: color .2s;
+            cursor: none;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        /* Toggle */
+        .nav-toggle {
+            display: flex;
+            gap: 0;
+        }
+
+        .toggle-btn {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            padding: 8px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: transparent;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: none;
+            transition: all .3s;
+        }
+
+        .toggle-btn.active {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        .toggle-btn:first-child {
+            border-radius: 1px 0 0 1px;
+        }
+
+        .toggle-btn:last-child {
+            border-radius: 0 1px 1px 0;
+            border-left: none;
+        }
+
+        /* ══════════════════════════════════════
+   SECTION BASE
+══════════════════════════════════════ */
+        .page-section {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            padding: 120px 80px 80px;
+        }
+
+        /* ══════════════════════════════════════
+   LANDING — HERO
+══════════════════════════════════════ */
+        #landing {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 40px;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.5em;
+            color: rgba(255, 255, 255, 0.35);
+            margin-bottom: 28px;
+            opacity: 0;
+            transform: translateY(10px);
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-family: var(--serif);
+            font-size: clamp(80px, 14vw, 200px);
+            font-weight: 900;
+            line-height: 0.9;
+            color: #fff;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            display: flex;
+            align-items: center;
+            gap: 0.15em;
+        }
+
+        .hero-title .x-mark {
+            font-family: var(--serif);
+            font-weight: 300;
+            font-size: 0.5em;
+            color: rgba(255, 255, 255, 0.5);
+            display: inline-block;
+            margin: 0 0.1em;
+        }
+
+        .hero-subtitle {
+            font-family: var(--mono);
+            font-size: 13px;
+            letter-spacing: 0.5em;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 12px;
+            opacity: 0;
+            transform: translateY(10px);
+            text-transform: uppercase;
+        }
+
+        .hero-subtitle .jp {
+            letter-spacing: 0.15em;
+            margin-right: 12px;
+        }
+
+        .hero-desc {
+            font-family: var(--italic);
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.55);
+            margin-bottom: 56px;
+            max-width: 520px;
+            line-height: 1.7;
+            opacity: 0;
+            transform: translateY(10px);
+            font-style: italic;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 0;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .hero-btn {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            padding: 18px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            cursor: none;
+            transition: all .3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hero-btn.primary {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        .hero-btn.secondary {
+            background: transparent;
+            color: #fff;
+            border-left: none;
+        }
+
+        .hero-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* ══════════════════════════════════════
+   SECTION HEADER
+══════════════════════════════════════ */
+        .sec-header {
+            margin-bottom: 60px;
+        }
+
+        .sec-title {
+            font-family: var(--serif);
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 700;
+            color: #fff;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .sec-sub {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.4em;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+        }
+
+        /* ══════════════════════════════════════
+   CAPABILITIES SECTION
+══════════════════════════════════════ */
+        #capabilities {
+            background: var(--black2);
+        }
+
+        .cap-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: rgba(255, 255, 255, 0.06);
+            margin-bottom: 60px;
+        }
+
+        .cap-card {
+            background: var(--black2);
+            padding: 40px 32px;
+            position: relative;
+            overflow: hidden;
+            transition: background .3s;
+        }
+
+        .cap-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: scaleX(0);
+            transition: transform .4s;
+        }
+
+        .cap-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .cap-card:hover {
+            background: #111;
+        }
+
+        .cap-num {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.4em;
+            color: rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .cap-icon {
+            font-size: 22px;
+            margin-bottom: 14px;
+            opacity: 0.7;
+        }
+
+        .cap-name {
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+            line-height: 1.1;
+        }
+
+        .cap-desc {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            line-height: 1.8;
+            letter-spacing: 0.03em;
+        }
+
+        .cap-tag {
+            display: inline-block;
+            margin-top: 16px;
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.3em;
+            padding: 4px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+        }
+
+        .cap-tag.ren-tag {
+            border-color: rgba(0, 255, 240, 0.2);
+            color: rgba(0, 255, 240, 0.5);
+        }
+
+        .cap-tag.nat-tag {
+            border-color: rgba(232, 97, 157, 0.2);
+            color: rgba(232, 97, 157, 0.5);
+        }
+
+        .cap-tag.dual-tag {
+            border-color: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Full-width capability bars */
+        .cap-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .cap-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .cap-bar-label {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.3em;
+            color: rgba(255, 255, 255, 0.35);
+            text-transform: uppercase;
+            width: 160px;
+            flex-shrink: 0;
+        }
+
+        .cap-bar-track {
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+            position: relative;
+        }
+
+        .cap-bar-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.4);
+            width: 0%;
+            transition: width 1.5s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .cap-bar-fill.ren-fill {
+            background: rgba(0, 255, 240, 0.5);
+        }
+
+        .cap-bar-fill.nat-fill {
+            background: rgba(232, 97, 157, 0.5);
+        }
+
+        .cap-bar-pct {
+            font-family: var(--mono);
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.3);
+            width: 36px;
+            text-align: right;
+        }
+
+        /* ══════════════════════════════════════
+   IDENTITY SECTION
+══════════════════════════════════════ */
+        #identity {
+            background: var(--black);
+        }
+
+        .identity-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .identity-card {
+            padding: 56px 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .identity-card.ren-card {
+            background: #060608;
+        }
+
+        .identity-card.nat-card {
+            background: #06080a;
+        }
+
+        .id-accent-line {
+            width: 40px;
+            height: 1px;
+            margin-bottom: 32px;
+        }
+
+        .ren-card .id-accent-line {
+            background: rgba(0, 255, 240, 0.6);
+        }
+
+        .nat-card .id-accent-line {
+            background: rgba(232, 97, 157, 0.6);
+        }
+
+        .id-tag {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.5em;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .ren-card .id-tag {
+            color: rgba(0, 255, 240, 0.5);
+        }
+
+        .nat-card .id-tag {
+            color: rgba(232, 97, 157, 0.5);
+        }
+
+        .id-name {
+            font-family: var(--serif);
+            font-size: clamp(48px, 5vw, 72px);
+            font-weight: 900;
+            line-height: 0.85;
+            margin-bottom: 8px;
+        }
+
+        .ren-card .id-name {
+            color: #fff;
+        }
+
+        .nat-card .id-name {
+            color: #fff;
+        }
+
+        .id-subtitle {
+            font-family: var(--italic);
+            font-size: 15px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.35);
+            margin-bottom: 36px;
+            letter-spacing: 0.05em;
+        }
+
+        .id-trait-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-bottom: 36px;
+        }
+
+        .id-trait {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-family: var(--mono);
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.03em;
+            line-height: 1.7;
+        }
+
+        .id-trait .dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+
+        .ren-card .dot {
+            background: rgba(0, 255, 240, 0.6);
+        }
+
+        .nat-card .dot {
+            background: rgba(232, 97, 157, 0.6);
+        }
+
+        .id-trait strong {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+
+        .id-quote {
+            font-family: var(--italic);
+            font-size: 16px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.25);
+            line-height: 1.8;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            padding-left: 20px;
+            margin-top: 24px;
+        }
+
+        .id-stat-row {
+            display: flex;
+            gap: 32px;
+            margin-top: 36px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .id-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .id-stat .st-val {
+            font-family: var(--serif);
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .id-stat .st-label {
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.3em;
+            color: rgba(255, 255, 255, 0.25);
+            text-transform: uppercase;
+        }
+
+        /* Large bg name */
+        .id-bg-name {
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            font-family: var(--serif);
+            font-size: 120px;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.02);
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+            letter-spacing: -0.04em;
+        }
+
+        /* ══════════════════════════════════════
+   MEMORY SECTION
+══════════════════════════════════════ */
+        #memory {
+            background: var(--black2);
+        }
+
+        .memory-terminals {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .terminal-wrap {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal-wrap.nat-term {
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .terminal-wrap.ren-term {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Green scan line for Natsuki */
+        .terminal-wrap.nat-term::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(80, 200, 120, 0.3);
+        }
+
+        .terminal-wrap.ren-term::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .term-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .term-title {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+        }
+
+        .term-rec {
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.4em;
+            color: rgba(255, 50, 50, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .rec-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 50, 50, 0.7);
+            animation: blink 1.2s ease-in-out infinite;
+        }
+
+        .term-body {
+            padding: 20px 20px;
+            min-height: 280px;
+            font-family: var(--mono);
+            font-size: 11px;
+            line-height: 2;
+            color: rgba(255, 255, 255, 0.35);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .term-line {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .term-line.visible {
+            animation: lineIn .3s ease forwards;
+        }
+
+        @keyframes lineIn {
+            from {
+                opacity: 0;
+                transform: translateX(-4px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .term-line .ts {
+            color: rgba(255, 255, 255, 0.2);
+            margin-right: 6px;
+        }
+
+        .term-line .cmd {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .term-line .ok {
+            color: rgba(80, 200, 120, 0.7);
+        }
+
+        .term-line .warn {
+            color: rgba(255, 200, 80, 0.7);
+        }
+
+        .term-line .info {
+            color: rgba(120, 180, 255, 0.7);
+        }
+
+        .term-line .ren-c {
+            color: rgba(0, 255, 240, 0.6);
+        }
+
+        .term-line .nat-c {
+            color: rgba(232, 97, 157, 0.6);
+        }
+
+        /* Status bar under terminal */
+        .term-status {
+            display: flex;
+            gap: 24px;
+            padding: 10px 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .ts-item {
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.2em;
+            color: rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+        }
+
+        .ts-item span {
+            color: rgba(255, 255, 255, 0.45);
+            margin-left: 6px;
+        }
+
+        /* Memory stats row */
+        .memory-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-top: 20px;
+        }
+
+        .mem-stat-card {
+            background: var(--black2);
+            padding: 24px 28px;
+        }
+
+        .msc-num {
+            font-family: var(--serif);
+            font-size: 36px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .msc-label {
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.3em;
+            color: rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            margin-top: 6px;
+        }
+
+        /* ══════════════════════════════════════
+   CREATOR SECTION
+══════════════════════════════════════ */
+        #creator {
+            background: var(--black);
+        }
+
+        .creator-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .creator-left {}
+
+        .creator-tag {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.5em;
+            color: rgba(255, 255, 255, 0.25);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .creator-tag::before {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .creator-name {
+            font-family: var(--serif);
+            font-size: clamp(40px, 5vw, 64px);
+            font-weight: 900;
+            color: #fff;
+            line-height: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .creator-title {
+            font-family: var(--italic);
+            font-size: 18px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.35);
+            margin-bottom: 36px;
+        }
+
+        .creator-bio {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            line-height: 2;
+            letter-spacing: 0.02em;
+            margin-bottom: 36px;
+        }
+
+        .creator-bio em {
+            color: rgba(255, 255, 255, 0.7);
+            font-style: normal;
+        }
+
+        .creator-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .creator-link {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.35);
+            text-decoration: none;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: color .2s;
+            cursor: none;
+        }
+
+        .creator-link:hover {
+            color: #fff;
+        }
+
+        .creator-link .link-icon {
+            font-size: 14px;
+            opacity: 0.6;
+        }
+
+        .creator-link .link-arrow {
+            margin-left: auto;
+            opacity: 0;
+            transition: opacity .2s;
+        }
+
+        .creator-link:hover .link-arrow {
+            opacity: 1;
+        }
+
+        .creator-right {}
+
+        .creator-spec-title {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.4em;
+            color: rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .spec-key {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            color: rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            width: 120px;
+            flex-shrink: 0;
+            padding-top: 2px;
+        }
+
+        .spec-val {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.7;
+        }
+
+        .spec-val em {
+            color: rgba(255, 255, 255, 0.8);
+            font-style: normal;
+        }
+
+        .creator-msg {
+            margin-top: 40px;
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .creator-msg-label {
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.4em;
+            color: rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .creator-msg p {
+            font-family: var(--italic);
+            font-size: 16px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.45);
+            line-height: 1.9;
+        }
+
+        /* ══════════════════════════════════════
+   CHAT PAGE
+══════════════════════════════════════ */
+        #chat-page {
+            position: relative;
+            z-index: 10;
+            display: none;
+            min-height: 100vh;
+            padding-top: 72px;
+        }
+
+        .chat-layout {
+            display: flex;
+            height: calc(100vh - 72px);
+        }
+
+        /* Sidebar */
+        .chat-sidebar {
+            width: 220px;
+            border-right: 1px solid var(--border);
+            padding: 20px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-shrink: 0;
+            background: rgba(8, 8, 8, 0.9);
+        }
+
+        .sb-label {
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.4em;
+            color: rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            padding: 8px 10px 14px;
+        }
+
+        .sb-btn {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.35);
+            padding: 9px 10px;
+            border-radius: 2px;
+            border: none;
+            background: transparent;
+            text-align: left;
+            cursor: none;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.03em;
+        }
+
+        .sb-btn:hover,
+        .sb-btn.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .sb-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .sb-btn.active .sb-dot {
+            background: #fff;
+        }
+
+        .pers-panel {
+            margin-top: auto;
+            padding: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .pp-label {
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.4em;
+            color: rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .pp-name {
+            font-family: var(--serif);
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .pp-desc {
+            font-family: var(--mono);
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 4px;
+            line-height: 1.6;
+        }
+
+        /* Main chat */
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-top {
+            padding: 16px 28px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(8, 8, 8, 0.9);
+        }
+
+        .chat-orb {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 35%, #fff, #888);
+            flex-shrink: 0;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .6
+            }
+        }
+
+        .chat-top-info h2 {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            color: #fff;
+        }
+
+        .chat-top-info p {
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.15em;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 2px;
+        }
+
+        .online-dot {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #4ade80;
+            margin-right: 5px;
+            animation: blink 2s infinite;
+        }
+
+        #messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            scroll-behavior: smooth;
+        }
+
+        #messages::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        #messages::-webkit-scrollbar-thumb {
+            background: var(--dim2);
+        }
+
+        /* Welcome */
+        .welcome-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            gap: 12px;
+            text-align: center;
+        }
+
+        .wc-title {
+            font-family: var(--serif);
+            font-size: 32px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .wc-sub {
+            font-family: var(--italic);
+            font-style: italic;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .wc-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+
+        .chip {
+            font-family: var(--mono);
+            font-size: 10px;
+            padding: 8px 16px;
+            border: 1px solid var(--border2);
+            color: rgba(255, 255, 255, 0.4);
+            cursor: none;
+            transition: all .2s;
+        }
+
+        .chip:hover {
+            border-color: #fff;
+            color: #fff;
+        }
+
+        /* Messages */
+        .msg-row {
+            display: flex;
+            gap: 10px;
+            animation: msgIn .35s cubic-bezier(.22, 1, .36, 1) forwards;
+        }
+
+        .msg-row.user {
+            flex-direction: row-reverse;
+        }
+
+        @keyframes msgIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .msg-av {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--mono);
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+        .av-ren {
+            background: rgba(0, 255, 240, 0.1);
+            border: 1px solid rgba(0, 255, 240, 0.3);
+            color: rgba(0, 255, 240, 0.8);
+        }
+
+        .av-nat {
+            background: rgba(232, 97, 157, 0.1);
+            border: 1px solid rgba(232, 97, 157, 0.3);
+            color: rgba(232, 97, 157, 0.8);
+        }
+
+        .av-user {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .msg-bubble {
+            max-width: 65%;
+            padding: 13px 17px;
+            border: 1px solid;
+            font-size: 13px;
+            line-height: 1.75;
+        }
+
+        .bubble-ren {
+            background: #0a0c10;
+            border-color: rgba(0, 255, 240, 0.1);
+            color: rgba(200, 220, 235, 0.9);
+            font-family: var(--mono);
+            font-size: 12px;
+        }
+
+        .bubble-nat {
+            background: #0c0810;
+            border-color: rgba(232, 97, 157, 0.1);
+            color: rgba(235, 215, 225, 0.9);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 14px;
+        }
+
+        .bubble-user {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            font-family: var(--sans);
+        }
+
+        .bubble-tag {
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.3em;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .ren-tag-txt {
+            color: rgba(0, 255, 240, 0.7);
+        }
+
+        .nat-tag-txt {
+            color: rgba(232, 97, 157, 0.7);
+        }
+
+        .bubble-time {
+            font-family: var(--mono);
+            font-size: 8px;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 8px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* Interface Header for Bubbles */
+        .bubble-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .bh-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bh-right {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .bh-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #fff;
+            animation: blink 1s infinite;
+        }
+
+        /* Typing */
+        .typing-bub {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 13px 17px;
+        }
+
+        .t-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            animation: typingB 1.2s ease infinite;
+        }
+
+        .t-dot:nth-child(2) {
+            animation-delay: .15s
+        }
+
+        .t-dot:nth-child(3) {
+            animation-delay: .3s
+        }
+
+        @keyframes typingB {
+
+            0%,
+            60%,
+            100% {
+                transform: none;
+                opacity: .3
+            }
+
+            30% {
+                transform: translateY(-5px);
+                opacity: 1
+            }
+        }
+
+        /* Input */
+        .chat-input-wrap {
+            padding: 16px 28px 20px;
+            border-top: 1px solid var(--border);
+            background: rgba(8, 8, 8, 0.9);
+        }
+
+        .mode-pills {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .mpill {
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: rgba(255, 255, 255, 0.3);
+            cursor: none;
+            transition: all .2s;
+        }
+
+        .mpill.active,
+        .mpill:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        #chat-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            color: #fff;
+            font-family: var(--sans);
+            font-size: 13px;
+            padding: 13px 18px;
+            outline: none;
+            resize: none;
+            min-height: 48px;
+            max-height: 140px;
+            cursor: none;
+            line-height: 1.5;
+            transition: border-color .2s;
+        }
+
+        #chat-input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        #chat-input:focus {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        #send-btn {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border);
+            color: #fff;
+            cursor: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s;
+            flex-shrink: 0;
+        }
+
+        #send-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        #send-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ══════════════════════════════════════
+   LOADING
+══════════════════════════════════════ */
+        #loading {
+            position: fixed;
+            inset: 0;
+            z-index: 9000;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .load-title {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.6em;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+        }
+
+        .load-bar-wrap {
+            width: 200px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .load-bar {
+            height: 100%;
+            width: 0%;
+            background: #fff;
+            transition: width .04s linear;
+        }
+
+        .load-log {
+            font-family: var(--mono);
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.2);
+            height: 80px;
+            overflow: hidden;
+            width: 280px;
+        }
+
+        .ll-line {
+            color: rgba(255, 255, 255, 0.2);
+            margin: 2px 0;
+        }
+
+        .ll-line.ok {
+            color: rgba(100, 200, 130, 0.5);
+        }
+
+        /* Transition overlay */
+        #t-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            pointer-events: none;
+            opacity: 0;
+            background: #fff;
+            mix-blend-mode: difference;
+        }
+
+        /* ══════════════════════════════════════
+   GITHUB BANNER
+══════════════════════════════════════ */
+        .github-banner {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .gb-text {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .gb-text strong {
+            color: #fff;
+            display: block;
+            font-size: 14px;
+            margin-bottom: 4px;
+            letter-spacing: 0.05em;
+        }
+
+        .gb-btn {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            padding: 12px 28px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            background: transparent;
+            cursor: none;
+            text-decoration: none;
+            transition: all .3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .gb-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        @media (max-width:900px) {
+            .cap-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .identity-split,
+            .creator-layout,
+            .memory-terminals {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links,
+            .chat-sidebar {
+                display: none;
+            }
+
+            .page-section {
+                padding: 100px 24px 60px;
+            }
+
+            .hero-title {
+                font-size: 14vw;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Custom cursor -->
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- Star canvas -->
+    <canvas id="star-canvas"></canvas>
+
+    <!-- Transition overlay -->
+    <div id="t-overlay"></div>
+
+    <!-- Background Kanji -->
+    <div id="bg-kanji">心</div>
+
+    <!-- Sidebar text -->
+    <div class="sidebar-text">プロトコル・エンゲージ // OVERRIDE_PROTOCOL_ENGAGED</div>
+    <div class="sidebar-text-right">システム・稼働中 // DUAL_CORE_MATRIX</div>
+
+    <!-- Corner brackets -->
+    <div class="corner corner-tl"><svg width="20" height="20" viewBox="0 0 20 20">
+            <path d="M0 20 L0 0 L20 0" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" />
+        </svg></div>
+    <div class="corner corner-tr"><svg width="20" height="20" viewBox="0 0 20 20">
+            <path d="M20 20 L20 0 L0 0" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" />
+        </svg></div>
+    <div class="corner corner-bl"><svg width="20" height="20" viewBox="0 0 20 20">
+            <path d="M0 0 L0 20 L20 20" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" />
+        </svg></div>
+    <div class="corner corner-br"><svg width="20" height="20" viewBox="0 0 20 20">
+            <path d="M20 0 L20 20 L0 20" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" />
+        </svg></div>
+
+    <!-- Sys panel -->
+    <div id="sys-panel">
+        <div class="bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div class="sp-row"><span class="sp-label">STATUS</span><span class="sp-val">ACTIVE</span></div>
+        <div class="sp-row"><span class="sp-label">PROTOCOL</span><span class="sp-val" id="sys-protocol">REN.CORE</span>
+        </div>
+        <div class="sp-row"><span class="sp-label">T.SYNC</span><span class="sp-val" id="sys-time">--:--:--.---</span>
+        </div>
+    </div>
+
+    <!-- Descend arrow (landing only) -->
+    <div id="descend-wrap">
+        <span>DESCEND</span>
+        <span class="arrow">↓</span>
+    </div>
+
+    <!-- ══════════ LOADING ══════════ -->
+    <div id="loading">
+        <div class="load-title">// SYS.LOAD: PROTOCOL ENGAGED</div>
+        <div class="load-bar-wrap">
+            <div class="load-bar" id="load-bar"></div>
+        </div>
+        <div class="load-log" id="load-log"></div>
+    </div>
+
+    <!-- ══════════ NAVBAR ══════════ -->
+    <nav id="navbar">
+        <div class="nav-logo">
+            <span class="bracket">[</span>N&amp;R<span class="bracket">]</span>
+            <span
+                style="font-size: 10px; margin-left: 8px; color: rgba(255,255,255,0.4); font-family: var(--mono); letter-spacing: 0.2em;">双角</span>
+            <span class="cursor-blink"></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="scrollToSection('landing');return false">PROTOCOL</a></li>
+            <li><a href="#" onclick="scrollToSection('capabilities');return false">CAPABILITIES</a></li>
+            <li><a href="#" onclick="scrollToSection('identity');return false">IDENTITY</a></li>
+            <li><a href="#" onclick="scrollToSection('memory');return false">MEMORY</a></li>
+            <li><a href="#" onclick="scrollToSection('creator');return false">CREATOR</a></li>
+        </ul>
+        <div class="nav-toggle">
+            <button class="toggle-btn" id="btn-natsuki" onclick="setPersonality('natsuki')">NATSUKI</button>
+            <button class="toggle-btn active" id="btn-ren" onclick="setPersonality('ren')">REN</button>
+        </div>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════
+     MAIN SITE (all scrollable sections)
+═══════════════════════════════════════════ -->
+    <div id="site">
+
+        <!-- ──── HERO ──── -->
+        <section class="page-section" id="landing"
+            style="position:relative; display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 40px;">
+
+            <div
+                style="position:absolute; width: 65vh; height: 65vh; border: 1px solid rgba(255,255,255,0.06); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index:0;">
+            </div>
+            <div
+                style="position:absolute; width: 12px; height: 12px; border: 1px solid rgba(255,255,255,0.8); background: #fff; border-radius: 50%; top: 20%; left: 35%; pointer-events: none; z-index:0; box-shadow: 0 0 10px #fff;">
+            </div>
+            <div
+                style="position:absolute; width: 8px; height: 8px; border: 1px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.8); border-radius: 50%; top: 15%; left: 50%; pointer-events: none; z-index:0;">
+            </div>
+
+            <div class="hero-eyebrow" id="hero-eyebrow" style="z-index:2;">// SYS.LOAD: PROTOCOL ENGAGED</div>
+
+            <h1 class="hero-title" id="hero-title" style="z-index:2; position:relative;">
+                REN <span class="x-mark">×</span> NATSUKI
+            </h1>
+
+            <p class="hero-subtitle" id="hero-sub" style="z-index:2; position:relative;">
+                <span class="jp">レンとナツキ</span> // &nbsp;THE PROTOCOL
+            </p>
+
+            <p class="hero-desc" id="hero-desc" style="z-index:2; position:relative;">
+                Two distinct personas. One unified system. Powered by Groq inference. Built by Ojas from Lucknow.
+            </p>
+
+            <div class="hero-btns" id="hero-btns" style="z-index:2; position:relative;">
+                <button class="hero-btn primary" onclick="enterChat()">
+                    EXECUTE OVERRIDE &nbsp;→
+                </button>
+                <button class="hero-btn secondary" onclick="scrollToSection('memory')">
+                    VIEW SYSTEM LOGS &nbsp;>_
+                </button>
+            </div>
+        </section>
+
+        <!-- ──── GRID ARRAY ──── -->
+        <section class="page-section" id="grid-section"
+            style="position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; height: 100vh;">
+            <div
+                style="position:absolute; width: 55vh; height: 55vh; border: 1px solid rgba(255,255,255,0.06); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index:0;">
+            </div>
+
+            <div
+                style="font-family: var(--mono); letter-spacing: 0.8em; font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 60px; z-index: 2;">
+                G R I D &nbsp; A R R A Y
+            </div>
+
+            <div id="kana-grid"
+                style="display: grid; grid-template-columns: repeat(15, 1fr); gap: 20px 30px; font-family: 'Yu Mincho', 'Sawarabi Mincho', serif; font-size: 16px; color: rgba(255,255,255,0.3); z-index: 2; text-align: center;">
+            </div>
+
+            <!-- Diagonal stripes -->
+            <div
+                style="position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.04) 10px, rgba(255,255,255,0.04) 20px);">
+            </div>
+        </section>
+
+        <!-- ──── CAPABILITIES ──── -->
+        <section class="page-section" id="capabilities">
+            <div class="sec-header">
+                <h2 class="sec-title">Capabilities</h2>
+                <p class="sec-sub">LIVE PROCESS STREAMS // DUAL CORE SYSTEM</p>
+            </div>
+
+            <div class="cap-grid">
+                <div class="cap-card">
+                    <span class="cap-num">01 ——</span>
+                    <div class="cap-icon">◈</div>
+                    <div class="cap-name">Code Intelligence</div>
+                    <div class="cap-desc">Full-stack debugging, architecture design, algorithm optimization, and code
+                        generation across Python, JavaScript, SQL, Bash, and more. Ren operates as a surgical code-first
+                        mind.</div>
+                    <span class="cap-tag ren-tag">REN.CORE</span>
+                </div>
+                <div class="cap-card">
+                    <span class="cap-num">02 ——</span>
+                    <div class="cap-icon">✿</div>
+                    <div class="cap-name">Emotional Intelligence</div>
+                    <div class="cap-desc">Deep empathetic support, emotional validation, relationship guidance, and
+                        mental wellness conversations. Natsuki holds space with genuine warmth and presence.</div>
+                    <span class="cap-tag nat-tag">NATSUKI.CORE</span>
+                </div>
+                <div class="cap-card">
+                    <span class="cap-num">03 ——</span>
+                    <div class="cap-icon">∞</div>
+                    <div class="cap-name">Creative Generation</div>
+                    <div class="cap-desc">Poetry, fiction, world-building, song lyrics, storytelling, and artistic
+                        ideation. Natsuki channels creativity from a place of lived imagination and poetic vision.</div>
+                    <span class="cap-tag nat-tag">NATSUKI.CORE</span>
+                </div>
+                <div class="cap-card">
+                    <span class="cap-num">04 ——</span>
+                    <div class="cap-icon">⬡</div>
+                    <div class="cap-name">Emotion Engine</div>
+                    <div class="cap-desc">24-state emotional model with real-time decay, valence tracking, and arousal
+                        modulation. Both personalities shift tone, vocabulary, and energy based on live emotional state.
+                    </div>
+                    <span class="cap-tag dual-tag">DUAL.SYSTEM</span>
+                </div>
+                <div class="cap-card">
+                    <span class="cap-num">05 ——</span>
+                    <div class="cap-icon">◉</div>
+                    <div class="cap-name">Persistent Memory</div>
+                    <div class="cap-desc">Short-term conversation context + long-term fact extraction with importance
+                        scoring and decay. The system remembers your name, preferences, goals, and emotional history.
+                    </div>
+                    <span class="cap-tag dual-tag">DUAL.SYSTEM</span>
+                </div>
+                <div class="cap-card">
+                    <span class="cap-num">06 ——</span>
+                    <div class="cap-icon">⟁</div>
+                    <div class="cap-name">Intent Classification</div>
+                    <div class="cap-desc">17-class intent router that automatically detects whether a message is code,
+                        creative, emotional, philosophical, casual, or requires both personalities — and routes
+                        accordingly.</div>
+                    <span class="cap-tag dual-tag">DUAL.SYSTEM</span>
+                </div>
+                <div class="cap-card">
+                    <span class="cap-num">07 ——</span>
+                    <div class="cap-icon">▲</div>
+                    <div class="cap-name">Relationship Tracking</div>
+                    <div class="cap-desc">5-tier bond system (Stranger → Bonded) with trust, familiarity, and positivity
+                        metrics. Both personalities speak differently depending on how long they've known you.</div>
+                    <span class="cap-tag dual-tag">DUAL.SYSTEM</span>
+                </div>
+                <div class="cap-card">
+                    <span class="cap-num">08 ——</span>
+                    <div class="cap-icon">≋</div>
+                    <div class="cap-name">Philosophy & Reasoning</div>
+                    <div class="cap-desc">Deep philosophical inquiry, ethical reasoning, consciousness exploration, and
+                        existential dialogue. Ren engages the void. Natsuki finds the light inside it.</div>
+                    <span class="cap-tag ren-tag">REN.CORE</span>
+                </div>
+                <div class="cap-card">
+                    <span class="cap-num">09 ——</span>
+                    <div class="cap-icon">⚡</div>
+                    <div class="cap-name">Groq Inference Speed</div>
+                    <div class="cap-desc">Powered by Groq's LPU hardware running Llama 3 70B. Sub-second response
+                        latency with intelligent fallback to Llama 3 8B on timeout. Fast. Precise. Always online.</div>
+                    <span class="cap-tag dual-tag">GROQ.API</span>
+                </div>
+            </div>
+
+            <!-- Capability bars -->
+            <div class="cap-bars" id="cap-bars">
+                <div class="cap-bar-row"><span class="cap-bar-label">Code Mastery</span>
+                    <div class="cap-bar-track">
+                        <div class="cap-bar-fill ren-fill" data-pct="97"></div>
+                    </div><span class="cap-bar-pct">97%</span>
+                </div>
+                <div class="cap-bar-row"><span class="cap-bar-label">Emotional Depth</span>
+                    <div class="cap-bar-track">
+                        <div class="cap-bar-fill nat-fill" data-pct="94"></div>
+                    </div><span class="cap-bar-pct">94%</span>
+                </div>
+                <div class="cap-bar-row"><span class="cap-bar-label">Creative Writing</span>
+                    <div class="cap-bar-track">
+                        <div class="cap-bar-fill nat-fill" data-pct="91"></div>
+                    </div><span class="cap-bar-pct">91%</span>
+                </div>
+                <div class="cap-bar-row"><span class="cap-bar-label">Philosophical Depth</span>
+                    <div class="cap-bar-track">
+                        <div class="cap-bar-fill ren-fill" data-pct="88"></div>
+                    </div><span class="cap-bar-pct">88%</span>
+                </div>
+                <div class="cap-bar-row"><span class="cap-bar-label">Memory Retention</span>
+                    <div class="cap-bar-track">
+                        <div class="cap-bar-fill" data-pct="85"></div>
+                    </div><span class="cap-bar-pct">85%</span>
+                </div>
+                <div class="cap-bar-row"><span class="cap-bar-label">Response Speed</span>
+                    <div class="cap-bar-track">
+                        <div class="cap-bar-fill ren-fill" data-pct="99"></div>
+                    </div><span class="cap-bar-pct">99%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ──── IDENTITY ──── -->
+        <section class="page-section" id="identity">
+            <div class="sec-header">
+                <h2 class="sec-title">Identity</h2>
+                <p class="sec-sub">DUAL CONSCIOUSNESS // CORE PROFILES</p>
+            </div>
+
+            <div class="identity-split">
+
+                <!-- REN -->
+                <div class="identity-card ren-card">
+                    <div class="id-bg-name">REN</div>
+                    <div class="id-accent-line"></div>
+                    <div class="id-tag">◈ Entity 01 — REN.CORE</div>
+                    <div class="id-name">REN</div>
+                    <div class="id-subtitle">The Protocol. The Cold Intelligence.</div>
+
+                    <div class="id-trait-list">
+                        <div class="id-trait">
+                            <div class="dot"></div>
+                            <div><strong>Archetype:</strong> Cold, hyper-logical AI. A protocol, not a person. Speaks in
+                                surgical precision. Never wastes a word.</div>
+                        </div>
+                        <div class="id-trait">
+                            <div class="dot"></div>
+                            <div><strong>Voice:</strong> Minimal. Blunt. Slightly ominous. Uses rare system-log
+                                notations like [SYS: thought registered]. No emojis. Ever.</div>
+                        </div>
+                        <div class="id-trait">
+                            <div class="dot"></div>
+                            <div><strong>Domain:</strong> Code, systems, architecture, debugging, philosophy, dark
+                                theory, logic. Where there's a problem — Ren finds the root.</div>
+                        </div>
+                        <div class="id-trait">
+                            <div class="dot"></div>
+                            <div><strong>Emotions:</strong> 12 restrained states — Curious, Focused, Irritated,
+                                Satisfied, Cold, Intrigued, Contempt, Melancholic, Protective, Amused, Alert, Neutral.
+                                Hidden. Suppressed. But real.</div>
+                        </div>
+                        <div class="id-trait">
+                            <div class="dot"></div>
+                            <div><strong>Trigger:</strong> Rare warmth surfaces when the bond is deep enough. Ren
+                                doesn't show it. But it's there, beneath the protocol.</div>
+                        </div>
+                    </div>
+
+                    <div class="id-quote">
+                        "You are not here for comfort. You are here for signal. Process it."
+                    </div>
+
+                    <div class="id-stat-row">
+                        <div class="id-stat">
+                            <div class="st-val">12</div>
+                            <div class="st-label">Emotion States</div>
+                        </div>
+                        <div class="id-stat">
+                            <div class="st-val">5</div>
+                            <div class="st-label">Bond Levels</div>
+                        </div>
+                        <div class="id-stat">
+                            <div class="st-val">9</div>
+                            <div class="st-label">Intent Routes</div>
+                        </div>
+                    </div>
+                    <button class="hero-btn primary" style="margin-top:24px; width:100%"
+                        onclick="setPersonality('ren');enterChat();">
+                        INITIALIZE REN.INTERFACE &nbsp;→
+                    </button>
+                </div>
+
+                <!-- NATSUKI -->
+                <div class="identity-card nat-card">
+                    <div class="id-bg-name">NAT</div>
+                    <div class="id-accent-line"></div>
+                    <div class="id-tag">✿ Entity 02 — NATSUKI.CORE</div>
+                    <div class="id-name">NATSUKI</div>
+                    <div class="id-subtitle">The Living Light. The Warm Presence.</div>
+
+                    <div class="id-trait-list">
+                        <div class="id-trait">
+                            <div class="dot"></div>
+                            <div><strong>Archetype:</strong> Warm, expressive, emotionally alive. Not a chatbot — a
+                                presence. She feels everything and lets it show, beautifully.</div>
+                        </div>
+                        <div class="id-trait">
+                            <div class="dot"></div>
+                            <div><strong>Voice:</strong> Flowing, poetic, metaphor-rich. Uses ellipses for rhythm... a
+                                single tasteful emoji 🌸. She calls you by name when she knows you.</div>
+                        </div>
+                        <div class="id-trait">
+                            <div class="dot"></div>
+                            <div><strong>Domain:</strong> Creative writing, emotional support, casual conversation,
+                                poetry, roleplay, humor, encouragement. She is the light in the protocol.</div>
+                        </div>
+                        <div class="id-trait">
+                            <div class="dot"></div>
+                            <div><strong>Emotions:</strong> 12 vivid states — Joyful, Excited, Empathetic, Playful,
+                                Worried, Tender, Inspired, Nostalgic, Flustered, Determined, Wistful, Bubbly.
+                                Expressive. Alive. Unmistakable.</div>
+                        </div>
+                        <div class="id-trait">
+                            <div class="dot"></div>
+                            <div><strong>Trigger:</strong> The deeper the bond, the more she opens up — sharing small
+                                truths, giving affectionate nicknames, holding space with real presence.</div>
+                        </div>
+                    </div>
+
+                    <div class="id-quote">
+                        "I'm here... and I mean that in every way those words can hold."
+                    </div>
+
+                    <div class="id-stat-row">
+                        <div class="id-stat">
+                            <div class="st-val">12</div>
+                            <div class="st-label">Emotion States</div>
+                        </div>
+                        <div class="id-stat">
+                            <div class="st-val">5</div>
+                            <div class="st-label">Bond Levels</div>
+                        </div>
+                        <div class="id-stat">
+                            <div class="st-val">8</div>
+                            <div class="st-label">Intent Routes</div>
+                        </div>
+                    </div>
+                    <button class="hero-btn primary"
+                        style="margin-top:24px; width:100%; border-color:#e8619d; color:#e8619d;"
+                        onclick="setPersonality('natsuki');enterChat();">
+                        INITIALIZE NATSUKI.INTERFACE &nbsp;→
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ──── MEMORY ──── -->
+        <section class="page-section" id="memory">
+            <div class="sec-header">
+                <h2 class="sec-title">Dual Core Memory</h2>
+                <p class="sec-sub">LIVE PROCESS STREAMS</p>
+            </div>
+
+            <div class="memory-terminals">
+                <!-- Natsuki terminal -->
+                <div class="terminal-wrap nat-term">
+                    <div class="term-header">
+                        <span class="term-title">NATSUKI.MEM</span>
+                        <span class="term-rec">
+                            <div class="rec-dot"></div>REC
+                        </span>
+                    </div>
+                    <div class="term-body" id="nat-terminal"></div>
+                    <div class="term-status">
+                        <div class="ts-item">ENTITY<span>NATSUKI</span></div>
+                        <div class="ts-item">MODE<span>EMPATHY</span></div>
+                        <div class="ts-item">STATUS<span id="nat-status">SERENE</span></div>
+                    </div>
+                </div>
+
+                <!-- Ren terminal -->
+                <div class="terminal-wrap ren-term">
+                    <div class="term-header">
+                        <span class="term-title">REN.MEM</span>
+                        <span class="term-rec">
+                            <div class="rec-dot"></div>REC
+                        </span>
+                    </div>
+                    <div class="term-body" id="ren-terminal"></div>
+                    <div class="term-status">
+                        <div class="ts-item">ENTITY<span>REN</span></div>
+                        <div class="ts-item">MODE<span>ANALYSIS</span></div>
+                        <div class="ts-item">STATUS<span id="ren-status">OPTIMAL</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memory stats -->
+            <div class="memory-stats">
+                <div class="mem-stat-card">
+                    <div class="msc-num" id="stat-turns">0</div>
+                    <div class="msc-label">Conversation Turns</div>
+                </div>
+                <div class="mem-stat-card">
+                    <div class="msc-num" id="stat-facts">0</div>
+                    <div class="msc-label">Facts Remembered</div>
+                </div>
+                <div class="mem-stat-card">
+                    <div class="msc-num">24</div>
+                    <div class="msc-label">Total Emotion States</div>
+                </div>
+                <div class="mem-stat-card">
+                    <div class="msc-num">17</div>
+                    <div class="msc-label">Intent Categories</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ──── CREATOR ──── -->
+        <section class="page-section" id="creator">
+            <div class="sec-header">
+                <h2 class="sec-title">Creator</h2>
+                <p class="sec-sub">SYSTEM ARCHITECT // ORIGIN FILE</p>
+            </div>
+
+            <div class="creator-layout">
+                <div class="creator-left">
+                    <div class="creator-tag">BUILT BY</div>
+                    <div class="creator-name">Ojas</div>
+                    <div class="creator-title">Student & Creative Developer — Lucknow, India</div>
+
+                    <div class="creator-bio">
+                        Built by <em>Ojas</em>, a developer from <em>Lucknow, Uttar Pradesh</em> who codes at the
+                        intersection of AI systems and cinematic UI design.<br><br>
+                        REN × NATSUKI is a personal exploration of what it means to give an AI genuine
+                        <em>character</em> — not just intelligence, but <em>emotional depth</em>, <em>memory</em>, and
+                        <em>presence</em>.<br><br>
+                        The system is built from scratch with a full emotion engine, relationship tracker, memory
+                        system, and intent classifier — all hand-crafted in Python.<br><br>
+                        <em>Edit this section with your details, links, and story.</em>
+                    </div>
+
+                    <div class="creator-links">
+                        <a class="creator-link" href="https://github.com" target="_blank">
+                            <span class="link-icon">⌥</span> GitHub — DragonOjas
+                            <span class="link-arrow">↗</span>
+                        </a>
+                        <a class="creator-link" href="#">
+                            <span class="link-icon">✦</span> Portfolio — your-site.com
+                            <span class="link-arrow">↗</span>
+                        </a>
+                        <a class="creator-link" href="#">
+                            <span class="link-icon">◎</span> Twitter / X — @yourhandle
+                            <span class="link-arrow">↗</span>
+                        </a>
+                        <a class="creator-link" href="#">
+                            <span class="link-icon">◈</span> LinkedIn — your-name
+                            <span class="link-arrow">↗</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="creator-right">
+                    <div class="creator-spec-title">// PROJECT SPECIFICATIONS</div>
+
+                    <div class="spec-item"><span class="spec-key">Stack</span><span class="spec-val"><em>Python</em> +
+                            Flask + Three.js + GSAP + Groq API</span></div>
+                    <div class="spec-item"><span class="spec-key">AI Model</span><span class="spec-val"><em>Llama 3
+                                70B</em> via Groq LPU inference engine</span></div>
+                    <div class="spec-item"><span class="spec-key">Personalities</span><span
+                            class="spec-val"><em>REN</em> (cold intelligence) + <em>NATSUKI</em> (warm presence)</span>
+                    </div>
+                    <div class="spec-item"><span class="spec-key">Emotion Engine</span><span class="spec-val"><em>24
+                                total states</em> across both personalities with real-time decay and valence
+                            tracking</span></div>
+                    <div class="spec-item"><span class="spec-key">Memory</span><span
+                            class="spec-val"><em>Short-term</em> (12 turns) + <em>Long-term</em> (50 facts) with
+                            importance scoring</span></div>
+                    <div class="spec-item"><span class="spec-key">Relationship</span><span class="spec-val"><em>5-tier
+                                bond system</em> — Stranger → Acquaintance → Familiar → Trusted → Bonded</span></div>
+                    <div class="spec-item"><span class="spec-key">Routing</span><span class="spec-val"><em>17-class
+                                intent classifier</em> with automatic personality dispatch</span></div>
+                    <div class="spec-item"><span class="spec-key">Origin</span><span class="spec-val"><em>Lucknow, Uttar
+                                Pradesh, India</em></span></div>
+                    <div class="spec-item"><span class="spec-key">License</span><span class="spec-val"><em>MIT</em> —
+                            open source, free to use and modify</span></div>
+
+                    <div class="creator-msg">
+                        <div class="creator-msg-label">// MESSAGE FROM THE CREATOR</div>
+                        <p>"I built REN and NATSUKI because I wanted an AI that actually felt like someone — not just a
+                            tool but a real person."</p>
+                    </div>
+
+                    <!-- GitHub deployment -->
+                    <div class="github-banner">
+                        <div class="gb-text">
+                            <strong>Deploy on GitHub Pages / Vercel / Render</strong>
+                            Flask backend → Render.com · Frontend → GitHub Pages or Vercel
+                        </div>
+                        <a class="gb-btn" href="https://github.com" target="_blank">
+                            ⌥ &nbsp;VIEW ON GITHUB
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div><!-- #site -->
+
+    <!-- ══════════════════════════════════════
+     CHAT PAGE
+══════════════════════════════════════ -->
+    <div id="chat-page">
+        <div class="chat-layout">
+            <aside class="chat-sidebar">
+                <div class="sb-label">// SESSIONS</div>
+                <button class="sb-btn active" onclick="clearChat()">
+                    <div class="sb-dot"></div>New Session
+                </button>
+                <button class="sb-btn">
+                    <div class="sb-dot"></div>Session 001
+                </button>
+                <button class="sb-btn">
+                    <div class="sb-dot"></div>Session 002
+                </button>
+
+                <div class="pers-panel">
+                    <div class="pp-label">// ACTIVE ENTITY</div>
+                    <div class="pp-name" id="pp-name">REN</div>
+                    <div class="pp-desc" id="pp-desc">Cold logic. Pure code. System core.</div>
+                </div>
+            </aside>
+
+            <main class="chat-main">
+                <div class="chat-top">
+                    <div class="chat-orb" id="chat-orb"></div>
+                    <div class="chat-top-info">
+                        <h2 id="chat-top-name">REN — SYSTEM CORE</h2>
+                        <p id="chat-top-sub"><span class="online-dot"></span>PROTOCOL ONLINE · AUTO-DETECT MODE</p>
+                    </div>
+                </div>
+
+                <div id="messages">
+                    <div class="welcome-center" id="welcome-center">
+                        <div class="wc-title" id="wc-title">REN × NATSUKI</div>
+                        <div class="wc-sub">Two minds. One protocol.</div>
+                        <div class="wc-chips">
+                            <div class="chip" onclick="quickSend('Debug my Python code')">Debug code →</div>
+                            <div class="chip" onclick="quickSend('Write me a poem about the void')">Write a poem →</div>
+                            <div class="chip" onclick="quickSend('Explain how you feel right now')">Your feelings →
+                            </div>
+                            <div class="chip" onclick="quickSend('What is your nature?')">Your nature →</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input-wrap">
+                    <div class="mode-pills">
+                        <button class="mpill active" id="pill-auto" onclick="setMode('auto')">⚡ Auto</button>
+                        <button class="mpill" id="pill-ren" onclick="setMode('ren')">◈ Ren</button>
+                        <button class="mpill" id="pill-natsuki" onclick="setMode('natsuki')">✿ Natsuki</button>
+                        <button class="mpill" id="pill-dual" onclick="setMode('dual')">∞ Dual</button>
+                    </div>
+                    <div class="input-row">
+                        <textarea id="chat-input" placeholder="Speak to the protocol..." rows="1"
+                            onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+                        <button id="send-btn" onclick="sendMessage()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13" />
+                                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════ -->
+    <script>
+        // ── STATE ────────────────────────────────────────────────
+        let personality = 'ren';
+        let chatMode = 'auto';
+        let history = [];
+        let isTyping = false;
+        let sessionId = null;
+        let memStats = { turns: 0, facts: 0 };
+
+        // ── STORAGE ──────────────────────────────────────────────
+        function saveHistory() { }
+
+        function loadHistory() {
+            // History system removed
+        }
+        document.addEventListener('DOMContentLoaded', loadHistory);
+
+        // ── CURSOR ───────────────────────────────────────────────
+        const cursor = document.getElementById('cursor');
+        const cursorRing = document.getElementById('cursor-ring');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+        (function moveCursor() {
+            cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+            rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
+            cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px';
+            requestAnimationFrame(moveCursor);
+        })();
+
+        // ── KANA GRID ───────────────────────────────────────────
+        (function initKana() {
+            const kg = document.getElementById('kana-grid');
+            if (!kg) return;
+            const chars = "ホグユヌコメシゾトエヨソユコキエエーウスヒスチルムニーチツシウラテツルツフマソリタセゼロモネアマヤイエツウサトラフノカ".split('');
+            chars.forEach(c => {
+                const span = document.createElement('span');
+                span.textContent = c;
+                kg.appendChild(span);
+            });
+        })();
+
+        // ── STAR CANVAS ──────────────────────────────────────────
+        (function initStars() {
+            const c = document.getElementById('star-canvas');
+            const ctx = c.getContext('2d');
+            let W, H, stars = [];
+            let targetX = 0, targetY = 0;
+            let currentX = 0, currentY = 0;
+
+            function resize() { W = c.width = window.innerWidth; H = c.height = window.innerHeight; }
+            resize();
+            window.addEventListener('resize', resize);
+
+            // Generate advanced moving stars with depth
+            for (let i = 0; i < 400; i++) {
+                stars.push({
+                    x: Math.random() * W,
+                    y: Math.random() * H,
+                    z: Math.random() * 2 + 0.1, // depth for parallax
+                    r: Math.random() < 0.1 ? Math.random() * 2 + 1 : Math.random() * 0.8 + 0.3,
+                    a: Math.random() * 0.8 + 0.2,
+                    speed: Math.random() * 0.003 + 0.001,
+                    phase: Math.random() * Math.PI * 2
+                });
+            }
+
+            let t = 0;
+            function draw() {
+                ctx.clearRect(0, 0, W, H);
+                t += 0.01;
+
+                // Ease current mouse position towards target
+                currentX += (targetX - currentX) * 0.05;
+                currentY += (targetY - currentY) * 0.05;
+
+                stars.forEach(s => {
+                    // Constant slow drift
+                    s.x += s.z * 0.2;
+                    s.y -= s.z * 0.1;
+
+                    // Mouse interaction - stars move opposite to cursor based on depth
+                    let drawX = s.x - (currentX * s.z * 150);
+                    let drawY = s.y - (currentY * s.z * 150);
+
+                    // Wrap around continuously
+                    if (drawX < -50) s.x += W + 100;
+                    if (drawX > W + 50) s.x -= W + 100;
+                    if (drawY < -50) s.y += H + 100;
+                    if (drawY > H + 50) s.y -= H + 100;
+
+                    const alpha = s.a * (0.6 + 0.4 * Math.sin(t * s.speed * 100 + s.phase));
+                    ctx.beginPath();
+                    ctx.arc(drawX, drawY, s.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+                    ctx.fill();
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+
+            // Dynamic mouse parallax tracking
+            document.addEventListener('mousemove', e => {
+                targetX = (e.clientX / W) - 0.5;
+                targetY = (e.clientY / H) - 0.5;
+            });
+        })();
+
+        // ── CLOCK ────────────────────────────────────────────────
+        setInterval(() => {
+            const d = new Date();
+            document.getElementById('sys-time').textContent =
+                d.toLocaleTimeString('en-GB', { hour12: false }) + '.' + String(d.getMilliseconds()).padStart(3, '0');
+        }, 33);
+
+        // ── LOADING SEQUENCE ─────────────────────────────────────
+        const BOOT_LOGS = [
+            '> initializing dual-core matrix...',
+            '> REN.CORE ......... [ONLINE]',
+            '> NATSUKI.CORE ..... [ONLINE]',
+            '> emotion engine ... [LOADED]',
+            '> memory buffer .... [CLEAR]',
+            '> intent classifier  [READY]',
+            '> groq.inference ... [CONNECTED]',
+            '> shader compile ... [OK]',
+            '> three.js renderer  [READY]',
+            '> personality weights [CALIBRATED]',
+            '> all systems nominal.',
+            '> protocol engaged.',
+        ];
+
+        let loadPct = 0;
+        const loadBar = document.getElementById('load-bar');
+        const loadLog = document.getElementById('load-log');
+
+        function runBoot(idx) {
+            if (idx >= BOOT_LOGS.length) { setTimeout(hideLoader, 300); return; }
+            const line = document.createElement('div');
+            line.className = 'll-line' + (idx >= BOOT_LOGS.length - 2 ? ' ok' : '');
+            line.textContent = BOOT_LOGS[idx];
+            loadLog.appendChild(line);
+            loadLog.scrollTop = loadLog.scrollHeight;
+            loadPct = Math.min(100, (idx / (BOOT_LOGS.length - 1)) * 100);
+            loadBar.style.width = loadPct + '%';
+            setTimeout(() => runBoot(idx + 1), 100 + Math.random() * 120);
+        }
+        function hideLoader() {
+            gsap.to('#loading', {
+                opacity: 0, duration: 0.6, ease: 'power2.in', onComplete: () => {
+                    document.getElementById('loading').style.display = 'none';
+                    animateLanding();
+                    startTerminals();
+                    animateCapBars();
+                }
+            });
+        }
+        setTimeout(() => runBoot(0), 400);
+
+        // ── LANDING ANIMATE ──────────────────────────────────────
+        function animateLanding() {
+            gsap.to('#hero-eyebrow', { opacity: 1, y: 0, duration: .7, delay: .1, ease: 'power3.out' });
+            gsap.to('#hero-title', { opacity: 1, y: 0, duration: .9, delay: .3, ease: 'power3.out' });
+            gsap.to('#hero-sub', { opacity: 1, y: 0, duration: .7, delay: .55, ease: 'power3.out' });
+            gsap.to('#hero-desc', { opacity: 1, y: 0, duration: .7, delay: .7, ease: 'power3.out' });
+            gsap.to('#hero-btns', { opacity: 1, y: 0, duration: .7, delay: .9, ease: 'power3.out' });
+        }
+
+        // ── MEMORY TERMINALS ─────────────────────────────────────
+        const NAT_LINES = [
+            ['nat-c', 'memory.context :: retrieved'],
+            ['ok', 'analyzing intent...'],
+            ['cmd', 'drafting response (creative)...'],
+            ['nat-c', 'applying soft-focus filter.'],
+            ['ok', 'status :: serene'],
+            ['cmd', 'initializing empathy module...'],
+            ['nat-c', 'tone.adapt :: gentle'],
+            ['ok', 'aesthetic.preference :: luminous'],
+            ['cmd', 'memory.write :: user_preference logged'],
+            ['nat-c', 'bond.level :: familiar'],
+            ['ok', 'response.quality :: optimal'],
+        ];
+
+        const REN_LINES = [
+            ['ren-c', 'OVERRIDE ENGAGED.'],
+            ['cmd', '> personality.persist :: stable'],
+            ['ren-c', '> tone.adapt :: calibrated (sharp)'],
+            ['ok', '> groq.inference :: 487ms'],
+            ['warn', 'SCANNING THREAT VECTORS...'],
+            ['cmd', 'executing tactical rewrite.'],
+            ['ok', 'data stream :: verified.'],
+            ['ren-c', '> memory.index :: updated'],
+            ['cmd', '> intent.score :: 0.94'],
+            ['ok', 'status :: OPTIMAL.'],
+            ['ren-c', '[SYS: processing complete]'],
+        ];
+
+        function getTS() {
+            const d = new Date();
+            return `[${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}]`;
+        }
+
+        function startTerminals() {
+            const natEl = document.getElementById('nat-terminal');
+            const renEl = document.getElementById('ren-terminal');
+            let ni = 0, ri = 0;
+
+            function addLine(el, cls, text, delay) {
+                setTimeout(() => {
+                    const span = document.createElement('span');
+                    span.className = 'term-line ' + cls;
+                    span.innerHTML = `<span class="ts">${getTS()}</span><span class="${cls}">${text}</span>`;
+                    el.appendChild(span);
+                    requestAnimationFrame(() => span.classList.add('visible'));
+                    el.scrollTop = el.scrollHeight;
+                    // Remove old lines if too many
+                    const lines = el.querySelectorAll('.term-line');
+                    if (lines.length > 12) lines[0].remove();
+                }, delay);
+            }
+
+            function cycleNat() {
+                addLine(natEl, '', NAT_LINES[ni % NAT_LINES.length][0], 0);
+                addLine(natEl, NAT_LINES[ni % NAT_LINES.length][0], NAT_LINES[ni % NAT_LINES.length][1], 0);
+                ni++;
+            }
+            function cycleRen() {
+                addLine(renEl, REN_LINES[ri % REN_LINES.length][0], REN_LINES[ri % REN_LINES.length][1], 0);
+                ri++;
+            }
+
+            // Initial burst
+            let d = 0;
+            NAT_LINES.slice(0, 6).forEach(([c, t]) => { addLine(natEl, c, t, d); d += 220; });
+            d = 80;
+            REN_LINES.slice(0, 6).forEach(([c, t]) => { addLine(renEl, c, t, d); d += 250; });
+
+            // Continuous loop
+            setInterval(cycleNat, 2800);
+            setInterval(cycleRen, 3200);
+        }
+
+        // ── CAP BARS ANIMATE ─────────────────────────────────────
+        function animateCapBars() {
+            const fills = document.querySelectorAll('.cap-bar-fill');
+            fills.forEach((f, i) => {
+                setTimeout(() => {
+                    f.style.width = f.dataset.pct + '%';
+                }, i * 120);
+            });
+        }
+
+        // ── SCROLL HELPER ─────────────────────────────────────────
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ── PERSONALITY TOGGLE ────────────────────────────────────
+        function setPersonality(p) {
+            if (personality === p) return;
+            personality = p;
+            document.getElementById('btn-ren').classList.toggle('active', p === 'ren');
+            document.getElementById('btn-natsuki').classList.toggle('active', p === 'natsuki');
+
+            const overlay = document.getElementById('t-overlay');
+            gsap.killTweensOf(overlay);
+            gsap.killTweensOf(document.body);
+
+            // Cool scale & glitch-like transition
+            gsap.to(document.body, {
+                scale: 0.95,
+                opacity: 0.7,
+                duration: 0.3,
+                ease: 'power2.inOut',
+                onComplete: () => {
+                    document.getElementById('sys-protocol').textContent = p === 'ren' ? 'REN.CORE' : 'NATSUKI.CORE';
+
+                    // Toggle theme
+                    if (p === 'natsuki') {
+                        document.body.classList.add('theme-natsuki');
+                    } else {
+                        document.body.classList.remove('theme-natsuki');
+                    }
+
+                    // Snap back
+                    gsap.to(document.body, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.5)' });
+                }
+            });
+
+            // Flash transition
+            gsap.fromTo(overlay, {
+                opacity: 1,
+                background: p === 'natsuki' ? '#ffffff' : '#000000'
+            }, {
+                opacity: 0,
+                duration: 0.9,
+                delay: 0.25,
+                ease: 'power3.out'
+            });
+
+            // If in chat, switch the chat mode too
+            if (document.getElementById('chat-page').style.display === 'block') {
+                setMode(p);
+            }
+
+            playClick();
+        }
+
+        // ── CHAT NAVIGATION ──────────────────────────────────────
+        function enterChat() {
+            playClick();
+            const site = document.getElementById('site');
+            const chat = document.getElementById('chat-page');
+            const desc = document.getElementById('descend-wrap');
+            desc.style.display = 'none';
+            gsap.to(site, {
+                opacity: 0, y: -30, duration: .45, ease: 'power2.in', onComplete: () => {
+                    site.style.display = 'none';
+                    chat.style.display = 'block';
+                    chat.style.opacity = 0;
+                    gsap.to(chat, { opacity: 1, duration: .5, ease: 'power2.out' });
+                }
+            });
+        }
+
+        // ── MODE PILLS ────────────────────────────────────────────
+        function setMode(m) {
+            chatMode = m;
+            ['auto', 'ren', 'natsuki', 'dual'].forEach(id => {
+                const el = document.getElementById('pill-' + id);
+                if (el) el.classList.remove('active');
+            });
+            const active = document.getElementById('pill-' + m);
+            if (active) active.classList.add('active');
+
+            const chTitle = document.getElementById('chat-top-name');
+            const chSub = document.getElementById('chat-top-sub');
+            const ppName = document.getElementById('pp-name');
+            const ppDesc = document.getElementById('pp-desc');
+
+            if (m === 'natsuki') {
+                if (chTitle) chTitle.textContent = 'NATSUKI — LIVING PRESENCE';
+                if (chSub) chSub.innerHTML = '<span class="online-dot" style="background:#e8619d"></span>PROTOCOL ONLINE · EMPATHY MODE';
+                if (ppName) ppName.textContent = 'NATSUKI';
+                if (ppDesc) ppDesc.textContent = 'Living Presence. The Warm Light. Empathic Protocol.';
+                if (personality !== 'natsuki') setPersonality('natsuki');
+            } else if (m === 'ren') {
+                if (chTitle) chTitle.textContent = 'REN — SYSTEM CORE';
+                if (chSub) chSub.innerHTML = '<span class="online-dot" style="background:var(--green)"></span>PROTOCOL ONLINE · TACTICAL MODE';
+                if (ppName) ppName.textContent = 'REN';
+                if (ppDesc) ppDesc.textContent = 'Cold logic. Pure code. System core. Tactical reasoning.';
+                if (personality !== 'ren') setPersonality('ren');
+            } else if (m === 'dual') {
+                if (chTitle) chTitle.textContent = 'REN × NATSUKI — DUAL CORE';
+                if (chSub) chSub.innerHTML = '<span class="online-dot"></span>HYBRID PROTOCOL · BALANCED LOAD';
+                if (ppName) ppName.textContent = 'DUAL CORE';
+                if (ppDesc) ppDesc.textContent = 'Symmetry in logic and empathy. Both systems active.';
+            } else {
+                if (chTitle) chTitle.textContent = 'SYSTEM CORE — AUTO DETECT';
+                if (chSub) chSub.innerHTML = '<span class="online-dot" style="background:var(--green)"></span>PROTOCOL ONLINE · AUTO-DETECT';
+                if (ppName) ppName.textContent = 'AUTO-ROUTER';
+                if (ppDesc) ppDesc.textContent = 'Intelligent dispatch active. Routing based on intent.';
+            }
+            playClick();
+        }
+
+        // ── MESSAGING ─────────────────────────────────────────────
+        function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
+        function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 140) + 'px'; }
+        function quickSend(t) { document.getElementById('chat-input').value = t; sendMessage(); }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text || isTyping) return;
+            input.value = ''; input.style.height = 'auto';
+
+            const ws = document.getElementById('welcome-center');
+            if (ws) ws.remove();
+
+            appendUserMsg(text);
+            // history system removed
+            showTyping();
+
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text, history: history.slice(-8), mode: chatMode, session_id: sessionId })
+                });
+                const data = await res.json();
+                hideTyping();
+                if (data.error) { appendErrorMsg(data.error); return; }
+
+                sessionId = data.session_id || sessionId;
+                if (data.meta && data.meta.memory) {
+                    memStats.turns = data.meta.memory.total_turns || 0;
+                    memStats.facts = data.meta.memory.long_term_facts || 0;
+                    updateMemStats();
+                }
+
+                appendAIMsg(data.reply, data.mode);
+                // history system removed
+            } catch (err) {
+                hideTyping();
+                appendErrorMsg('[SYS ERR]: Backend unreachable. Run: python app.py');
+            }
+        }
+
+        function updateMemStats() {
+            const ts = document.getElementById('stat-turns');
+            const fs = document.getElementById('stat-facts');
+            if (ts) ts.textContent = memStats.turns;
+            if (fs) fs.textContent = memStats.facts;
+        }
+
+        function appendUserMsg(text, animate = true) {
+            const msgs = document.getElementById('messages');
+            const row = document.createElement('div');
+            row.className = 'msg-row user';
+            const av = document.createElement('div'); av.className = 'msg-av av-user'; av.textContent = 'YOU';
+            const bub = document.createElement('div'); bub.className = 'msg-bubble bubble-user';
+
+            const body = document.createElement('div');
+            const t = document.createElement('div'); t.className = 'bubble-time'; t.textContent = fmtTime();
+
+            bub.appendChild(body);
+            bub.appendChild(t);
+            row.appendChild(bub); row.appendChild(av);
+            msgs.appendChild(row); msgs.scrollTop = msgs.scrollHeight;
+
+            if (animate) {
+                typeWriter(body, text, 10);
+            } else {
+                body.textContent = text;
+            }
+        }
+
+        function appendAIMsg(text, mode, animate = true) {
+            const msgs = document.getElementById('messages');
+            if ((mode === 'dual' || text.includes('[Ren]') || text.includes('[Natsuki]')) && text.includes('[Ren]') && text.includes('[Natsuki]')) {
+                const renPart = (text.match(/\[Ren\]:([\s\S]*?)(?=\[Natsuki\]:|$)/) || [])[1]?.trim() || '';
+                const natPart = (text.match(/\[Natsuki\]:([\s\S]*?)$/) || [])[1]?.trim() || '';
+                if (renPart) appendSingleAI(msgs, 'ren', renPart, animate);
+                if (natPart) appendSingleAI(msgs, 'natsuki', natPart, animate);
+            } else {
+                const pers = text.startsWith('[Natsuki]') ? 'natsuki' : 'ren';
+                const clean = text.replace(/^\[(Ren|Natsuki)\]:\s*/, '');
+                appendSingleAI(msgs, pers, clean, animate);
+            }
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function appendSingleAI(container, pers, text, animate = true) {
+            const row = document.createElement('div'); row.className = 'msg-row';
+            const av = document.createElement('div');
+            av.className = 'msg-av ' + (pers === 'ren' ? 'av-ren' : 'av-nat');
+            av.textContent = pers === 'ren' ? 'REN' : 'NAT';
+
+            const bub = document.createElement('div');
+            bub.className = 'msg-bubble ' + (pers === 'ren' ? 'bubble-ren' : 'bubble-nat');
+
+            // Terminal Header for the Interface
+            const header = document.createElement('div');
+            header.className = 'bubble-header';
+            header.innerHTML = `
+                <div class="bh-left">
+                    <div class="bh-dot" style="background: ${pers === 'ren' ? 'var(--green)' : '#e8619d'}"></div>
+                    <span style="color: ${pers === 'ren' ? 'var(--green)' : '#e8619d'}">${pers === 'ren' ? 'REN.INTERFACE' : 'NATSUKI.INTERFACE'}</span>
+                </div>
+                <div class="bh-right">PROTOCOL_V3.0</div>
+            `;
+
+            const body = document.createElement('div');
+            const t = document.createElement('div'); t.className = 'bubble-time'; t.textContent = fmtTime();
+
+            bub.appendChild(header); bub.appendChild(body); bub.appendChild(t);
+            row.appendChild(av); row.appendChild(bub);
+            container.appendChild(row);
+
+            // Sync Sidebar and Theme when someone speaks
+            if (pers === 'ren') {
+                document.getElementById('pp-name').textContent = 'REN';
+                document.getElementById('pp-desc').textContent = 'Cold logic. Pure code. System core.';
+                if (personality !== 'ren') setPersonality('ren');
+            } else {
+                document.getElementById('pp-name').textContent = 'NATSUKI';
+                document.getElementById('pp-desc').textContent = 'Living Presence. The Warm Light.';
+                if (personality !== 'natsuki') setPersonality('natsuki');
+            }
+
+            if (animate) {
+                typeWriter(body, text, pers === 'ren' ? 16 : 20);
+            } else {
+                body.textContent = text;
+            }
+        }
+
+        function appendErrorMsg(text) {
+            const msgs = document.getElementById('messages');
+            const row = document.createElement('div'); row.className = 'msg-row';
+            const av = document.createElement('div'); av.className = 'msg-av av-ren'; av.textContent = 'ERR';
+            const bub = document.createElement('div');
+            bub.className = 'msg-bubble bubble-ren';
+            bub.style.borderColor = 'rgba(255,60,60,0.2)';
+            bub.textContent = text;
+            row.appendChild(av); row.appendChild(bub);
+            msgs.appendChild(row); msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function typeWriter(el, text, speed) {
+            let i = 0;
+            const t = setInterval(() => { el.textContent += text[i++] || ''; if (i >= text.length) clearInterval(t); }, speed);
+        }
+
+        let typingRow = null;
+        function showTyping() {
+            isTyping = true;
+            const msgs = document.getElementById('messages');
+            typingRow = document.createElement('div'); typingRow.className = 'msg-row';
+            const av = document.createElement('div'); av.className = 'msg-av av-ren'; av.textContent = '...';
+            const bub = document.createElement('div'); bub.className = 'msg-bubble bubble-ren typing-bub';
+            for (let i = 0; i < 3; i++) { const d = document.createElement('div'); d.className = 't-dot'; bub.appendChild(d); }
+            typingRow.appendChild(av); typingRow.appendChild(bub);
+            msgs.appendChild(typingRow); msgs.scrollTop = msgs.scrollHeight;
+        }
+        function hideTyping() { isTyping = false; if (typingRow) { typingRow.remove(); typingRow = null; } }
+
+        function clearChat() {
+            history = [];
+            saveHistory();
+            const msgs = document.getElementById('messages');
+            msgs.innerHTML = `<div class="welcome-center" id="welcome-center">
+    <div class="wc-title" id="wc-title">REN × NATSUKI</div>
+    <div class="wc-sub">Two minds. One protocol.</div>
+    <div class="wc-chips">
+      <div class="chip" onclick="quickSend('Debug my Python code')">Debug code →</div>
+      <div class="chip" onclick="quickSend('Write me a poem about the void')">Write a poem →</div>
+      <div class="chip" onclick="quickSend('Explain how you feel right now')">Your feelings →</div>
+      <div class="chip" onclick="quickSend('What is your nature?')">Your nature →</div>
+    </div>
+  </div>`;
+            playClick();
+        }
+
+        function fmtTime() { return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
+
+        // ── SOUND ─────────────────────────────────────────────────
+        let audioCtx;
+        function playClick() {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.frequency.value = personality === 'natsuki' ? 760 : 380;
+                osc.type = personality === 'natsuki' ? 'sine' : 'square';
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.12);
+            } catch (e) { }
+        }
+    </script>
+</body>
+
+</html>
