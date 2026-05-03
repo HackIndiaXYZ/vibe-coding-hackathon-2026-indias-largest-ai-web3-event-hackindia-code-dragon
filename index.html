@@ -1886,29 +1886,105 @@
             color: #000;
         }
 
+        /* ══════════════════════════════════════
+   MOBILE OPTIMIZATION
+══════════════════════════════════════ */
         @media (max-width:900px) {
-            .cap-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+            .nav-links, .chat-sidebar { display: none; }
+            .identity-split, .creator-layout, .memory-terminals { grid-template-columns: 1fr; }
+            .cap-grid { grid-template-columns: 1fr; }
+            .page-section { padding: 80px 20px; }
+            .hero-title { font-size: 14vw; }
+            .hero-desc { font-size: 14px; }
+            
+            #messages { padding: 15px; }
+            .msg-bubble { max-width: 88%; }
+            .chat-input-wrap { padding: 12px 15px; }
+            .mode-pills { overflow-x: auto; padding-bottom: 5px; }
+            .mpill { flex-shrink: 0; white-space: nowrap; }
+            
+            .chat-orb { width: 30px; height: 30px; }
+            .chat-top-info h2 { font-size: 10px; }
+        }
 
-            .identity-split,
-            .creator-layout,
-            .memory-terminals {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width:480px) {
+            .hero-title { font-size: 18vw; }
+            .wc-title { font-size: 24px; }
+            .wc-sub { font-size: 14px; }
+            .chip { font-size: 9px; padding: 6px 12px; }
+            .sidebar-text, .sidebar-text-right { display: none; }
+            .msg-av { width: 24px; height: 24px; font-size: 7px; }
+            .bubble-header { font-size: 7px; }
+        }
 
-            .nav-links,
-            .chat-sidebar {
-                display: none;
-            }
-
-            .page-section {
-                padding: 100px 24px 60px;
-            }
-
-            .hero-title {
-                font-size: 14vw;
-            }
+        /* ══════════════════════════════════════
+   SETTINGS MODAL
+══════════════════════════════════════ */
+        #settings-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .settings-content {
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            position: relative;
+        }
+        .settings-title {
+            font-family: var(--mono);
+            font-size: 14px;
+            letter-spacing: 0.2em;
+            color: #fff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .settings-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: rgba(255,255,255,0.3);
+            cursor: pointer;
+            font-family: var(--mono);
+            font-size: 12px;
+        }
+        .settings-label {
+            font-family: var(--mono);
+            font-size: 9px;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .settings-input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 12px;
+            font-family: var(--mono);
+            font-size: 11px;
+            margin-bottom: 20px;
+        }
+        .settings-btn {
+            width: 100%;
+            padding: 12px;
+            background: #fff;
+            color: #000;
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
         }
     </style>
 </head>
@@ -2505,6 +2581,9 @@
                         <p id="chat-top-sub"><span class="online-dot"></span>PROTOCOL ONLINE · AUTO-DETECT MODE</p>
                     </div>
                 </div>
+                <div style="position: absolute; top: 20px; right: 20px; z-index: 10;">
+                    <button onclick="toggleSettings()" style="background: none; border: 1px solid var(--border); color: rgba(255,255,255,0.4); font-family: var(--mono); font-size: 8px; padding: 6px 10px; cursor: pointer;">CONFIG</button>
+                </div>
 
                 <div id="messages">
                     <div class="welcome-center" id="welcome-center">
@@ -2545,6 +2624,20 @@
     <!-- ══════════════════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════════════════ -->
+    <!-- ══════════ SETTINGS MODAL ══════════ -->
+    <div id="settings-modal">
+        <div class="settings-content">
+            <div class="settings-close" onclick="toggleSettings()">[CLOSE]</div>
+            <div class="settings-title">◈ SYSTEM_CONFIG</div>
+            <div class="settings-label">Groq API Key</div>
+            <input type="password" id="api-key-input" class="settings-input" placeholder="gsk_...">
+            <p style="font-size: 9px; color: rgba(255,255,255,0.2); margin-top: -10px; margin-bottom: 20px;">
+                Your key is stored locally in your browser.
+            </p>
+            <button class="settings-btn" onclick="saveSettings()">APPLY CONFIG</button>
+        </div>
+    </div>
+
     <script>
         // ── STATE ────────────────────────────────────────────────
         let personality = 'ren';
@@ -2910,6 +3003,25 @@
             playClick();
         }
 
+        // ── SETTINGS ─────────────────────────────────────────────
+        function toggleSettings() {
+            const m = document.getElementById('settings-modal');
+            const isVisible = m.style.display === 'flex';
+            m.style.display = isVisible ? 'none' : 'flex';
+            if (!isVisible) {
+                document.getElementById('api-key-input').value = localStorage.getItem('natsukixren_api_key') || '';
+            }
+            playClick();
+        }
+
+        function saveSettings() {
+            const key = document.getElementById('api-key-input').value.trim();
+            localStorage.setItem('natsukixren_api_key', key);
+            toggleSettings();
+            // Show a mini notification or log
+            appendAIMsg("[SYS]: Configuration updated. Local API override " + (key ? "ACTIVE" : "INACTIVE"), 'ren', true);
+        }
+
         // ── MESSAGING ─────────────────────────────────────────────
         function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
         function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 140) + 'px'; }
@@ -2925,18 +3037,27 @@
             if (ws) ws.remove();
 
             appendUserMsg(text);
-            // history system removed
             showTyping();
+
+            const customKey = localStorage.getItem('natsukixren_api_key');
+            const headers = { 'Content-Type': 'application/json' };
+            if (customKey) headers['X-Groq-API-Key'] = customKey;
 
             try {
                 const res = await fetch('/api/chat', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: headers,
                     body: JSON.stringify({ message: text, history: history.slice(-8), mode: chatMode, session_id: sessionId })
                 });
                 const data = await res.json();
                 hideTyping();
-                if (data.error) { appendErrorMsg(data.error); return; }
+                if (data.error) { 
+                    appendErrorMsg(data.error); 
+                    if (data.error.includes("Invalid API Key")) {
+                        setTimeout(() => appendAIMsg("[SYS]: It seems the API key is invalid. Click 'CONFIG' to update your Groq API Key.", 'ren'), 500);
+                    }
+                    return; 
+                }
 
                 sessionId = data.session_id || sessionId;
                 if (data.meta && data.meta.memory) {
@@ -2946,10 +3067,9 @@
                 }
 
                 appendAIMsg(data.reply, data.mode);
-                // history system removed
             } catch (err) {
                 hideTyping();
-                appendErrorMsg('[SYS ERR]: Backend unreachable. Run: python app.py');
+                appendErrorMsg('[SYS ERR]: Backend unreachable. Run: python web_app.py');
             }
         }
 

@@ -65,6 +65,10 @@ def chat_endpoint():
         user_message = data.get('message', '').strip()
         mode = data.get('mode', 'auto')
         session_id = data.get('session_id')
+        
+        # Support client-side API key override
+        client_api_key = request.headers.get('X-Groq-API-Key')
+        api_key = client_api_key if client_api_key else config.GROQ_API_KEY
 
         if not user_message:
             return jsonify({"error": "Message payload empty."}), 400
@@ -83,7 +87,7 @@ def chat_endpoint():
         context_window = memory_sys.get_context_window(session_id)
 
         # Execute Inference Sequence
-        final_reply = inference_engine.generate_response(active_mode, context_window)
+        final_reply = inference_engine.generate_response(active_mode, context_window, api_key=api_key)
 
         # Store AI Output
         memory_sys.add_message(session_id, "assistant", final_reply)

@@ -24,12 +24,13 @@ class GroqInferenceEngine:
             "Content-Type": "application/json"
         }
 
-    def _execute_api_call(self, payload: Dict[str, Any], max_retries: int = 3) -> Dict[str, Any]:
+    def _execute_api_call(self, payload: Dict[str, Any], max_retries: int = 3, headers: Dict[str, str] = None) -> Dict[str, Any]:
         """Executes the HTTP POST to Groq with exponential backoff."""
         attempt = 0
+        current_headers = headers if headers else self.headers
         while attempt < max_retries:
             try:
-                response = requests.post(self.api_url, headers=self.headers, json=payload, timeout=30)
+                response = requests.post(self.api_url, headers=current_headers, json=payload, timeout=30)
                 response.raise_for_status()
                 return response.json()
             except requests.exceptions.HTTPError as e:
@@ -51,7 +52,7 @@ class GroqInferenceEngine:
                 
         raise Exception("Max retries exceeded while calling inference engine.")
 
-    def generate_response(self, mode: str, context_messages: List[Dict[str, str]]) -> str:
+    def generate_response(self, mode: str, context_messages: List[Dict[str, str]], api_key: str = None) -> str:
         """
         Generates the AI response. Handles the full lifecycle including:
         1. Injecting the correct Persona Prompt.
@@ -59,6 +60,13 @@ class GroqInferenceEngine:
         3. Catching and resolving Tool Calls autonomously.
         4. Returning the final synthesized string.
         """
+        
+        # 0. Set up request-specific headers
+        current_api_key = api_key if api_key else self.api_key
+        request_headers = {
+            "Authorization": f"Bearer {current_api_key}",
+            "Content-Type": "application/json"
+        }
         
         # 1. Compile the active message stack
         sys_prompt_content = get_system_prompt(mode)
@@ -79,7 +87,7 @@ class GroqInferenceEngine:
         print(f"[Engine] Initiating inference sequence for mode: {mode}")
         
         # 3. Fire first request
-        resp_data = self._execute_api_call(payload)
+        resp_data = self._execute_api_call(payload, headers=request_headers)
         response_message = resp_data['choices'][0]['message']
         
         # 4. Process Tool Calls if any
@@ -116,7 +124,7 @@ class GroqInferenceEngine:
             payload.pop('tools', None)
             
             print(f"[Engine] Synthesizing final response post-tool execution...")
-            second_resp_data = self._execute_api_call(payload)
+            second_resp_data = self._execute_api_call(payload, headers=request_headers)
             final_reply = second_resp_data['choices'][0]['message']['content']
         else:
             final_reply = response_message.get('content', '')
