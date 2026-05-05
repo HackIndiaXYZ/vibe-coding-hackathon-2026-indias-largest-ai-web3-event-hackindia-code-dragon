@@ -2638,6 +2638,9 @@
                 <button class="settings-btn" onclick="saveSettings()" style="flex: 1;">APPLY CONFIG</button>
                 <button class="settings-btn" onclick="resetKey()" style="flex: 1; background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4);">RESET KEY</button>
             </div>
+            <div style="margin-top: 20px; text-align: center;">
+                <a href="https://console.groq.com/keys" target="_blank" style="font-family: var(--mono); font-size: 9px; color: #00fff0; text-decoration: none; border-bottom: 1px solid rgba(0,255,240,0.3); padding-bottom: 2px;">GET GROQ API KEY ↗</a>
+            </div>
         </div>
     </div>
 
@@ -2701,12 +2704,12 @@
             const geo = new THREE.BufferGeometry();
             const pos = [];
             const cols = [];
-            const count = 1500;
+            const count = 3000;
 
             for (let i = 0; i < count; i++) {
-                pos.push((Math.random() - 0.5) * 2000);
-                pos.push((Math.random() - 0.5) * 2000);
-                pos.push((Math.random() - 0.5) * 2000);
+                pos.push((Math.random() - 0.5) * 2500);
+                pos.push((Math.random() - 0.5) * 2500);
+                pos.push((Math.random() - 0.5) * 2500);
                 
                 cols.push(1, 1, 1);
             }
@@ -2715,10 +2718,10 @@
             geo.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
 
             const mat = new THREE.PointsMaterial({
-                size: 3,
+                size: 1.5,
                 vertexColors: true,
                 transparent: true,
-                opacity: 0.8,
+                opacity: 0.6,
                 blending: THREE.AdditiveBlending
             });
 
@@ -3084,9 +3087,16 @@
                 const data = await res.json();
                 hideTyping();
                 if (data.error) { 
-                    appendErrorMsg(data.error); 
-                    if (data.error.includes("Invalid API Key")) {
-                        setTimeout(() => appendAIMsg("[SYS]: It seems the API key is invalid. Click 'CONFIG' to update your Groq API Key.", 'ren'), 500);
+                    const isKeyError = data.error.toLowerCase().includes("api key") || data.error.includes("invalid_api_key");
+                    
+                    if (isKeyError) {
+                        appendErrorMsg("CRITICAL: INVALID API KEY");
+                        setTimeout(() => {
+                            appendAIMsg("[SYS]: Your API Key is invalid or missing. Please provide a valid Groq API Key to proceed.", 'ren');
+                            toggleSettings();
+                        }, 500);
+                    } else {
+                        appendErrorMsg(data.error); 
                     }
                     return; 
                 }

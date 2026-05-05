@@ -107,9 +107,12 @@ def chat_endpoint():
         })
 
     except Exception as e:
-        logging.error(f"Critical Exception in /api/chat: {str(e)}", exc_info=True)
-        print(f"[ERROR] chat_endpoint failed: {e}")
-        return jsonify({"error": f"Internal System Error: {str(e)}"}), 500
+        error_msg = str(e)
+        if "invalid_api_key" in error_msg.lower() or "401" in error_msg:
+            return jsonify({"error": "Invalid API Key. Please update your configuration."}), 401
+        
+        logging.error(f"Critical Exception in /api/chat: {error_msg}", exc_info=True)
+        return jsonify({"error": f"System Error: {error_msg}"}), 500
 
 if __name__ == '__main__':
     print(f"\n===========================================")
