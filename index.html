@@ -2634,7 +2634,10 @@
             <p style="font-size: 9px; color: rgba(255,255,255,0.2); margin-top: -10px; margin-bottom: 20px;">
                 Your key is stored locally in your browser.
             </p>
-            <button class="settings-btn" onclick="saveSettings()">APPLY CONFIG</button>
+            <div class="settings-btns" style="display: flex; gap: 10px;">
+                <button class="settings-btn" onclick="saveSettings()" style="flex: 1;">APPLY CONFIG</button>
+                <button class="settings-btn" onclick="resetKey()" style="flex: 1; background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4);">RESET KEY</button>
+            </div>
         </div>
     </div>
 
@@ -2679,71 +2682,89 @@
             });
         })();
 
-        // ── STAR CANVAS ──────────────────────────────────────────
-        (function initStars() {
-            const c = document.getElementById('star-canvas');
-            const ctx = c.getContext('2d');
-            let W, H, stars = [];
-            let targetX = 0, targetY = 0;
-            let currentX = 0, currentY = 0;
+        // ── THREE.JS BACKGROUND ──────────────────────────────────
+        let scene, camera, renderer, particles, starPoints;
+        let mouseX = 0, mouseY = 0;
+        let targetColor = new THREE.Color(0x00fff0); // Default Ren Cyan
+        let currentColor = new THREE.Color(0x00fff0);
 
-            function resize() { W = c.width = window.innerWidth; H = c.height = window.innerHeight; }
-            resize();
-            window.addEventListener('resize', resize);
+        (function initThreeBG() {
+            const canvas = document.getElementById('star-canvas');
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+            camera.position.z = 1000;
 
-            // Generate advanced moving stars with depth
-            for (let i = 0; i < 400; i++) {
-                stars.push({
-                    x: Math.random() * W,
-                    y: Math.random() * H,
-                    z: Math.random() * 2 + 0.1, // depth for parallax
-                    r: Math.random() < 0.1 ? Math.random() * 2 + 1 : Math.random() * 0.8 + 0.3,
-                    a: Math.random() * 0.8 + 0.2,
-                    speed: Math.random() * 0.003 + 0.001,
-                    phase: Math.random() * Math.PI * 2
-                });
+            renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            const geo = new THREE.BufferGeometry();
+            const pos = [];
+            const cols = [];
+            const count = 1500;
+
+            for (let i = 0; i < count; i++) {
+                pos.push((Math.random() - 0.5) * 2000);
+                pos.push((Math.random() - 0.5) * 2000);
+                pos.push((Math.random() - 0.5) * 2000);
+                
+                cols.push(1, 1, 1);
             }
 
-            let t = 0;
-            function draw() {
-                ctx.clearRect(0, 0, W, H);
-                t += 0.01;
+            geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+            geo.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
 
-                // Ease current mouse position towards target
-                currentX += (targetX - currentX) * 0.05;
-                currentY += (targetY - currentY) * 0.05;
+            const mat = new THREE.PointsMaterial({
+                size: 3,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending
+            });
 
-                stars.forEach(s => {
-                    // Constant slow drift
-                    s.x += s.z * 0.2;
-                    s.y -= s.z * 0.1;
+            starPoints = new THREE.Points(geo, mat);
+            scene.add(starPoints);
 
-                    // Mouse interaction - stars move opposite to cursor based on depth
-                    let drawX = s.x - (currentX * s.z * 150);
-                    let drawY = s.y - (currentY * s.z * 150);
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                // Color transition
+                currentColor.lerp(targetColor, 0.05);
+                const colors = starPoints.geometry.attributes.color.array;
+                for (let i = 0; i < colors.length; i += 3) {
+                    colors[i] = currentColor.r;
+                    colors[i+1] = currentColor.g;
+                    colors[i+2] = currentColor.b;
+                }
+                starPoints.geometry.attributes.color.needsUpdate = true;
 
-                    // Wrap around continuously
-                    if (drawX < -50) s.x += W + 100;
-                    if (drawX > W + 50) s.x -= W + 100;
-                    if (drawY < -50) s.y += H + 100;
-                    if (drawY > H + 50) s.y -= H + 100;
+                starPoints.rotation.y += 0.0005;
+                starPoints.rotation.x += 0.0002;
 
-                    const alpha = s.a * (0.6 + 0.4 * Math.sin(t * s.speed * 100 + s.phase));
-                    ctx.beginPath();
-                    ctx.arc(drawX, drawY, s.r, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
-                    ctx.fill();
-                });
-                requestAnimationFrame(draw);
+                // Mouse parallax
+                camera.position.x += (mouseX - camera.position.x) * 0.05;
+                camera.position.y += (-mouseY - camera.position.y) * 0.05;
+                camera.lookAt(scene.position);
+
+                renderer.render(scene, camera);
             }
-            draw();
+            animate();
 
-            // Dynamic mouse parallax tracking
-            document.addEventListener('mousemove', e => {
-                targetX = (e.clientX / W) - 0.5;
-                targetY = (e.clientY / H) - 0.5;
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX - window.innerWidth / 2);
+                mouseY = (e.clientY - window.innerHeight / 2);
             });
         })();
+
+        function updateBGColor(p) {
+            targetColor = p === 'ren' ? new THREE.Color(0x00fff0) : new THREE.Color(0xe8619d);
+        }
 
         // ── CLOCK ────────────────────────────────────────────────
         setInterval(() => {
@@ -2898,6 +2919,7 @@
         function setPersonality(p) {
             if (personality === p) return;
             personality = p;
+            updateBGColor(p);
             document.getElementById('btn-ren').classList.toggle('active', p === 'ren');
             document.getElementById('btn-natsuki').classList.toggle('active', p === 'natsuki');
 
@@ -3020,6 +3042,16 @@
             toggleSettings();
             // Show a mini notification or log
             appendAIMsg("[SYS]: Configuration updated. Local API override " + (key ? "ACTIVE" : "INACTIVE"), 'ren', true);
+        }
+
+        function resetKey() {
+            if (confirm("Reset API Key? This will clear your local override.")) {
+                localStorage.removeItem('natsukixren_api_key');
+                document.getElementById('api-key-input').value = '';
+                appendAIMsg("[SYS]: Local API key cleared. System will now use default backend configuration.", 'ren', true);
+                toggleSettings();
+            }
+            playClick();
         }
 
         // ── MESSAGING ─────────────────────────────────────────────
