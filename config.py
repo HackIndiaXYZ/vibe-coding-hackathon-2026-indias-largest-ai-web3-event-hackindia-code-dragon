@@ -10,7 +10,7 @@ import os
 # [API Configuration]
 # The primary API key used to authenticate with the Groq Inference Engine.
 # WARNING: Keep this secure. Use environment variables in production.
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "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")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 # [Model Configuration]
