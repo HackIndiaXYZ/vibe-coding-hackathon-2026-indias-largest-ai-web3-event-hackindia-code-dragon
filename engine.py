@@ -137,3 +137,10 @@ class GroqInferenceEngine:
             final_reply = f"[Natsuki]: {final_reply.strip()}"
             
         return final_reply
+
+if __name__ == "__main__":
+    engine = GroqInferenceEngine()
+    messages = [
+        {"role": "user", "content": "Hello, how are you?"}
+    ]
+    print(engine.generate_response("natsuki", messages))
