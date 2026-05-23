@@ -3090,6 +3090,26 @@
                     const isKeyError = data.error.toLowerCase().includes("api key") || data.error.includes("invalid_api_key");
                     
                     if (isKeyError) {
+                        // Auto-clear stale localStorage key and retry with backend key
+                        const hadLocalKey = localStorage.getItem('natsukixren_api_key');
+                        if (hadLocalKey) {
+                            localStorage.removeItem('natsukixren_api_key');
+                            appendAIMsg("[SYS]: Local API key was invalid. Cleared and retrying with backend key...", 'ren', true);
+                            // Retry without the bad local key
+                            showTyping();
+                            const retryRes = await fetch('/api/chat', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ message: text, history: history.slice(-8), mode: chatMode, session_id: sessionId })
+                            });
+                            const retryData = await retryRes.json();
+                            hideTyping();
+                            if (!retryData.error) {
+                                sessionId = retryData.session_id || sessionId;
+                                appendAIMsg(retryData.reply, retryData.mode);
+                                return;
+                            }
+                        }
                         appendErrorMsg("CRITICAL: INVALID API KEY");
                         setTimeout(() => {
                             appendAIMsg("[SYS]: Your API Key is invalid or missing. Please provide a valid Groq API Key to proceed.", 'ren');
