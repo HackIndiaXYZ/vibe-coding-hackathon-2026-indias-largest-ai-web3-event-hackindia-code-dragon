@@ -9,7 +9,7 @@ import config
 class MemoryManager:
     """
     The MemoryManager is responsible for the long-term retention of conversation data.
-    It simulates an advanced memory protocol, ensuring that Natsuki and Ren
+    It simulates an advanced memory protocol, ensuring that Ren
     can recall past interactions, compute user engagement statistics, and manage
     context windows to avoid token limit exhaustion.
     """

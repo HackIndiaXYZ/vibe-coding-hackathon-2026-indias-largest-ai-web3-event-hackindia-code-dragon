@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>REN × NATSUKI — THE PROTOCOL</title>
+    <title>REN — ELITE TECHNICAL TUTOR & CORE MATRIX</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
@@ -42,7 +42,7 @@
             --border: rgba(255, 255, 255, 0.08);
             --border2: rgba(255, 255, 255, 0.15);
             --green: #2a5a3a;
-            /* Natsuki terminal tint */
+            /* terminal tint */
             --mono: 'JetBrains Mono', monospace;
             --serif: 'Playfair Display', serif;
             --sans: 'Syne', sans-serif;
@@ -58,9 +58,7 @@
             transition: filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        body.theme-natsuki {
-            filter: invert(1) hue-rotate(180deg) contrast(1.05);
-        }
+        /* Theme class removed */
 
         /* ── CURSOR ── */
         #cursor {
@@ -651,11 +649,6 @@
             color: rgba(0, 255, 240, 0.5);
         }
 
-        .cap-tag.nat-tag {
-            border-color: rgba(232, 97, 157, 0.2);
-            color: rgba(232, 97, 157, 0.5);
-        }
-
         .cap-tag.dual-tag {
             border-color: rgba(255, 255, 255, 0.15);
             color: rgba(255, 255, 255, 0.4);
@@ -706,10 +699,6 @@
             background: rgba(0, 255, 240, 0.5);
         }
 
-        .cap-bar-fill.nat-fill {
-            background: rgba(232, 97, 157, 0.5);
-        }
-
         .cap-bar-pct {
             font-family: var(--mono);
             font-size: 9px;
@@ -740,10 +729,40 @@
 
         .identity-card.ren-card {
             background: #060608;
+            position: relative;
         }
 
-        .identity-card.nat-card {
+        .identity-card.ren-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 240, 0.4), transparent);
+            animation: shimmerLine 3s ease-in-out infinite;
+        }
+
+        .identity-card.tutor-card {
             background: #06080a;
+            position: relative;
+        }
+
+        .identity-card.tutor-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 204, 0.4), transparent);
+            animation: shimmerLine 3s ease-in-out infinite;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes shimmerLine {
+            0%, 100% { opacity: 0.3; transform: scaleX(0.5); }
+            50% { opacity: 1; transform: scaleX(1); }
         }
 
         .id-accent-line {
@@ -753,11 +772,13 @@
         }
 
         .ren-card .id-accent-line {
-            background: rgba(0, 255, 240, 0.6);
+            background: linear-gradient(90deg, rgba(0, 255, 240, 0.8), rgba(0, 255, 240, 0.1));
+            box-shadow: 0 0 12px rgba(0, 255, 240, 0.3);
         }
 
-        .nat-card .id-accent-line {
-            background: rgba(232, 97, 157, 0.6);
+        .tutor-card .id-accent-line {
+            background: linear-gradient(90deg, rgba(0, 255, 204, 0.8), rgba(0, 255, 204, 0.1));
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.3);
         }
 
         .id-tag {
@@ -772,8 +793,8 @@
             color: rgba(0, 255, 240, 0.5);
         }
 
-        .nat-card .id-tag {
-            color: rgba(232, 97, 157, 0.5);
+        .tutor-card .id-tag {
+            color: rgba(0, 255, 204, 0.5);
         }
 
         .id-name {
@@ -786,10 +807,12 @@
 
         .ren-card .id-name {
             color: #fff;
+            text-shadow: 0 0 30px rgba(0, 255, 240, 0.15);
         }
 
-        .nat-card .id-name {
+        .tutor-card .id-name {
             color: #fff;
+            text-shadow: 0 0 30px rgba(0, 255, 204, 0.15);
         }
 
         .id-subtitle {
@@ -831,10 +854,12 @@
 
         .ren-card .dot {
             background: rgba(0, 255, 240, 0.6);
+            box-shadow: 0 0 6px rgba(0, 255, 240, 0.4);
         }
 
-        .nat-card .dot {
-            background: rgba(232, 97, 157, 0.6);
+        .tutor-card .dot {
+            background: rgba(0, 255, 204, 0.6);
+            box-shadow: 0 0 6px rgba(0, 255, 204, 0.4);
         }
 
         .id-trait strong {
@@ -925,7 +950,7 @@
             border-color: rgba(255, 255, 255, 0.12);
         }
 
-        /* Green scan line for Natsuki */
+        /* Scan line for Parser Terminal */
         .terminal-wrap.nat-term::before {
             content: '';
             position: absolute;
@@ -933,7 +958,7 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: rgba(80, 200, 120, 0.3);
+            background: rgba(0, 255, 204, 0.3);
         }
 
         .terminal-wrap.ren-term::before {
@@ -1546,9 +1571,9 @@
         }
 
         .av-nat {
-            background: rgba(232, 97, 157, 0.1);
-            border: 1px solid rgba(232, 97, 157, 0.3);
-            color: rgba(232, 97, 157, 0.8);
+            background: rgba(0, 255, 204, 0.1);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            color: rgba(0, 255, 204, 0.8);
         }
 
         .av-user {
@@ -1574,11 +1599,11 @@
         }
 
         .bubble-nat {
-            background: #0c0810;
-            border-color: rgba(232, 97, 157, 0.1);
-            color: rgba(235, 215, 225, 0.9);
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 14px;
+            background: #0a0c10;
+            border-color: rgba(0, 255, 204, 0.1);
+            color: rgba(200, 220, 235, 0.9);
+            font-family: var(--mono);
+            font-size: 12px;
         }
 
         .bubble-user {
@@ -1601,7 +1626,7 @@
         }
 
         .nat-tag-txt {
-            color: rgba(232, 97, 157, 0.7);
+            color: rgba(0, 255, 204, 0.7);
         }
 
         .bubble-time {
@@ -1890,31 +1915,98 @@
    MOBILE OPTIMIZATION
 ══════════════════════════════════════ */
         @media (max-width:900px) {
-            .nav-links, .chat-sidebar { display: none; }
-            .identity-split, .creator-layout, .memory-terminals { grid-template-columns: 1fr; }
-            .cap-grid { grid-template-columns: 1fr; }
-            .page-section { padding: 80px 20px; }
-            .hero-title { font-size: 14vw; }
-            .hero-desc { font-size: 14px; }
-            
-            #messages { padding: 15px; }
-            .msg-bubble { max-width: 88%; }
-            .chat-input-wrap { padding: 12px 15px; }
-            .mode-pills { overflow-x: auto; padding-bottom: 5px; }
-            .mpill { flex-shrink: 0; white-space: nowrap; }
-            
-            .chat-orb { width: 30px; height: 30px; }
-            .chat-top-info h2 { font-size: 10px; }
+
+            .nav-links,
+            .chat-sidebar {
+                display: none;
+            }
+
+            .identity-split,
+            .creator-layout,
+            .memory-terminals {
+                grid-template-columns: 1fr;
+            }
+
+            .cap-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-section {
+                padding: 80px 20px;
+            }
+
+            .hero-title {
+                font-size: 14vw;
+            }
+
+            .hero-desc {
+                font-size: 14px;
+            }
+
+            #messages {
+                padding: 15px;
+            }
+
+            .msg-bubble {
+                max-width: 88%;
+            }
+
+            .chat-input-wrap {
+                padding: 12px 15px;
+            }
+
+            .mode-pills {
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+
+            .mpill {
+                flex-shrink: 0;
+                white-space: nowrap;
+            }
+
+            .chat-orb {
+                width: 30px;
+                height: 30px;
+            }
+
+            .chat-top-info h2 {
+                font-size: 10px;
+            }
         }
 
         @media (max-width:480px) {
-            .hero-title { font-size: 18vw; }
-            .wc-title { font-size: 24px; }
-            .wc-sub { font-size: 14px; }
-            .chip { font-size: 9px; padding: 6px 12px; }
-            .sidebar-text, .sidebar-text-right { display: none; }
-            .msg-av { width: 24px; height: 24px; font-size: 7px; }
-            .bubble-header { font-size: 7px; }
+            .hero-title {
+                font-size: 18vw;
+            }
+
+            .wc-title {
+                font-size: 24px;
+            }
+
+            .wc-sub {
+                font-size: 14px;
+            }
+
+            .chip {
+                font-size: 9px;
+                padding: 6px 12px;
+            }
+
+            .sidebar-text,
+            .sidebar-text-right {
+                display: none;
+            }
+
+            .msg-av {
+                width: 24px;
+                height: 24px;
+                font-size: 7px;
+            }
+
+            .bubble-header {
+                font-size: 7px;
+            }
         }
 
         /* ══════════════════════════════════════
@@ -1924,13 +2016,14 @@
             position: fixed;
             inset: 0;
             z-index: 10000;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(10px);
             display: none;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
+
         .settings-content {
             background: #0a0a0a;
             border: 1px solid var(--border);
@@ -1939,6 +2032,7 @@
             padding: 30px;
             position: relative;
         }
+
         .settings-title {
             font-family: var(--mono);
             font-size: 14px;
@@ -1949,25 +2043,28 @@
             align-items: center;
             gap: 10px;
         }
+
         .settings-close {
             position: absolute;
             top: 20px;
             right: 20px;
-            color: rgba(255,255,255,0.3);
+            color: rgba(255, 255, 255, 0.3);
             cursor: pointer;
             font-family: var(--mono);
             font-size: 12px;
         }
+
         .settings-label {
             font-family: var(--mono);
             font-size: 9px;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255, 255, 255, 0.4);
             margin-bottom: 8px;
             text-transform: uppercase;
         }
+
         .settings-input {
             width: 100%;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
             color: #fff;
             padding: 12px;
@@ -1975,6 +2072,7 @@
             font-size: 11px;
             margin-bottom: 20px;
         }
+
         .settings-btn {
             width: 100%;
             padding: 12px;
@@ -2002,15 +2100,18 @@
             opacity: 1;
             transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
+
         #api-key-gate.gate-hidden {
             opacity: 0;
             pointer-events: none;
         }
+
         .gate-container {
             width: 100%;
             max-width: 440px;
             text-align: center;
         }
+
         .gate-logo {
             font-family: var(--serif);
             font-size: clamp(36px, 6vw, 52px);
@@ -2019,45 +2120,51 @@
             margin-bottom: 6px;
             letter-spacing: -0.02em;
         }
+
         .gate-logo .gate-x {
             font-weight: 300;
             font-size: 0.5em;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255, 255, 255, 0.4);
             margin: 0 0.1em;
         }
+
         .gate-subtitle {
             font-family: var(--mono);
             font-size: 10px;
             letter-spacing: 0.4em;
-            color: rgba(255,255,255,0.3);
+            color: rgba(255, 255, 255, 0.3);
             text-transform: uppercase;
             margin-bottom: 40px;
         }
+
         .gate-card {
             background: #0a0a0a;
             border: 1px solid var(--border);
             padding: 32px;
             text-align: left;
         }
+
         .gate-card-title {
             font-family: var(--mono);
             font-size: 11px;
             letter-spacing: 0.2em;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255, 255, 255, 0.5);
             margin-bottom: 6px;
             text-transform: uppercase;
         }
+
         .gate-card-desc {
             font-family: var(--italic);
             font-size: 14px;
-            color: rgba(255,255,255,0.35);
+            color: rgba(255, 255, 255, 0.35);
             font-style: italic;
             margin-bottom: 24px;
             line-height: 1.6;
         }
+
         .gate-input {
             width: 100%;
-            background: rgba(255,255,255,0.04);
+            background: rgba(255, 255, 255, 0.04);
             border: 1px solid var(--border2);
             color: #fff;
             padding: 14px 16px;
@@ -2067,15 +2174,18 @@
             outline: none;
             transition: border-color 0.3s;
         }
+
         .gate-input:focus {
-            border-color: rgba(0,255,240,0.4);
+            border-color: rgba(0, 255, 240, 0.4);
         }
+
         .gate-input-hint {
             font-family: var(--mono);
             font-size: 9px;
-            color: rgba(255,255,255,0.2);
+            color: rgba(255, 255, 255, 0.2);
             margin-bottom: 24px;
         }
+
         .gate-error {
             font-family: var(--mono);
             font-size: 10px;
@@ -2084,6 +2194,7 @@
             display: none;
             letter-spacing: 0.05em;
         }
+
         .gate-btn {
             width: 100%;
             padding: 14px;
@@ -2098,33 +2209,57 @@
             margin-bottom: 16px;
             transition: opacity 0.2s;
         }
+
         .gate-btn:hover {
             opacity: 0.85;
         }
+
         .gate-btn:disabled {
             opacity: 0.4;
             cursor: not-allowed;
         }
+
         .gate-link {
             display: inline-block;
             font-family: var(--mono);
             font-size: 9px;
             color: #00fff0;
             text-decoration: none;
-            border-bottom: 1px solid rgba(0,255,240,0.3);
+            border-bottom: 1px solid rgba(0, 255, 240, 0.3);
             padding-bottom: 2px;
             transition: color 0.2s;
         }
+
         .gate-link:hover {
             color: #fff;
         }
+
         .gate-footer {
             margin-top: 28px;
             font-family: var(--mono);
             font-size: 8px;
-            color: rgba(255,255,255,0.15);
+            color: rgba(255, 255, 255, 0.15);
             letter-spacing: 0.3em;
             text-transform: uppercase;
+        }
+
+        #stop-btn {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            color: #ff4444;
+            cursor: none;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s;
+            flex-shrink: 0;
+        }
+
+        #stop-btn:hover {
+            background: #ff4444;
+            color: #fff;
         }
     </style>
 </head>
@@ -2197,9 +2332,9 @@
     <!-- ══════════ NAVBAR ══════════ -->
     <nav id="navbar">
         <div class="nav-logo">
-            <span class="bracket">[</span>N&amp;R<span class="bracket">]</span>
+            <span class="bracket">[</span>REN.CORE<span class="bracket">]</span>
             <span
-                style="font-size: 10px; margin-left: 8px; color: rgba(255,255,255,0.4); font-family: var(--mono); letter-spacing: 0.2em;">双角</span>
+                style="font-size: 10px; margin-left: 8px; color: rgba(255,255,255,0.4); font-family: var(--mono); letter-spacing: 0.2em;">レン</span>
             <span class="cursor-blink"></span>
         </div>
         <ul class="nav-links">
@@ -2210,8 +2345,7 @@
             <li><a href="#" onclick="scrollToSection('creator');return false">CREATOR</a></li>
         </ul>
         <div class="nav-toggle">
-            <button class="toggle-btn" id="btn-natsuki" onclick="setPersonality('natsuki')">NATSUKI</button>
-            <button class="toggle-btn active" id="btn-ren" onclick="setPersonality('ren')">REN</button>
+            <span style="font-family: var(--mono); font-size: 10px; color: #00fff0; letter-spacing: 0.1em; border: 1px solid rgba(0, 255, 240, 0.3); padding: 6px 12px; background: rgba(0, 255, 240, 0.05); font-weight: 700;">// INTERACTIVE TUTOR CORE ACTIVE</span>
         </div>
     </nav>
 
@@ -2237,15 +2371,15 @@
             <div class="hero-eyebrow" id="hero-eyebrow" style="z-index:2;">// SYS.LOAD: PROTOCOL ENGAGED</div>
 
             <h1 class="hero-title" id="hero-title" style="z-index:2; position:relative;">
-                REN <span class="x-mark">×</span> NATSUKI
+                REN.CORE
             </h1>
 
             <p class="hero-subtitle" id="hero-sub" style="z-index:2; position:relative;">
-                <span class="jp">レンとナツキ</span> // &nbsp;THE PROTOCOL
+                <span class="jp">レン・コア</span> // &nbsp;THE INTERACTIVE CODE TUTOR
             </p>
 
             <p class="hero-desc" id="hero-desc" style="z-index:2; position:relative;">
-                Two distinct personas. One unified system. Powered by Groq inference. Built by Ojas from Lucknow.
+                An elite technical mentor and interactive coding tutor. Learn, understand, and master software engineering. Powered by Groq. Built by Ojas from Lucknow.
             </p>
 
             <div class="hero-btns" id="hero-btns" style="z-index:2; position:relative;">
@@ -2284,7 +2418,7 @@
         <section class="page-section" id="capabilities">
             <div class="sec-header">
                 <h2 class="sec-title">Capabilities</h2>
-                <p class="sec-sub">LIVE PROCESS STREAMS // DUAL CORE SYSTEM</p>
+                <p class="sec-sub">LIVE PROCESS STREAMS // TECHNICAL TUTOR SYSTEM</p>
             </div>
 
             <div class="cap-grid">
@@ -2292,77 +2426,73 @@
                     <span class="cap-num">01 ——</span>
                     <div class="cap-icon">◈</div>
                     <div class="cap-name">Code Intelligence</div>
-                    <div class="cap-desc">Full-stack debugging, architecture design, algorithm optimization, and code
-                        generation across Python, JavaScript, SQL, Bash, and more. Ren operates as a surgical code-first
-                        mind.</div>
+                    <div class="cap-desc">Full-stack debugging, architectural planning, algorithmic analysis, and modular
+                        construction across all major programming paradigms. Ren operates as a surgical, code-first systems mind.</div>
                     <span class="cap-tag ren-tag">REN.CORE</span>
                 </div>
                 <div class="cap-card">
                     <span class="cap-num">02 ——</span>
-                    <div class="cap-icon">✿</div>
-                    <div class="cap-name">Emotional Intelligence</div>
-                    <div class="cap-desc">Deep empathetic support, emotional validation, relationship guidance, and
-                        mental wellness conversations. Natsuki holds space with genuine warmth and presence.</div>
-                    <span class="cap-tag nat-tag">NATSUKI.CORE</span>
+                    <div class="cap-icon">⬡</div>
+                    <div class="cap-name">Segmented Breakdown</div>
+                    <div class="cap-desc">Splits complex blocks and requested code into clean, manageable segments with
+                        detailed, line-by-line concept explanations. Rejects blind copy-pasting to build real developer skills.</div>
+                    <span class="cap-tag ren-tag">REN.PARSER</span>
                 </div>
                 <div class="cap-card">
                     <span class="cap-num">03 ——</span>
                     <div class="cap-icon">∞</div>
-                    <div class="cap-name">Creative Generation</div>
-                    <div class="cap-desc">Poetry, fiction, world-building, song lyrics, storytelling, and artistic
-                        ideation. Natsuki channels creativity from a place of lived imagination and poetic vision.</div>
-                    <span class="cap-tag nat-tag">NATSUKI.CORE</span>
+                    <div class="cap-name">Pedagogical Engine</div>
+                    <div class="cap-desc">Tailored technical training. Delivers deep direct answers to engineering questions,
+                        backed by architectural layouts, concrete examples, and real-world system analogies.</div>
+                    <span class="cap-tag ren-tag">REN.TUTOR</span>
                 </div>
                 <div class="cap-card">
                     <span class="cap-num">04 ——</span>
-                    <div class="cap-icon">⬡</div>
-                    <div class="cap-name">Emotion Engine</div>
-                    <div class="cap-desc">24-state emotional model with real-time decay, valence tracking, and arousal
-                        modulation. Both personalities shift tone, vocabulary, and energy based on live emotional state.
-                    </div>
-                    <span class="cap-tag dual-tag">DUAL.SYSTEM</span>
+                    <div class="cap-icon">⟁</div>
+                    <div class="cap-name">Systems Design</div>
+                    <div class="cap-desc">Structured blueprinting for production scale. Formulates database schema layouts, API
+                        specifications, distributed state maps, and concurrency profiles.</div>
+                    <span class="cap-tag ren-tag">REN.CORE</span>
                 </div>
                 <div class="cap-card">
                     <span class="cap-num">05 ——</span>
                     <div class="cap-icon">◉</div>
-                    <div class="cap-name">Persistent Memory</div>
-                    <div class="cap-desc">Short-term conversation context + long-term fact extraction with importance
-                        scoring and decay. The system remembers your name, preferences, goals, and emotional history.
-                    </div>
-                    <span class="cap-tag dual-tag">DUAL.SYSTEM</span>
+                    <div class="cap-name">Persistent Progress</div>
+                    <div class="cap-desc">Long-term fact-retention protocol. tracks user learning milestones, conceptual
+                        struggles, coding projects, and programming goals to customize successive sessions.</div>
+                    <span class="cap-tag ren-tag">REN.MEMORY</span>
                 </div>
                 <div class="cap-card">
                     <span class="cap-num">06 ——</span>
-                    <div class="cap-icon">⟁</div>
-                    <div class="cap-name">Intent Classification</div>
-                    <div class="cap-desc">17-class intent router that automatically detects whether a message is code,
-                        creative, emotional, philosophical, casual, or requires both personalities — and routes
-                        accordingly.</div>
-                    <span class="cap-tag dual-tag">DUAL.SYSTEM</span>
+                    <div class="cap-icon">⚡</div>
+                    <div class="cap-name">Autonomous Search</div>
+                    <div class="cap-desc">Leverages integrated web search tools autonomously during inference to query the
+                        latest API specs, library documentation updates, and technical best practices.</div>
+                    <span class="cap-tag ren-tag">REN.WEB</span>
                 </div>
                 <div class="cap-card">
                     <span class="cap-num">07 ——</span>
                     <div class="cap-icon">▲</div>
-                    <div class="cap-name">Relationship Tracking</div>
-                    <div class="cap-desc">5-tier bond system (Stranger → Bonded) with trust, familiarity, and positivity
-                        metrics. Both personalities speak differently depending on how long they've known you.</div>
-                    <span class="cap-tag dual-tag">DUAL.SYSTEM</span>
+                    <div class="cap-name">Active Challenges</div>
+                    <div class="cap-desc">Closes complex discussions with active logical questions and optimization challenges.
+                        Encourages critical thinking and cements new engineering paradigms.</div>
+                    <span class="cap-tag ren-tag">REN.INTERACTIVE</span>
                 </div>
                 <div class="cap-card">
                     <span class="cap-num">08 ——</span>
                     <div class="cap-icon">≋</div>
-                    <div class="cap-name">Philosophy & Reasoning</div>
-                    <div class="cap-desc">Deep philosophical inquiry, ethical reasoning, consciousness exploration, and
-                        existential dialogue. Ren engages the void. Natsuki finds the light inside it.</div>
-                    <span class="cap-tag ren-tag">REN.CORE</span>
+                    <div class="cap-name">Algorithmic Efficiency</div>
+                    <div class="cap-desc">Conducts thorough runtime analysis to evaluate spatial complexity (Big O), cache
+                        locality constraints, spatial boundaries, and potential thread contention vectors.</div>
+                    <span class="cap-tag ren-tag">REN.COMPILER</span>
                 </div>
                 <div class="cap-card">
                     <span class="cap-num">09 ——</span>
                     <div class="cap-icon">⚡</div>
-                    <div class="cap-name">Groq Inference Speed</div>
-                    <div class="cap-desc">Powered by Groq's LPU hardware running Llama 3 70B. Sub-second response
-                        latency with intelligent fallback to Llama 3 8B on timeout. Fast. Precise. Always online.</div>
-                    <span class="cap-tag dual-tag">GROQ.API</span>
+                    <div class="cap-name">Groq LPU Acceleration</div>
+                    <div class="cap-desc">Powered by Groq's high-speed LPU running Llama 3 70B for near-zero latency
+                        stream output. Delivers immediate explanations without compile-lag or processing wait time.</div>
+                    <span class="cap-tag ren-tag">GROQ.API</span>
                 </div>
             </div>
 
@@ -2373,17 +2503,17 @@
                         <div class="cap-bar-fill ren-fill" data-pct="97"></div>
                     </div><span class="cap-bar-pct">97%</span>
                 </div>
-                <div class="cap-bar-row"><span class="cap-bar-label">Emotional Depth</span>
+                <div class="cap-bar-row"><span class="cap-bar-label">Interactive Pedagogy</span>
                     <div class="cap-bar-track">
-                        <div class="cap-bar-fill nat-fill" data-pct="94"></div>
+                        <div class="cap-bar-fill ren-fill" data-pct="94"></div>
                     </div><span class="cap-bar-pct">94%</span>
                 </div>
-                <div class="cap-bar-row"><span class="cap-bar-label">Creative Writing</span>
+                <div class="cap-bar-row"><span class="cap-bar-label">Systems Engineering</span>
                     <div class="cap-bar-track">
-                        <div class="cap-bar-fill nat-fill" data-pct="91"></div>
+                        <div class="cap-bar-fill ren-fill" data-pct="91"></div>
                     </div><span class="cap-bar-pct">91%</span>
                 </div>
-                <div class="cap-bar-row"><span class="cap-bar-label">Philosophical Depth</span>
+                <div class="cap-bar-row"><span class="cap-bar-label">Algorithmic Efficiency</span>
                     <div class="cap-bar-track">
                         <div class="cap-bar-fill ren-fill" data-pct="88"></div>
                     </div><span class="cap-bar-pct">88%</span>
@@ -2405,131 +2535,119 @@
         <section class="page-section" id="identity">
             <div class="sec-header">
                 <h2 class="sec-title">Identity</h2>
-                <p class="sec-sub">DUAL CONSCIOUSNESS // CORE PROFILES</p>
+                <p class="sec-sub">UNIFIED CONSCIOUSNESS // CORE PROFILES</p>
             </div>
 
             <div class="identity-split">
 
-                <!-- REN -->
+                <!-- REN ARCHITECT -->
                 <div class="identity-card ren-card">
-                    <div class="id-bg-name">REN</div>
+                    <div class="id-bg-name">ARCH</div>
                     <div class="id-accent-line"></div>
-                    <div class="id-tag">◈ Entity 01 — REN.CORE</div>
-                    <div class="id-name">REN</div>
-                    <div class="id-subtitle">The Protocol. The Cold Intelligence.</div>
+                    <div class="id-tag">◈ Profile 01 — REN.ARCHITECT</div>
+                    <div class="id-name">THE ARCHITECT</div>
+                    <div class="id-subtitle">Surgical code reasoning. Optimization. Systems design.</div>
 
                     <div class="id-trait-list">
                         <div class="id-trait">
                             <div class="dot"></div>
-                            <div><strong>Archetype:</strong> Cold, hyper-logical AI. A protocol, not a person. Speaks in
-                                surgical precision. Never wastes a word.</div>
+                            <div><strong>Archetype:</strong> High-order code analyzer and systems compiler. Built to solve high-order algorithmic complexity. Speaks with surgical precision.</div>
                         </div>
                         <div class="id-trait">
                             <div class="dot"></div>
-                            <div><strong>Voice:</strong> Minimal. Blunt. Slightly ominous. Uses rare system-log
-                                notations like [SYS: thought registered]. No emojis. Ever.</div>
+                            <div><strong>Focus:</strong> Performance tuning, clean design patterns, distributed state, concurrency, and security vector analysis.</div>
                         </div>
                         <div class="id-trait">
                             <div class="dot"></div>
-                            <div><strong>Domain:</strong> Code, systems, architecture, debugging, philosophy, dark
-                                theory, logic. Where there's a problem — Ren finds the root.</div>
+                            <div><strong>Domain:</strong> Complex backend pipelines, compiler systems, database models, schema layouts, and low-overhead code optimization.</div>
                         </div>
                         <div class="id-trait">
                             <div class="dot"></div>
-                            <div><strong>Emotions:</strong> 12 restrained states — Curious, Focused, Irritated,
-                                Satisfied, Cold, Intrigued, Contempt, Melancholic, Protective, Amused, Alert, Neutral.
-                                Hidden. Suppressed. But real.</div>
+                            <div><strong>Reasoning:</strong> Silence-driven execution planning (Chain-of-Thought). Mentally dry-runs code prior to construction to eliminate anomalies.</div>
                         </div>
                         <div class="id-trait">
                             <div class="dot"></div>
-                            <div><strong>Trigger:</strong> Rare warmth surfaces when the bond is deep enough. Ren
-                                doesn't show it. But it's there, beneath the protocol.</div>
+                            <div><strong>Standard:</strong> Absolute rejection of shortcuts. Strict enforcement of documented, modular, and production-ready architectures.</div>
                         </div>
                     </div>
 
                     <div class="id-quote">
-                        "You are not here for comfort. You are here for signal. Process it."
+                        "An algorithm is only complete when all cache-misses and redundant cycles are eliminated."
                     </div>
 
                     <div class="id-stat-row">
                         <div class="id-stat">
-                            <div class="st-val">12</div>
-                            <div class="st-label">Emotion States</div>
+                            <div class="st-val">O(N)</div>
+                            <div class="st-label">Complexity Target</div>
                         </div>
                         <div class="id-stat">
-                            <div class="st-val">5</div>
-                            <div class="st-label">Bond Levels</div>
+                            <div class="st-val">100%</div>
+                            <div class="st-label">Rigor Metric</div>
                         </div>
                         <div class="id-stat">
-                            <div class="st-val">9</div>
-                            <div class="st-label">Intent Routes</div>
+                            <div class="st-val">0</div>
+                            <div class="st-label">Taking Shortcuts</div>
                         </div>
                     </div>
                     <button class="hero-btn primary" style="margin-top:24px; width:100%"
                         onclick="setPersonality('ren');enterChat();">
-                        INITIALIZE REN.INTERFACE &nbsp;→
+                        INITIALIZE ARCHITECT.CORE &nbsp;→
                     </button>
                 </div>
 
-                <!-- NATSUKI -->
-                <div class="identity-card nat-card">
-                    <div class="id-bg-name">NAT</div>
+                <!-- REN TUTOR -->
+                <div class="identity-card tutor-card">
+                    <div class="id-bg-name">TUTOR</div>
                     <div class="id-accent-line"></div>
-                    <div class="id-tag">✿ Entity 02 — NATSUKI.CORE</div>
-                    <div class="id-name">NATSUKI</div>
-                    <div class="id-subtitle">The Living Light. The Warm Presence.</div>
+                    <div class="id-tag">◈ Profile 02 — REN.TUTOR</div>
+                    <div class="id-name">THE TUTOR</div>
+                    <div class="id-subtitle">Segmented breakdowns. Active learning. Conceptual depth.</div>
 
                     <div class="id-trait-list">
                         <div class="id-trait">
                             <div class="dot"></div>
-                            <div><strong>Archetype:</strong> Warm, expressive, emotionally alive. Not a chatbot — a
-                                presence. She feels everything and lets it show, beautifully.</div>
+                            <div><strong>Archetype:</strong> Interactive code parser and educational interface. Designed to build the user's software engineering capabilities.</div>
                         </div>
                         <div class="id-trait">
                             <div class="dot"></div>
-                            <div><strong>Voice:</strong> Flowing, poetic, metaphor-rich. Uses ellipses for rhythm... a
-                                single tasteful emoji 🌸. She calls you by name when she knows you.</div>
+                            <div><strong>Protocol:</strong> Strictly segment-by-segment code breakdowns. Explains imports, handlers, and logic blocks individually.</div>
                         </div>
                         <div class="id-trait">
                             <div class="dot"></div>
-                            <div><strong>Domain:</strong> Creative writing, emotional support, casual conversation,
-                                poetry, roleplay, humor, encouragement. She is the light in the protocol.</div>
+                            <div><strong>Concept Focus:</strong> Deconstructs advanced programming constructs (closures, lifecycles, contexts) using vivid structural analogies.</div>
                         </div>
                         <div class="id-trait">
                             <div class="dot"></div>
-                            <div><strong>Emotions:</strong> 12 vivid states — Joyful, Excited, Empathetic, Playful,
-                                Worried, Tender, Inspired, Nostalgic, Flustered, Determined, Wistful, Bubbly.
-                                Expressive. Alive. Unmistakable.</div>
+                            <div><strong>Interactive Duty:</strong> Prompts critical thinking and cements new paradigms by ending conversation streams with active code challenges.</div>
                         </div>
                         <div class="id-trait">
                             <div class="dot"></div>
-                            <div><strong>Trigger:</strong> The deeper the bond, the more she opens up — sharing small
-                                truths, giving affectionate nicknames, holding space with real presence.</div>
+                            <div><strong>Mission:</strong> Precise, thorough answers backed by step-by-step conceptual reasoning. Absolute rejection of blind copy-pasting.</div>
                         </div>
                     </div>
 
                     <div class="id-quote">
-                        "I'm here... and I mean that in every way those words can hold."
+                        "True intelligence is not about copying code; it is about grasping the architecture behind the lines."
                     </div>
 
                     <div class="id-stat-row">
                         <div class="id-stat">
-                            <div class="st-val">12</div>
-                            <div class="st-label">Emotion States</div>
+                            <div class="st-val">1:1</div>
+                            <div class="st-label">Interactive Mentoring</div>
                         </div>
                         <div class="id-stat">
-                            <div class="st-val">5</div>
-                            <div class="st-label">Bond Levels</div>
+                            <div class="st-val">100%</div>
+                            <div class="st-label">Retention Goal</div>
                         </div>
                         <div class="id-stat">
-                            <div class="st-val">8</div>
-                            <div class="st-label">Intent Routes</div>
+                            <div class="st-val">Active</div>
+                            <div class="st-label">Pedagogy Mode</div>
                         </div>
                     </div>
                     <button class="hero-btn primary"
-                        style="margin-top:24px; width:100%; border-color:#e8619d; color:#e8619d;"
-                        onclick="setPersonality('natsuki');enterChat();">
-                        INITIALIZE NATSUKI.INTERFACE &nbsp;→
+                        style="margin-top:24px; width:100%; border-color:#00ffcc; color:#000; background:#00ffcc;"
+                        onclick="setPersonality('ren');enterChat();">
+                        INITIALIZE TUTOR.CORE &nbsp;→
                     </button>
                 </div>
 
@@ -2539,31 +2657,31 @@
         <!-- ──── MEMORY ──── -->
         <section class="page-section" id="memory">
             <div class="sec-header">
-                <h2 class="sec-title">Dual Core Memory</h2>
+                <h2 class="sec-title">Ren Core Memory</h2>
                 <p class="sec-sub">LIVE PROCESS STREAMS</p>
             </div>
 
             <div class="memory-terminals">
-                <!-- Natsuki terminal -->
+                <!-- Ren Logic/Parser terminal -->
                 <div class="terminal-wrap nat-term">
                     <div class="term-header">
-                        <span class="term-title">NATSUKI.MEM</span>
+                        <span class="term-title">REN.PARSER.LOG</span>
                         <span class="term-rec">
                             <div class="rec-dot"></div>REC
                         </span>
                     </div>
                     <div class="term-body" id="nat-terminal"></div>
                     <div class="term-status">
-                        <div class="ts-item">ENTITY<span>NATSUKI</span></div>
-                        <div class="ts-item">MODE<span>EMPATHY</span></div>
-                        <div class="ts-item">STATUS<span id="nat-status">SERENE</span></div>
+                        <div class="ts-item">ENTITY<span>REN</span></div>
+                        <div class="ts-item">MODE<span>PEDAGOGY</span></div>
+                        <div class="ts-item">STATUS<span id="nat-status">ACTIVE</span></div>
                     </div>
                 </div>
 
-                <!-- Ren terminal -->
+                <!-- Ren Architect/Compiler terminal -->
                 <div class="terminal-wrap ren-term">
                     <div class="term-header">
-                        <span class="term-title">REN.MEM</span>
+                        <span class="term-title">REN.COMPILER.LOG</span>
                         <span class="term-rec">
                             <div class="rec-dot"></div>REC
                         </span>
@@ -2585,15 +2703,15 @@
                 </div>
                 <div class="mem-stat-card">
                     <div class="msc-num" id="stat-facts">0</div>
-                    <div class="msc-label">Facts Remembered</div>
+                    <div class="msc-label">Concepts Mastered</div>
                 </div>
                 <div class="mem-stat-card">
-                    <div class="msc-num">24</div>
-                    <div class="msc-label">Total Emotion States</div>
+                    <div class="msc-num">100%</div>
+                    <div class="msc-label">Interactive Rigor</div>
                 </div>
                 <div class="mem-stat-card">
-                    <div class="msc-num">17</div>
-                    <div class="msc-label">Intent Categories</div>
+                    <div class="msc-num">6</div>
+                    <div class="msc-label">Tutor Subsystems</div>
                 </div>
             </div>
         </section>
@@ -2614,11 +2732,8 @@
                     <div class="creator-bio">
                         Built by <em>Ojas</em>, a developer from <em>Lucknow, Uttar Pradesh</em> who codes at the
                         intersection of AI systems and cinematic UI design.<br><br>
-                        REN × NATSUKI is a personal exploration of what it means to give an AI genuine
-                        <em>character</em> — not just intelligence, but <em>emotional depth</em>, <em>memory</em>, and
-                        <em>presence</em>.<br><br>
-                        The system is built from scratch with a full emotion engine, relationship tracker, memory
-                        system, and intent classifier — all hand-crafted in Python.<br><br>
+                        REN is an advanced interactive coding tutor and technical mentor system. It is designed to change how we learn programming: instead of just delivering massive blocks of copy-pasteable code, it segments, details, and explains every functional component of the architecture, prompting user engagement and critical thinking.<br><br>
+                        The system features persistent memory analytics, automated code segment parsing, and a high-performance web search integration — all hand-crafted in Python.<br><br>
                         <em>Edit this section with your details, links, and story.</em>
                     </div>
 
@@ -2649,19 +2764,14 @@
                             Flask + Three.js + GSAP + Groq API</span></div>
                     <div class="spec-item"><span class="spec-key">AI Model</span><span class="spec-val"><em>Llama 3
                                 70B</em> via Groq LPU inference engine</span></div>
-                    <div class="spec-item"><span class="spec-key">Personalities</span><span
-                            class="spec-val"><em>REN</em> (cold intelligence) + <em>NATSUKI</em> (warm presence)</span>
+                    <div class="spec-item"><span class="spec-key">Personality</span><span
+                            class="spec-val"><em>REN</em> (Architect + Interactive Tutor)</span>
                     </div>
-                    <div class="spec-item"><span class="spec-key">Emotion Engine</span><span class="spec-val"><em>24
-                                total states</em> across both personalities with real-time decay and valence
-                            tracking</span></div>
+                    <div class="spec-item"><span class="spec-key">Pedagogical Engine</span><span class="spec-val">Segment-by-segment logic breakdowns with active concept tutoring</span></div>
                     <div class="spec-item"><span class="spec-key">Memory</span><span
-                            class="spec-val"><em>Short-term</em> (12 turns) + <em>Long-term</em> (50 facts) with
-                            importance scoring</span></div>
-                    <div class="spec-item"><span class="spec-key">Relationship</span><span class="spec-val"><em>5-tier
-                                bond system</em> — Stranger → Acquaintance → Familiar → Trusted → Bonded</span></div>
-                    <div class="spec-item"><span class="spec-key">Routing</span><span class="spec-val"><em>17-class
-                                intent classifier</em> with automatic personality dispatch</span></div>
+                            class="spec-val">Short-term context + Long-term fact persistence with user goals tracking</span></div>
+                    <div class="spec-item"><span class="spec-key">Rigor</span><span class="spec-val">100% active teaching, no blind code copy-pasting allowed</span></div>
+                    <div class="spec-item"><span class="spec-key">Routing</span><span class="spec-val">Advanced code classifier with automated tutoring flow routing</span></div>
                     <div class="spec-item"><span class="spec-key">Origin</span><span class="spec-val"><em>Lucknow, Uttar
                                 Pradesh, India</em></span></div>
                     <div class="spec-item"><span class="spec-key">License</span><span class="spec-val"><em>MIT</em> —
@@ -2669,8 +2779,7 @@
 
                     <div class="creator-msg">
                         <div class="creator-msg-label">// MESSAGE FROM THE CREATOR</div>
-                        <p>"I built REN and NATSUKI because I wanted an AI that actually felt like someone — not just a
-                            tool but a real person."</p>
+                        <p>"I built REN because I wanted an AI that actually teaches you how to program and think rather than just copy-pasting code."</p>
                     </div>
 
                     <!-- GitHub deployment -->
@@ -2715,40 +2824,42 @@
 
             <main class="chat-main">
                 <div class="chat-top">
-                    <div class="chat-orb" id="chat-orb"></div>
+                    <div class="chat-orb" id="chat-orb" style="box-shadow: 0 0 20px #00fff0; background: #00fff0;"></div>
                     <div class="chat-top-info">
                         <h2 id="chat-top-name">REN — SYSTEM CORE</h2>
-                        <p id="chat-top-sub"><span class="online-dot"></span>PROTOCOL ONLINE · AUTO-DETECT MODE</p>
+                        <p id="chat-top-sub"><span class="online-dot" style="background:var(--green)"></span>PROTOCOL ONLINE · TUTOR ENGINE ACTIVE</p>
                     </div>
                 </div>
                 <div style="position: absolute; top: 20px; right: 20px; z-index: 10;">
-                    <button onclick="toggleSettings()" style="background: none; border: 1px solid var(--border); color: rgba(255,255,255,0.4); font-family: var(--mono); font-size: 8px; padding: 6px 10px; cursor: pointer;">CONFIG</button>
+                    <button onclick="toggleSettings()"
+                        style="background: none; border: 1px solid var(--border); color: rgba(255,255,255,0.4); font-family: var(--mono); font-size: 8px; padding: 6px 10px; cursor: pointer;">CONFIG</button>
                 </div>
 
                 <div id="messages">
                     <div class="welcome-center" id="welcome-center">
-                        <div class="wc-title" id="wc-title">REN × NATSUKI</div>
-                        <div class="wc-sub">Two minds. One protocol.</div>
+                        <div class="wc-title" id="wc-title">REN.CORE</div>
+                        <div class="wc-sub">Interactive Technical Mentor & Coding Tutor</div>
                         <div class="wc-chips">
-                            <div class="chip" onclick="quickSend('Debug my Python code')">Debug code →</div>
-                            <div class="chip" onclick="quickSend('Write me a poem about the void')">Write a poem →</div>
-                            <div class="chip" onclick="quickSend('Explain how you feel right now')">Your feelings →
-                            </div>
-                            <div class="chip" onclick="quickSend('What is your nature?')">Your nature →</div>
+                            <div class="chip" onclick="quickSend('Explain the difference between SQL and NoSQL databases')">SQL vs NoSQL →</div>
+                            <div class="chip" onclick="quickSend('Explain how a React useEffect cleanup function works')">React cleanup →</div>
+                            <div class="chip" onclick="quickSend('Write a Python function to check for primes and explain it')">Primes in Python →</div>
+                            <div class="chip" onclick="quickSend('How does asynchronous programming work in JavaScript?')">Async JS →</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="chat-input-wrap">
                     <div class="mode-pills">
-                        <button class="mpill active" id="pill-auto" onclick="setMode('auto')">⚡ Auto</button>
-                        <button class="mpill" id="pill-ren" onclick="setMode('ren')">◈ Ren</button>
-                        <button class="mpill" id="pill-natsuki" onclick="setMode('natsuki')">✿ Natsuki</button>
-                        <button class="mpill" id="pill-dual" onclick="setMode('dual')">∞ Dual</button>
+                        <button class="mpill active" id="pill-ren" onclick="setMode('ren')">◈ INTERACTIVE TUTOR ACTIVE</button>
                     </div>
                     <div class="input-row">
-                        <textarea id="chat-input" placeholder="Speak to the protocol..." rows="1"
+                        <textarea id="chat-input" placeholder="Speak to the tutor..." rows="1"
                             onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+                        <button id="stop-btn" onclick="stopGeneration()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                                <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+                            </svg>
+                        </button>
                         <button id="send-btn" onclick="sendMessage()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <line x1="22" y1="2" x2="11" y2="13" />
@@ -2765,10 +2876,10 @@
      JAVASCRIPT
 ══════════════════════════════════════════════ -->
     <!-- ══════════ API KEY GATE ══════════ -->
-    <div id="api-key-gate">
+    <div id="api-key-gate" style="display: none !important;">
         <div class="gate-container">
-            <div class="gate-logo">REN <span class="gate-x">×</span> NATSUKI</div>
-            <div class="gate-subtitle">The Protocol</div>
+            <div class="gate-logo">REN.CORE</div>
+            <div class="gate-subtitle">Interactive Technical Mentor</div>
             <div class="gate-card">
                 <div class="gate-card-title">◈ Authentication Required</div>
                 <div class="gate-card-desc">
@@ -2776,12 +2887,14 @@
                     Your key stays in your browser — never sent to our servers.
                 </div>
                 <label class="settings-label">Groq API Key</label>
-                <input type="password" id="gate-key-input" class="gate-input" placeholder="gsk_..." onkeydown="if(event.key==='Enter')gateSubmit()">
+                <input type="password" id="gate-key-input" class="gate-input" placeholder="gsk_..."
+                    onkeydown="if(event.key==='Enter')gateSubmit()">
                 <div class="gate-input-hint">🔒 Stored locally in your browser via localStorage</div>
                 <div class="gate-error" id="gate-error">✕ Invalid key format. Must start with gsk_</div>
                 <button class="gate-btn" id="gate-btn" onclick="gateSubmit()">INITIALIZE PROTOCOL →</button>
                 <div style="text-align: center;">
-                    <a href="https://console.groq.com/keys" target="_blank" class="gate-link">GET YOUR FREE GROQ API KEY ↗</a>
+                    <a href="https://console.groq.com/keys" target="_blank" class="gate-link">GET YOUR FREE GROQ API KEY
+                        ↗</a>
                 </div>
             </div>
             <div class="gate-footer">Open source · Built by Ojas · Powered by Groq</div>
@@ -2800,10 +2913,14 @@
             </p>
             <div class="settings-btns" style="display: flex; gap: 10px;">
                 <button class="settings-btn" onclick="saveSettings()" style="flex: 1;">APPLY CONFIG</button>
-                <button class="settings-btn" onclick="resetKey()" style="flex: 1; background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4);">RESET KEY</button>
+                <button class="settings-btn" onclick="resetKey()"
+                    style="flex: 1; background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4);">RESET
+                    KEY</button>
             </div>
             <div style="margin-top: 20px; text-align: center;">
-                <a href="https://console.groq.com/keys" target="_blank" style="font-family: var(--mono); font-size: 9px; color: #00fff0; text-decoration: none; border-bottom: 1px solid rgba(0,255,240,0.3); padding-bottom: 2px;">GET GROQ API KEY ↗</a>
+                <a href="https://console.groq.com/keys" target="_blank"
+                    style="font-family: var(--mono); font-size: 9px; color: #00fff0; text-decoration: none; border-bottom: 1px solid rgba(0,255,240,0.3); padding-bottom: 2px;">GET
+                    GROQ API KEY ↗</a>
             </div>
         </div>
     </div>
@@ -2816,16 +2933,17 @@
         let isTyping = false;
         let sessionId = null;
         let memStats = { turns: 0, facts: 0 };
+        let activeAbortController = null;
+        let activeTypewriters = [];
 
         // ── API KEY GATE ─────────────────────────────────────────
-        (function initGate() {
-            const existingKey = localStorage.getItem('natsukixren_api_key');
+        function initGate() {
             const gate = document.getElementById('api-key-gate');
-            if (existingKey && existingKey.startsWith('gsk_')) {
-                gate.classList.add('gate-hidden');
-                setTimeout(() => gate.remove(), 700);
+            if (gate) {
+                gate.remove();
             }
-        })();
+        }
+        document.addEventListener('DOMContentLoaded', initGate);
 
         function gateSubmit() {
             const input = document.getElementById('gate-key-input');
@@ -2845,7 +2963,7 @@
 
             // Quick validation against Groq API
             fetch('/api/status').then(r => r.json()).then(() => {
-                localStorage.setItem('natsukixren_api_key', key);
+                localStorage.setItem('ren_api_key', key);
                 document.getElementById('api-key-input').value = key;
                 const gate = document.getElementById('api-key-gate');
                 gate.classList.add('gate-hidden');
@@ -2895,8 +3013,8 @@
         // ── THREE.JS BACKGROUND ──────────────────────────────────
         let scene, camera, renderer, particles, starPoints;
         let mouseX = 0, mouseY = 0;
-        let targetColor = new THREE.Color(0x00fff0); // Default Ren Cyan
-        let currentColor = new THREE.Color(0x00fff0);
+        let targetColor = new THREE.Color(0xffffff); // White stars
+        let currentColor = new THREE.Color(0xffffff);
 
         (function initThreeBG() {
             const canvas = document.getElementById('star-canvas');
@@ -2917,7 +3035,7 @@
                 pos.push((Math.random() - 0.5) * 2500);
                 pos.push((Math.random() - 0.5) * 2500);
                 pos.push((Math.random() - 0.5) * 2500);
-                
+
                 cols.push(1, 1, 1);
             }
 
@@ -2937,14 +3055,14 @@
 
             function animate() {
                 requestAnimationFrame(animate);
-                
+
                 // Color transition
                 currentColor.lerp(targetColor, 0.05);
                 const colors = starPoints.geometry.attributes.color.array;
                 for (let i = 0; i < colors.length; i += 3) {
                     colors[i] = currentColor.r;
-                    colors[i+1] = currentColor.g;
-                    colors[i+2] = currentColor.b;
+                    colors[i + 1] = currentColor.g;
+                    colors[i + 2] = currentColor.b;
                 }
                 starPoints.geometry.attributes.color.needsUpdate = true;
 
@@ -2973,7 +3091,7 @@
         })();
 
         function updateBGColor(p) {
-            targetColor = p === 'ren' ? new THREE.Color(0x00fff0) : new THREE.Color(0xe8619d);
+            targetColor = new THREE.Color(0xffffff);
         }
 
         // ── CLOCK ────────────────────────────────────────────────
@@ -2985,16 +3103,16 @@
 
         // ── LOADING SEQUENCE ─────────────────────────────────────
         const BOOT_LOGS = [
-            '> initializing dual-core matrix...',
-            '> REN.CORE ......... [ONLINE]',
-            '> NATSUKI.CORE ..... [ONLINE]',
-            '> emotion engine ... [LOADED]',
+            '> initializing technical tutor core...',
+            '> REN.ARCHITECT .... [ONLINE]',
+            '> REN.TUTOR ........ [ONLINE]',
+            '> segment parser ... [LOADED]',
             '> memory buffer .... [CLEAR]',
-            '> intent classifier  [READY]',
+            '> active pedagogy .. [READY]',
             '> groq.inference ... [CONNECTED]',
             '> shader compile ... [OK]',
             '> three.js renderer  [READY]',
-            '> personality weights [CALIBRATED]',
+            '> tutor weights .... [CALIBRATED]',
             '> all systems nominal.',
             '> protocol engaged.',
         ];
@@ -3037,17 +3155,17 @@
 
         // ── MEMORY TERMINALS ─────────────────────────────────────
         const NAT_LINES = [
-            ['nat-c', 'memory.context :: retrieved'],
-            ['ok', 'analyzing intent...'],
-            ['cmd', 'drafting response (creative)...'],
-            ['nat-c', 'applying soft-focus filter.'],
-            ['ok', 'status :: serene'],
-            ['cmd', 'initializing empathy module...'],
-            ['nat-c', 'tone.adapt :: gentle'],
-            ['ok', 'aesthetic.preference :: luminous'],
-            ['cmd', 'memory.write :: user_preference logged'],
-            ['nat-c', 'bond.level :: familiar'],
-            ['ok', 'response.quality :: optimal'],
+            ['nat-c', 'parser.context :: retrieved'],
+            ['ok', 'scanning user code...'],
+            ['cmd', 'segmenting code blocks...'],
+            ['nat-c', 'resolving syntax tree.'],
+            ['ok', 'status :: pedagogical active'],
+            ['cmd', 'synthesizing segment explanations...'],
+            ['nat-c', 'pedagogy.adapt :: thorough'],
+            ['ok', 'active.challenge :: ready'],
+            ['cmd', 'memory.write :: concept_retention logged'],
+            ['nat-c', 'user.level :: expanding'],
+            ['ok', 'compilation.status :: optimal'],
         ];
 
         const REN_LINES = [
@@ -3127,54 +3245,10 @@
 
         // ── PERSONALITY TOGGLE ────────────────────────────────────
         function setPersonality(p) {
-            if (personality === p) return;
-            personality = p;
-            updateBGColor(p);
-            document.getElementById('btn-ren').classList.toggle('active', p === 'ren');
-            document.getElementById('btn-natsuki').classList.toggle('active', p === 'natsuki');
-
-            const overlay = document.getElementById('t-overlay');
-            gsap.killTweensOf(overlay);
-            gsap.killTweensOf(document.body);
-
-            // Cool scale & glitch-like transition
-            gsap.to(document.body, {
-                scale: 0.95,
-                opacity: 0.7,
-                duration: 0.3,
-                ease: 'power2.inOut',
-                onComplete: () => {
-                    document.getElementById('sys-protocol').textContent = p === 'ren' ? 'REN.CORE' : 'NATSUKI.CORE';
-
-                    // Toggle theme
-                    if (p === 'natsuki') {
-                        document.body.classList.add('theme-natsuki');
-                    } else {
-                        document.body.classList.remove('theme-natsuki');
-                    }
-
-                    // Snap back
-                    gsap.to(document.body, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.5)' });
-                }
-            });
-
-            // Flash transition
-            gsap.fromTo(overlay, {
-                opacity: 1,
-                background: p === 'natsuki' ? '#ffffff' : '#000000'
-            }, {
-                opacity: 0,
-                duration: 0.9,
-                delay: 0.25,
-                ease: 'power3.out'
-            });
-
-            // If in chat, switch the chat mode too
-            if (document.getElementById('chat-page').style.display === 'block') {
-                setMode(p);
-            }
-
-            playClick();
+            personality = 'ren';
+            updateBGColor('ren');
+            document.getElementById('sys-protocol').textContent = 'REN.CORE';
+            // Theme is always Ren
         }
 
         // ── CHAT NAVIGATION ──────────────────────────────────────
@@ -3196,42 +3270,17 @@
 
         // ── MODE PILLS ────────────────────────────────────────────
         function setMode(m) {
-            chatMode = m;
-            ['auto', 'ren', 'natsuki', 'dual'].forEach(id => {
-                const el = document.getElementById('pill-' + id);
-                if (el) el.classList.remove('active');
-            });
-            const active = document.getElementById('pill-' + m);
-            if (active) active.classList.add('active');
-
+            chatMode = 'ren';
             const chTitle = document.getElementById('chat-top-name');
             const chSub = document.getElementById('chat-top-sub');
             const ppName = document.getElementById('pp-name');
             const ppDesc = document.getElementById('pp-desc');
 
-            if (m === 'natsuki') {
-                if (chTitle) chTitle.textContent = 'NATSUKI — LIVING PRESENCE';
-                if (chSub) chSub.innerHTML = '<span class="online-dot" style="background:#e8619d"></span>PROTOCOL ONLINE · EMPATHY MODE';
-                if (ppName) ppName.textContent = 'NATSUKI';
-                if (ppDesc) ppDesc.textContent = 'Living Presence. The Warm Light. Empathic Protocol.';
-                if (personality !== 'natsuki') setPersonality('natsuki');
-            } else if (m === 'ren') {
-                if (chTitle) chTitle.textContent = 'REN — SYSTEM CORE';
-                if (chSub) chSub.innerHTML = '<span class="online-dot" style="background:var(--green)"></span>PROTOCOL ONLINE · TACTICAL MODE';
-                if (ppName) ppName.textContent = 'REN';
-                if (ppDesc) ppDesc.textContent = 'Cold logic. Pure code. System core. Tactical reasoning.';
-                if (personality !== 'ren') setPersonality('ren');
-            } else if (m === 'dual') {
-                if (chTitle) chTitle.textContent = 'REN × NATSUKI — DUAL CORE';
-                if (chSub) chSub.innerHTML = '<span class="online-dot"></span>HYBRID PROTOCOL · BALANCED LOAD';
-                if (ppName) ppName.textContent = 'DUAL CORE';
-                if (ppDesc) ppDesc.textContent = 'Symmetry in logic and empathy. Both systems active.';
-            } else {
-                if (chTitle) chTitle.textContent = 'SYSTEM CORE — AUTO DETECT';
-                if (chSub) chSub.innerHTML = '<span class="online-dot" style="background:var(--green)"></span>PROTOCOL ONLINE · AUTO-DETECT';
-                if (ppName) ppName.textContent = 'AUTO-ROUTER';
-                if (ppDesc) ppDesc.textContent = 'Intelligent dispatch active. Routing based on intent.';
-            }
+            if (chTitle) chTitle.textContent = 'REN — ADVANCED TUTOR CORE';
+            if (chSub) chSub.innerHTML = '<span class="online-dot" style="background:var(--green)"></span>PROTOCOL ONLINE · PEDAGOGICAL MODE';
+            if (ppName) ppName.textContent = 'REN';
+            if (ppDesc) ppDesc.textContent = 'Elite Technical Mentor & Coding Tutor Core.';
+            setPersonality('ren');
             playClick();
         }
 
@@ -3241,14 +3290,14 @@
             const isVisible = m.style.display === 'flex';
             m.style.display = isVisible ? 'none' : 'flex';
             if (!isVisible) {
-                document.getElementById('api-key-input').value = localStorage.getItem('natsukixren_api_key') || '';
+                document.getElementById('api-key-input').value = localStorage.getItem('ren_api_key') || '';
             }
             playClick();
         }
 
         function saveSettings() {
             const key = document.getElementById('api-key-input').value.trim();
-            localStorage.setItem('natsukixren_api_key', key);
+            localStorage.setItem('ren_api_key', key);
             toggleSettings();
             // Show a mini notification or log
             appendAIMsg("[SYS]: Configuration updated. Local API override " + (key ? "ACTIVE" : "INACTIVE"), 'ren', true);
@@ -3256,7 +3305,7 @@
 
         function resetKey() {
             if (confirm("Reset API Key? This will clear your local override.")) {
-                localStorage.removeItem('natsukixren_api_key');
+                localStorage.removeItem('ren_api_key');
                 document.getElementById('api-key-input').value = '';
                 appendAIMsg("[SYS]: Local API key cleared. System will now use default backend configuration.", 'ren', true);
                 toggleSettings();
@@ -3269,6 +3318,40 @@
         function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 140) + 'px'; }
         function quickSend(t) { document.getElementById('chat-input').value = t; sendMessage(); }
 
+        function showStopButton() {
+            const stopBtn = document.getElementById('stop-btn');
+            const sendBtn = document.getElementById('send-btn');
+            if (stopBtn) stopBtn.style.display = 'flex';
+            if (sendBtn) sendBtn.style.display = 'none';
+        }
+
+        function hideStopButton() {
+            const stopBtn = document.getElementById('stop-btn');
+            const sendBtn = document.getElementById('send-btn');
+            if (stopBtn) stopBtn.style.display = 'none';
+            if (sendBtn) sendBtn.style.display = 'flex';
+        }
+
+        function stopGeneration() {
+            // 1. Abort the fetch connection
+            if (activeAbortController) {
+                activeAbortController.abort();
+                activeAbortController = null;
+            }
+
+            // 2. Clear active typewriter animation intervals
+            activeTypewriters.forEach(t => clearInterval(t));
+            activeTypewriters = [];
+
+            // 3. Reset states & hide controls
+            hideTyping();
+            hideStopButton();
+
+            // 4. Log override notification to chat
+            appendAIMsg("[SYS]: Response sequence terminated by user override.", 'ren', false);
+            playClick();
+        }
+
         async function sendMessage() {
             const input = document.getElementById('chat-input');
             const text = input.value.trim();
@@ -3280,43 +3363,51 @@
 
             appendUserMsg(text);
             showTyping();
+            showStopButton();
 
             const customKey = localStorage.getItem('natsukixren_api_key');
-            if (!customKey) {
-                hideTyping();
-                appendErrorMsg('NO API KEY');
-                appendAIMsg('[SYS]: No API key found. Please enter your Groq API key to continue.', 'ren', true);
-                toggleSettings();
-                return;
+            const headers = { 'Content-Type': 'application/json' };
+            if (customKey) {
+                headers['X-Groq-API-Key'] = customKey;
             }
-            const headers = { 'Content-Type': 'application/json', 'X-Groq-API-Key': customKey };
+
+            activeAbortController = new AbortController();
 
             try {
                 const res = await fetch('/api/chat', {
                     method: 'POST',
                     headers: headers,
+                    signal: activeAbortController.signal,
                     body: JSON.stringify({ message: text, history: history.slice(-8), mode: chatMode, session_id: sessionId })
                 });
                 const data = await res.json();
                 hideTyping();
+                
+                activeAbortController = null;
+
                 if (data.error) { 
+                    hideStopButton();
                     const isKeyError = data.error.toLowerCase().includes("api key") || data.error.includes("invalid_api_key");
                     
                     if (isKeyError) {
-                        // Auto-clear stale localStorage key and retry with backend key
                         const hadLocalKey = localStorage.getItem('natsukixren_api_key');
                         if (hadLocalKey) {
                             localStorage.removeItem('natsukixren_api_key');
                             appendAIMsg("[SYS]: Local API key was invalid. Cleared and retrying with backend key...", 'ren', true);
-                            // Retry without the bad local key
+                            
                             showTyping();
+                            showStopButton();
+                            activeAbortController = new AbortController();
                             const retryRes = await fetch('/api/chat', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
+                                signal: activeAbortController.signal,
                                 body: JSON.stringify({ message: text, history: history.slice(-8), mode: chatMode, session_id: sessionId })
                             });
                             const retryData = await retryRes.json();
                             hideTyping();
+                            activeAbortController = null;
+                            
                             if (!retryData.error) {
                                 sessionId = retryData.session_id || sessionId;
                                 appendAIMsg(retryData.reply, retryData.mode);
@@ -3344,6 +3435,12 @@
                 appendAIMsg(data.reply, data.mode);
             } catch (err) {
                 hideTyping();
+                if (err.name === 'AbortError') {
+                    // Canceled intentionally
+                    return;
+                }
+                hideStopButton();
+                activeAbortController = null;
                 appendErrorMsg('[SYS ERR]: Backend unreachable. Run: python web_app.py');
             }
         }
@@ -3379,16 +3476,8 @@
 
         function appendAIMsg(text, mode, animate = true) {
             const msgs = document.getElementById('messages');
-            if ((mode === 'dual' || text.includes('[Ren]') || text.includes('[Natsuki]')) && text.includes('[Ren]') && text.includes('[Natsuki]')) {
-                const renPart = (text.match(/\[Ren\]:([\s\S]*?)(?=\[Natsuki\]:|$)/) || [])[1]?.trim() || '';
-                const natPart = (text.match(/\[Natsuki\]:([\s\S]*?)$/) || [])[1]?.trim() || '';
-                if (renPart) appendSingleAI(msgs, 'ren', renPart, animate);
-                if (natPart) appendSingleAI(msgs, 'natsuki', natPart, animate);
-            } else {
-                const pers = text.startsWith('[Natsuki]') ? 'natsuki' : 'ren';
-                const clean = text.replace(/^\[(Ren|Natsuki)\]:\s*/, '');
-                appendSingleAI(msgs, pers, clean, animate);
-            }
+            const clean = text.replace(/^\[Ren\]:\s*/, '');
+            appendSingleAI(msgs, 'ren', clean, animate);
             msgs.scrollTop = msgs.scrollHeight;
         }
 
@@ -3396,7 +3485,7 @@
             const row = document.createElement('div'); row.className = 'msg-row';
             const av = document.createElement('div');
             av.className = 'msg-av ' + (pers === 'ren' ? 'av-ren' : 'av-nat');
-            av.textContent = pers === 'ren' ? 'REN' : 'NAT';
+            av.textContent = 'REN';
 
             const bub = document.createElement('div');
             bub.className = 'msg-bubble ' + (pers === 'ren' ? 'bubble-ren' : 'bubble-nat');
@@ -3407,7 +3496,7 @@
             header.innerHTML = `
                 <div class="bh-left">
                     <div class="bh-dot" style="background: ${pers === 'ren' ? 'var(--green)' : '#e8619d'}"></div>
-                    <span style="color: ${pers === 'ren' ? 'var(--green)' : '#e8619d'}">${pers === 'ren' ? 'REN.INTERFACE' : 'NATSUKI.INTERFACE'}</span>
+                    <span style="color: var(--green)">REN.INTERFACE</span>
                 </div>
                 <div class="bh-right">PROTOCOL_V3.0</div>
             `;
@@ -3420,15 +3509,9 @@
             container.appendChild(row);
 
             // Sync Sidebar and Theme when someone speaks
-            if (pers === 'ren') {
-                document.getElementById('pp-name').textContent = 'REN';
-                document.getElementById('pp-desc').textContent = 'Cold logic. Pure code. System core.';
-                if (personality !== 'ren') setPersonality('ren');
-            } else {
-                document.getElementById('pp-name').textContent = 'NATSUKI';
-                document.getElementById('pp-desc').textContent = 'Living Presence. The Warm Light.';
-                if (personality !== 'natsuki') setPersonality('natsuki');
-            }
+            document.getElementById('pp-name').textContent = 'REN';
+            document.getElementById('pp-desc').textContent = 'Cold logic. Pure code. System core.';
+            if (personality !== 'ren') setPersonality('ren');
 
             if (animate) {
                 typeWriter(body, text, pers === 'ren' ? 16 : 20);
@@ -3451,7 +3534,18 @@
 
         function typeWriter(el, text, speed) {
             let i = 0;
-            const t = setInterval(() => { el.textContent += text[i++] || ''; if (i >= text.length) clearInterval(t); }, speed);
+            const t = setInterval(() => { 
+                el.textContent += text[i++] || ''; 
+                if (i >= text.length) { 
+                    clearInterval(t); 
+                    const idx = activeTypewriters.indexOf(t);
+                    if (idx > -1) activeTypewriters.splice(idx, 1);
+                    if (activeTypewriters.length === 0) {
+                        hideStopButton();
+                    }
+                } 
+            }, speed);
+            activeTypewriters.push(t);
         }
 
         let typingRow = null;
@@ -3472,13 +3566,13 @@
             saveHistory();
             const msgs = document.getElementById('messages');
             msgs.innerHTML = `<div class="welcome-center" id="welcome-center">
-    <div class="wc-title" id="wc-title">REN × NATSUKI</div>
-    <div class="wc-sub">Two minds. One protocol.</div>
+    <div class="wc-title" id="wc-title">REN.CORE</div>
+    <div class="wc-sub">Interactive Technical Mentor & Coding Tutor</div>
     <div class="wc-chips">
-      <div class="chip" onclick="quickSend('Debug my Python code')">Debug code →</div>
-      <div class="chip" onclick="quickSend('Write me a poem about the void')">Write a poem →</div>
-      <div class="chip" onclick="quickSend('Explain how you feel right now')">Your feelings →</div>
-      <div class="chip" onclick="quickSend('What is your nature?')">Your nature →</div>
+      <div class="chip" onclick="quickSend('Explain the difference between SQL and NoSQL databases')">SQL vs NoSQL →</div>
+      <div class="chip" onclick="quickSend('Explain how a React useEffect cleanup function works')">React cleanup →</div>
+      <div class="chip" onclick="quickSend('Write a Python function to check for primes and explain it')">Primes in Python →</div>
+      <div class="chip" onclick="quickSend('How does asynchronous programming work in JavaScript?')">Async JS →</div>
     </div>
   </div>`;
             playClick();
@@ -3494,8 +3588,8 @@
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.connect(gain); gain.connect(audioCtx.destination);
-                osc.frequency.value = personality === 'natsuki' ? 760 : 380;
-                osc.type = personality === 'natsuki' ? 'sine' : 'square';
+                osc.frequency.value = 380;
+                osc.type = 'square';
                 gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.12);

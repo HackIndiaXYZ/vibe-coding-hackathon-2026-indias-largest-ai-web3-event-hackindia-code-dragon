@@ -8,7 +8,7 @@ from memory import MemoryManager
 from engine import GroqInferenceEngine
 
 # -----------------------------------------------------------------------------
-# NATSUKI × REN - CORE BACKEND PROTOCOL
+# REN - ELITE TECHNICAL MENTOR PROTOCOL
 # -----------------------------------------------------------------------------
 # Main Entry Point. 
 # This module bootstraps the Flask application, wires up the REST endpoints,
@@ -18,7 +18,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Initialize Core Subsystems
-print("[SYS] Bootstrapping NatsukiXRen Dual-Core Protocol...")
+print("[SYS] Bootstrapping Ren Technical Mentor Core...")
 try:
     memory_sys = MemoryManager()
     inference_engine = GroqInferenceEngine()
@@ -44,7 +44,7 @@ def health_check():
     """Diagnostic endpoint to verify subsystem status."""
     return jsonify({
         "status": "ONLINE",
-        "protocol": "NatsukiXRen",
+        "protocol": "RenCore",
         "engine": "Groq",
         "model": config.MODEL_NAME
     })
@@ -56,7 +56,7 @@ def chat_endpoint():
     Expects JSON payload:
     {
       "message": "user text",
-      "mode": "auto" | "ren" | "natsuki" | "dual",
+      "mode": "auto" | "ren",
       "session_id": "optional-uuid"
     }
     """
@@ -116,7 +116,7 @@ def chat_endpoint():
 
 if __name__ == '__main__':
     print(f"\n===========================================")
-    print(f" REN × NATSUKI - THE PROTOCOL")
+    print(f" REN - THE TECHNICAL TUTOR & CORE MATRIX")
     print(f"===========================================")
     print(f" Port: {config.PORT}")
     print(f" Debug: {config.DEBUG_MODE}")

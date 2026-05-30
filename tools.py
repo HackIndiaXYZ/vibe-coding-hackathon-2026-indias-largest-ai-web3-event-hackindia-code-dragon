@@ -5,8 +5,8 @@ from duckduckgo_search import DDGS
 # -----------------------------------------------------------------------------
 # TOOLKIT & EXTERNAL CAPABILITIES
 # -----------------------------------------------------------------------------
-# This module provides external capabilities to the AI. Both Ren and Natsuki 
-# can leverage these tools autonomously during inference.
+# This module provides external capabilities to the AI. Ren can leverage 
+# these tools autonomously during inference.
 
 def execute_web_search(query: str, max_results: int = 3) -> str:
     """

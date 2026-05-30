@@ -130,11 +130,9 @@ class GroqInferenceEngine:
             final_reply = response_message.get('content', '')
             
         # 5. Format Guarantee Layer
-        # Ensure the identities stay in character for the UI parser
-        if mode == 'ren' and not final_reply.strip().startswith('[Ren]:'):
+        # Ensure the response always matches the Ren identity tag for UI parsing
+        if not final_reply.strip().startswith('[Ren]:'):
             final_reply = f"[Ren]: {final_reply.strip()}"
-        elif mode == 'natsuki' and not final_reply.strip().startswith('[Natsuki]:'):
-            final_reply = f"[Natsuki]: {final_reply.strip()}"
             
         return final_reply
 
@@ -143,4 +141,4 @@ if __name__ == "__main__":
     messages = [
         {"role": "user", "content": "Hello, how are you?"}
     ]
-    print(engine.generate_response("natsuki", messages))
+    print(engine.generate_response("ren", messages))
