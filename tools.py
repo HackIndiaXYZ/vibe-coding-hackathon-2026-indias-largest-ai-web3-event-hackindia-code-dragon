@@ -2,17 +2,9 @@ import json
 import datetime
 from duckduckgo_search import DDGS
 
-# -----------------------------------------------------------------------------
-# TOOLKIT & EXTERNAL CAPABILITIES
-# -----------------------------------------------------------------------------
-# This module provides external capabilities to the AI. Ren can leverage 
-# these tools autonomously during inference.
 
 def execute_web_search(query: str, max_results: int = 3) -> str:
-    """
-    Executes a web search utilizing the DuckDuckGo Search API.
-    Returns a JSON string of the top results containing titles, snippets, and URLs.
-    """
+  
     print(f"[Tools] Initiating Web Search for query: '{query}'")
     try:
         results = DDGS().text(query, max_results=max_results)
@@ -36,10 +28,7 @@ def execute_web_search(query: str, max_results: int = 3) -> str:
         return json.dumps({"error": f"Search tool failed: {str(e)}"})
 
 def get_current_datetime(_=None) -> str:
-    """
-    Returns the current server date and time.
-    Useful for the AI to orient itself temporally.
-    """
+ 
     now = datetime.datetime.now()
     return json.dumps({
         "current_date": now.strftime("%Y-%m-%d"),
@@ -47,10 +36,7 @@ def get_current_datetime(_=None) -> str:
         "timezone": "Local Server Time"
     })
 
-# -----------------------------------------------------------------------------
-# GROQ TOOL DEFINITIONS
-# -----------------------------------------------------------------------------
-# These JSON schemas map Python functions to the Groq LLM tool calling format.
+
 
 TOOLS_SCHEMA = [
     {

@@ -8,11 +8,7 @@ import tools
 from personas import get_system_prompt
 
 class GroqInferenceEngine:
-    """
-    The GroqInferenceEngine is responsible for securely communicating with
-    the Groq Inference API. It handles the message payload construction,
-    autonomous tool execution looping, and error backoff.
-    """
+
 
     def __init__(self):
         self.api_url = config.GROQ_API_URL
@@ -53,13 +49,7 @@ class GroqInferenceEngine:
         raise Exception("Max retries exceeded while calling inference engine.")
 
     def generate_response(self, mode: str, context_messages: List[Dict[str, str]], api_key: str = None) -> str:
-        """
-        Generates the AI response. Handles the full lifecycle including:
-        1. Injecting the correct Persona Prompt.
-        2. Firing the request to Groq.
-        3. Catching and resolving Tool Calls autonomously.
-        4. Returning the final synthesized string.
-        """
+
         
         # 0. Set up request-specific headers
         current_api_key = api_key if api_key else self.api_key
@@ -141,4 +131,4 @@ if __name__ == "__main__":
     messages = [
         {"role": "user", "content": "Hello, how are you?"}
     ]
-    print(engine.generate_response("ren", messages))
+    print(engine.generate_response("ren", messages))

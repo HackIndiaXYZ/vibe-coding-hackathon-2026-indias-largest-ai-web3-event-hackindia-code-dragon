@@ -7,17 +7,11 @@ import config
 from memory import MemoryManager
 from engine import GroqInferenceEngine
 
-# -----------------------------------------------------------------------------
-# REN - ELITE TECHNICAL MENTOR PROTOCOL
-# -----------------------------------------------------------------------------
-# Main Entry Point. 
-# This module bootstraps the Flask application, wires up the REST endpoints,
-# and coordinates the interactions between Memory, Engine, and UI.
 
 app = Flask(__name__)
 CORS(app)
 
-# Initialize Core Subsystems
+
 print("[SYS] Bootstrapping Ren Technical Mentor Core...")
 try:
     memory_sys = MemoryManager()
@@ -27,7 +21,6 @@ except Exception as e:
     print(f"[SYS_ERR] Failed to initialize core subsystems: {e}")
     sys.exit(1)
 
-# Configure Logging (Stream only to prevent reloads)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s',
@@ -36,12 +29,12 @@ logging.basicConfig(
 
 @app.route('/')
 def index():
-    """Serve the primary UI."""
+ 
     return send_from_directory('.', 'index.html')
 
 @app.route('/api/status', methods=['GET'])
 def health_check():
-    """Diagnostic endpoint to verify subsystem status."""
+ 
     return jsonify({
         "status": "ONLINE",
         "protocol": "RenCore",
@@ -51,15 +44,7 @@ def health_check():
 
 @app.route('/api/chat', methods=['POST'])
 def chat_endpoint():
-    """
-    Primary communication endpoint.
-    Expects JSON payload:
-    {
-      "message": "user text",
-      "mode": "auto" | "ren",
-      "session_id": "optional-uuid"
-    }
-    """
+   
     try:
         data = request.json
         user_message = data.get('message', '').strip()
