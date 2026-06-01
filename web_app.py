@@ -51,9 +51,9 @@ def chat_endpoint():
         mode = data.get('mode', 'auto')
         session_id = data.get('session_id')
         
-        # Support client-side API key override
-        client_api_key = request.headers.get('X-Groq-API-Key')
-        api_key = client_api_key if client_api_key else config.GROQ_API_KEY
+        api_key = config.GROQ_API_KEY
+        if not api_key:
+            return jsonify({"error": "Server not configured with GROQ_API_KEY."}), 500
 
         if not user_message:
             return jsonify({"error": "Message payload empty."}), 400

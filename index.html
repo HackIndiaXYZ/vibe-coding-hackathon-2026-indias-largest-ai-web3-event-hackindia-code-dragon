@@ -2004,240 +2004,6 @@
             }
         }
 
-        /* ══════════════════════════════════════
-   SETTINGS MODAL
-══════════════════════════════════════ */
-        #settings-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .settings-content {
-            background: #0a0a0a;
-            border: 1px solid var(--border);
-            width: 100%;
-            max-width: 400px;
-            padding: 30px;
-            position: relative;
-        }
-
-        .settings-title {
-            font-family: var(--mono);
-            font-size: 14px;
-            letter-spacing: 0.2em;
-            color: #fff;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .settings-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            font-family: var(--mono);
-            font-size: 12px;
-        }
-
-        .settings-label {
-            font-family: var(--mono);
-            font-size: 9px;
-            color: rgba(255, 255, 255, 0.4);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-
-        .settings-input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            color: #fff;
-            padding: 12px;
-            font-family: var(--mono);
-            font-size: 11px;
-            margin-bottom: 20px;
-        }
-
-        .settings-btn {
-            width: 100%;
-            padding: 12px;
-            background: #fff;
-            color: #000;
-            font-family: var(--mono);
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-        }
-
-        /* ══════════════════════════════════════
-   API KEY GATE
-══════════════════════════════════════ */
-        #api-key-gate {
-            position: fixed;
-            inset: 0;
-            z-index: 99999;
-            background: #080808;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            opacity: 1;
-            transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        #api-key-gate.gate-hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .gate-container {
-            width: 100%;
-            max-width: 440px;
-            text-align: center;
-        }
-
-        .gate-logo {
-            font-family: var(--serif);
-            font-size: clamp(36px, 6vw, 52px);
-            font-weight: 900;
-            color: #fff;
-            margin-bottom: 6px;
-            letter-spacing: -0.02em;
-        }
-
-        .gate-logo .gate-x {
-            font-weight: 300;
-            font-size: 0.5em;
-            color: rgba(255, 255, 255, 0.4);
-            margin: 0 0.1em;
-        }
-
-        .gate-subtitle {
-            font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: 0.4em;
-            color: rgba(255, 255, 255, 0.3);
-            text-transform: uppercase;
-            margin-bottom: 40px;
-        }
-
-        .gate-card {
-            background: #0a0a0a;
-            border: 1px solid var(--border);
-            padding: 32px;
-            text-align: left;
-        }
-
-        .gate-card-title {
-            font-family: var(--mono);
-            font-size: 11px;
-            letter-spacing: 0.2em;
-            color: rgba(255, 255, 255, 0.5);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-        }
-
-        .gate-card-desc {
-            font-family: var(--italic);
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.35);
-            font-style: italic;
-            margin-bottom: 24px;
-            line-height: 1.6;
-        }
-
-        .gate-input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border2);
-            color: #fff;
-            padding: 14px 16px;
-            font-family: var(--mono);
-            font-size: 12px;
-            margin-bottom: 8px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .gate-input:focus {
-            border-color: rgba(0, 255, 240, 0.4);
-        }
-
-        .gate-input-hint {
-            font-family: var(--mono);
-            font-size: 9px;
-            color: rgba(255, 255, 255, 0.2);
-            margin-bottom: 24px;
-        }
-
-        .gate-error {
-            font-family: var(--mono);
-            font-size: 10px;
-            color: #ff4444;
-            margin-bottom: 12px;
-            display: none;
-            letter-spacing: 0.05em;
-        }
-
-        .gate-btn {
-            width: 100%;
-            padding: 14px;
-            background: #fff;
-            color: #000;
-            font-family: var(--mono);
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            cursor: pointer;
-            border: none;
-            margin-bottom: 16px;
-            transition: opacity 0.2s;
-        }
-
-        .gate-btn:hover {
-            opacity: 0.85;
-        }
-
-        .gate-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .gate-link {
-            display: inline-block;
-            font-family: var(--mono);
-            font-size: 9px;
-            color: #00fff0;
-            text-decoration: none;
-            border-bottom: 1px solid rgba(0, 255, 240, 0.3);
-            padding-bottom: 2px;
-            transition: color 0.2s;
-        }
-
-        .gate-link:hover {
-            color: #fff;
-        }
-
-        .gate-footer {
-            margin-top: 28px;
-            font-family: var(--mono);
-            font-size: 8px;
-            color: rgba(255, 255, 255, 0.15);
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-        }
-
         #stop-btn {
             width: 48px;
             height: 48px;
@@ -2843,11 +2609,6 @@
                             ONLINE · TUTOR ENGINE ACTIVE</p>
                     </div>
                 </div>
-                <div style="position: absolute; top: 20px; right: 20px; z-index: 10;">
-                    <button onclick="toggleSettings()"
-                        style="background: none; border: 1px solid var(--border); color: rgba(255,255,255,0.4); font-family: var(--mono); font-size: 8px; padding: 6px 10px; cursor: pointer;">CONFIG</button>
-                </div>
-
                 <div id="messages">
                     <div class="welcome-center" id="welcome-center">
                         <div class="wc-title" id="wc-title">REN.CORE</div>
@@ -2898,55 +2659,6 @@
     <!-- ══════════════════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════════════════ -->
-    <!-- ══════════ API KEY GATE ══════════ -->
-    <div id="api-key-gate" style="display: none !important;">
-        <div class="gate-container">
-            <div class="gate-logo">REN.CORE</div>
-            <div class="gate-subtitle">Interactive Technical Mentor</div>
-            <div class="gate-card">
-                <div class="gate-card-title">◈ Authentication Required</div>
-                <div class="gate-card-desc">
-                    This is an open-source project. To begin, please provide your own Groq API key.
-                    Your key stays in your browser — never sent to our servers.
-                </div>
-                <label class="settings-label">Groq API Key</label>
-                <input type="password" id="gate-key-input" class="gate-input" placeholder="gsk_..."
-                    onkeydown="if(event.key==='Enter')gateSubmit()">
-                <div class="gate-input-hint">🔒 Stored locally in your browser via localStorage</div>
-                <div class="gate-error" id="gate-error">✕ Invalid key format. Must start with gsk_</div>
-                <button class="gate-btn" id="gate-btn" onclick="gateSubmit()">INITIALIZE PROTOCOL →</button>
-                <div style="text-align: center;">
-                    <a href="https://console.groq.com/keys" target="_blank" class="gate-link">GET YOUR FREE GROQ API KEY
-                        ↗</a>
-                </div>
-            </div>
-            <div class="gate-footer">Open source · Built by Ojas · Powered by Groq</div>
-        </div>
-    </div>
-
-    <!-- ══════════ SETTINGS MODAL ══════════ -->
-    <div id="settings-modal">
-        <div class="settings-content">
-            <div class="settings-close" onclick="toggleSettings()">[CLOSE]</div>
-            <div class="settings-title">◈ SYSTEM_CONFIG</div>
-            <div class="settings-label">Groq API Key</div>
-            <input type="password" id="api-key-input" class="settings-input" placeholder="gsk_...">
-            <p style="font-size: 9px; color: rgba(255,255,255,0.2); margin-top: -10px; margin-bottom: 20px;">
-                Your key is stored locally in your browser.
-            </p>
-            <div class="settings-btns" style="display: flex; gap: 10px;">
-                <button class="settings-btn" onclick="saveSettings()" style="flex: 1;">APPLY CONFIG</button>
-                <button class="settings-btn" onclick="resetKey()"
-                    style="flex: 1; background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4);">RESET
-                    KEY</button>
-            </div>
-            <div style="margin-top: 20px; text-align: center;">
-                <a href="https://console.groq.com/keys" target="_blank"
-                    style="font-family: var(--mono); font-size: 9px; color: #00fff0; text-decoration: none; border-bottom: 1px solid rgba(0,255,240,0.3); padding-bottom: 2px;">GET
-                    GROQ API KEY ↗</a>
-            </div>
-        </div>
-    </div>
 
     <script>
         // ── STATE ────────────────────────────────────────────────
@@ -2960,46 +2672,6 @@
         let activeTypewriters = [];
 
         // ── API KEY GATE ─────────────────────────────────────────
-        function initGate() {
-            const gate = document.getElementById('api-key-gate');
-            if (gate) {
-                gate.remove();
-            }
-        }
-        document.addEventListener('DOMContentLoaded', initGate);
-
-        function gateSubmit() {
-            const input = document.getElementById('gate-key-input');
-            const errEl = document.getElementById('gate-error');
-            const btn = document.getElementById('gate-btn');
-            const key = input.value.trim();
-
-            if (!key || !key.startsWith('gsk_') || key.length < 20) {
-                errEl.style.display = 'block';
-                input.style.borderColor = 'rgba(255,60,60,0.5)';
-                return;
-            }
-
-            errEl.style.display = 'none';
-            btn.disabled = true;
-            btn.textContent = 'VERIFYING...';
-
-            // Quick validation against Groq API
-            fetch('/api/status').then(r => r.json()).then(() => {
-                localStorage.setItem('ren_api_key', key);
-                document.getElementById('api-key-input').value = key;
-                const gate = document.getElementById('api-key-gate');
-                gate.classList.add('gate-hidden');
-                setTimeout(() => gate.remove(), 700);
-            }).catch(() => {
-                // Even if status check fails, save the key — it'll be validated on first message
-                localStorage.setItem('natsukixren_api_key', key);
-                document.getElementById('api-key-input').value = key;
-                const gate = document.getElementById('api-key-gate');
-                gate.classList.add('gate-hidden');
-                setTimeout(() => gate.remove(), 700);
-            });
-        }
 
         // ── STORAGE ──────────────────────────────────────────────
         function saveHistory() { }
@@ -3308,33 +2980,6 @@
         }
 
         // ── SETTINGS ─────────────────────────────────────────────
-        function toggleSettings() {
-            const m = document.getElementById('settings-modal');
-            const isVisible = m.style.display === 'flex';
-            m.style.display = isVisible ? 'none' : 'flex';
-            if (!isVisible) {
-                document.getElementById('api-key-input').value = localStorage.getItem('ren_api_key') || '';
-            }
-            playClick();
-        }
-
-        function saveSettings() {
-            const key = document.getElementById('api-key-input').value.trim();
-            localStorage.setItem('ren_api_key', key);
-            toggleSettings();
-            // Show a mini notification or log
-            appendAIMsg("[SYS]: Configuration updated. Local API override " + (key ? "ACTIVE" : "INACTIVE"), 'ren', true);
-        }
-
-        function resetKey() {
-            if (confirm("Reset API Key? This will clear your local override.")) {
-                localStorage.removeItem('ren_api_key');
-                document.getElementById('api-key-input').value = '';
-                appendAIMsg("[SYS]: Local API key cleared. System will now use default backend configuration.", 'ren', true);
-                toggleSettings();
-            }
-            playClick();
-        }
 
         // ── MESSAGING ─────────────────────────────────────────────
         function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
@@ -3388,11 +3033,7 @@
             showTyping();
             showStopButton();
 
-            const customKey = localStorage.getItem('natsukixren_api_key');
             const headers = { 'Content-Type': 'application/json' };
-            if (customKey) {
-                headers['X-Groq-API-Key'] = customKey;
-            }
 
             activeAbortController = new AbortController();
 
@@ -3413,34 +3054,9 @@
                     const isKeyError = data.error.toLowerCase().includes("api key") || data.error.includes("invalid_api_key");
 
                     if (isKeyError) {
-                        const hadLocalKey = localStorage.getItem('natsukixren_api_key');
-                        if (hadLocalKey) {
-                            localStorage.removeItem('natsukixren_api_key');
-                            appendAIMsg("[SYS]: Local API key was invalid. Cleared and retrying with backend key...", 'ren', true);
-
-                            showTyping();
-                            showStopButton();
-                            activeAbortController = new AbortController();
-                            const retryRes = await fetch('/api/chat', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                signal: activeAbortController.signal,
-                                body: JSON.stringify({ message: text, history: history.slice(-8), mode: chatMode, session_id: sessionId })
-                            });
-                            const retryData = await retryRes.json();
-                            hideTyping();
-                            activeAbortController = null;
-
-                            if (!retryData.error) {
-                                sessionId = retryData.session_id || sessionId;
-                                appendAIMsg(retryData.reply, retryData.mode);
-                                return;
-                            }
-                        }
                         appendErrorMsg("CRITICAL: INVALID API KEY");
                         setTimeout(() => {
-                            appendAIMsg("[SYS]: Your API Key is invalid or missing. Please provide a valid Groq API Key to proceed.", 'ren');
-                            toggleSettings();
+                            appendAIMsg("[SYS]: Your API Key is invalid or missing. Please configure GROQ_API_KEY on the server.", 'ren');
                         }, 500);
                     } else {
                         appendErrorMsg(data.error);
