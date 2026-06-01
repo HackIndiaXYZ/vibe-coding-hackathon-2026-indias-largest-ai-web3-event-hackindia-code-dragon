@@ -38,10 +38,7 @@
             --accent: #ffffff;
             --border: rgba(255, 255, 255, 0.08);
             --border2: rgba(255, 255, 255, 0.15);
-            --green: #999999;
-            --chat-green: #111111;
-            --chat-green-light: #2b2b2b;
-            --chat-green-bright: #3d3d3d;
+            --green: #2a5a3a;
             /* terminal tint */
             --mono: 'JetBrains Mono', monospace;
             --serif: 'Playfair Display', serif;
@@ -51,8 +48,8 @@
 
         body {
             font-family: var(--sans);
-            background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), transparent 18%),
-                        radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.04), transparent 20%),
+            background: radial-gradient(circle at top left, rgba(0, 255, 240, 0.08), transparent 18%),
+                        radial-gradient(circle at bottom right, rgba(83, 121, 235, 0.08), transparent 20%),
                         var(--black);
             color: var(--white);
             overflow-x: hidden;
@@ -481,58 +478,13 @@
         .hero-desc {
             font-family: var(--italic);
             font-size: 18px;
-            color: rgba(255, 255, 255, 0.65);
+            color: rgba(255, 255, 255, 0.55);
             margin-bottom: 56px;
             max-width: 520px;
             line-height: 1.7;
             opacity: 0;
             transform: translateY(10px);
             font-style: italic;
-        }
-
-        .hero-visual {
-            position: relative;
-            width: clamp(220px, 28vw, 300px);
-            height: clamp(220px, 28vw, 300px);
-            margin: 0 auto 40px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.85), rgba(32,32,32,0.98) 28%, rgba(32,32,32,0.35) 65%, transparent 100%);
-            box-shadow: 0 0 120px rgba(0,0,0,0.35), inset 0 0 30px rgba(255,255,255,0.08);
-            overflow: hidden;
-            display: grid;
-            place-items: center;
-        }
-
-        .hero-visual::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 54%);
-            filter: blur(16px);
-        }
-
-        .hero-visual .chat-logo {
-            position: relative;
-            width: 64%;
-            height: 64%;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.92), rgba(30,30,30,0.98) 38%, rgba(30,30,30,0.26) 72%);
-            box-shadow: 0 0 30px rgba(0,0,0,0.28);
-        }
-
-        .hero-visual .chat-logo::before,
-        .hero-visual .chat-logo::after {
-            content: '';
-            position: absolute;
-            inset: 12%;
-            border-radius: 50%;
-            border: 1.5px solid rgba(255,255,255,0.2);
-        }
-
-        .hero-visual .chat-logo::after {
-            inset: 22%;
-            border-color: rgba(255,255,255,0.12);
         }
 
         .hero-btns {
@@ -681,8 +633,8 @@
         }
 
         .cap-tag.ren-tag {
-            border-color: rgba(255, 255, 255, 0.12);
-            color: rgba(255, 255, 255, 0.5);
+            border-color: rgba(0, 255, 240, 0.2);
+            color: rgba(0, 255, 240, 0.5);
         }
 
         .cap-tag.dual-tag {
@@ -732,7 +684,7 @@
         }
 
         .cap-bar-fill.ren-fill {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 255, 240, 0.5);
         }
 
         .cap-bar-pct {
@@ -775,7 +727,7 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 240, 0.4), transparent);
             animation: shimmerLine 3s ease-in-out infinite;
         }
 
@@ -791,7 +743,7 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 204, 0.4), transparent);
             animation: shimmerLine 3s ease-in-out infinite;
             animation-delay: 1.5s;
         }
@@ -817,13 +769,13 @@
         }
 
         .ren-card .id-accent-line {
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.08));
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
+            background: linear-gradient(90deg, rgba(0, 255, 240, 0.8), rgba(0, 255, 240, 0.1));
+            box-shadow: 0 0 12px rgba(0, 255, 240, 0.3);
         }
 
         .tutor-card .id-accent-line {
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.08));
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
+            background: linear-gradient(90deg, rgba(0, 255, 204, 0.8), rgba(0, 255, 204, 0.1));
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.3);
         }
 
         .id-tag {
@@ -835,11 +787,11 @@
         }
 
         .ren-card .id-tag {
-            color: rgba(255, 255, 255, 0.55);
+            color: rgba(0, 255, 240, 0.5);
         }
 
         .tutor-card .id-tag {
-            color: rgba(255, 255, 255, 0.55);
+            color: rgba(0, 255, 204, 0.5);
         }
 
         .id-name {
@@ -852,12 +804,12 @@
 
         .ren-card .id-name {
             color: #fff;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.08);
+            text-shadow: 0 0 30px rgba(0, 255, 240, 0.15);
         }
 
         .tutor-card .id-name {
             color: #fff;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.08);
+            text-shadow: 0 0 30px rgba(0, 255, 204, 0.15);
         }
 
         .id-subtitle {
@@ -898,13 +850,13 @@
         }
 
         .ren-card .dot {
-            background: rgba(255, 255, 255, 0.35);
-            box-shadow: 0 0 6px rgba(255, 255, 255, 0.08);
+            background: rgba(0, 255, 240, 0.6);
+            box-shadow: 0 0 6px rgba(0, 255, 240, 0.4);
         }
 
         .tutor-card .dot {
-            background: rgba(255, 255, 255, 0.35);
-            box-shadow: 0 0 6px rgba(255, 255, 255, 0.08);
+            background: rgba(0, 255, 204, 0.6);
+            box-shadow: 0 0 6px rgba(0, 255, 204, 0.4);
         }
 
         .id-trait strong {
@@ -1003,7 +955,7 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(0, 255, 204, 0.3);
         }
 
         .terminal-wrap.ren-term::before {
@@ -1107,7 +1059,7 @@
         }
 
         .term-line .ren-c {
-            color: rgba(255, 255, 255, 0.72);
+            color: rgba(0, 255, 240, 0.6);
         }
 
         .term-line .nat-c {
@@ -1465,8 +1417,7 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background: radial-gradient(circle at 40% 35%, rgba(255,255,255,0.95), rgba(0, 0, 0, 0.4));
-            box-shadow: 0 0 18px rgba(255, 255, 255, 0.08);
+            background: radial-gradient(circle at 40% 35%, #fff, #888);
             flex-shrink: 0;
             animation: pulse 3s ease-in-out infinite;
         }
@@ -1611,15 +1562,15 @@
         }
 
         .av-ren {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: rgba(255, 255, 255, 0.65);
+            background: rgba(0, 255, 240, 0.1);
+            border: 1px solid rgba(0, 255, 240, 0.3);
+            color: rgba(0, 255, 240, 0.8);
         }
 
         .av-nat {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: rgba(255, 255, 255, 0.65);
+            background: rgba(0, 255, 204, 0.1);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            color: rgba(0, 255, 204, 0.8);
         }
 
         .av-user {
@@ -1638,7 +1589,7 @@
 
         .bubble-ren {
             background: #0a0c10;
-            border-color: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 255, 240, 0.1);
             color: rgba(200, 220, 235, 0.9);
             font-family: var(--mono);
             font-size: 12px;
@@ -1646,7 +1597,7 @@
 
         .bubble-nat {
             background: #0a0c10;
-            border-color: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 255, 204, 0.1);
             color: rgba(200, 220, 235, 0.9);
             font-family: var(--mono);
             font-size: 12px;
@@ -1668,11 +1619,11 @@
         }
 
         .ren-tag-txt {
-            color: rgba(255, 255, 255, 0.45);
+            color: rgba(0, 255, 240, 0.7);
         }
 
         .nat-tag-txt {
-            color: rgba(255, 255, 255, 0.45);
+            color: rgba(0, 255, 204, 0.7);
         }
 
         .bubble-time {
@@ -2100,7 +2051,7 @@
 
         .sb-btn:hover,
         .sb-btn.active {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(0, 255, 240, 0.08);
             color: #fff;
             transform: translateX(2px);
         }
@@ -2113,8 +2064,8 @@
         }
 
         .sb-btn.active .sb-dot {
-            background: #fff;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.12);
+            background: #00fff0;
+            box-shadow: 0 0 20px rgba(0, 255, 240, 0.25);
         }
 
         .pers-panel {
@@ -2157,8 +2108,8 @@
         .chat-orb {
             width: 32px;
             height: 32px;
-            background: radial-gradient(circle at 30% 30%, #333, rgba(255, 255, 255, 0.08));
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
+            background: radial-gradient(circle at 30% 30%, #00fff0, rgba(0, 255, 255, 0.55));
+            box-shadow: 0 0 20px rgba(0, 255, 240, 0.35);
         }
 
         .chat-top-info h2 {
@@ -2204,7 +2155,7 @@
         }
 
         .chip:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(0, 255, 255, 0.08);
             color: #fff;
         }
 
@@ -2233,11 +2184,11 @@
         }
 
         .bubble-ren {
-            border-color: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 255, 240, 0.12);
         }
 
         .bubble-nat {
-            border-color: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 255, 204, 0.12);
         }
 
         .bubble-user {
@@ -2282,14 +2233,14 @@
         }
 
         #send-btn {
-            background: linear-gradient(135deg, #222222, #444444);
+            background: linear-gradient(135deg, #00f5ff, #62ffa7);
             border-color: transparent;
-            color: #fff;
+            color: #050b12;
         }
 
         #send-btn:hover {
             transform: translateY(-1px);
-            background: linear-gradient(135deg, #333333, #555555);
+            background: linear-gradient(135deg, #00fff0, #76ffb8);
         }
 
         #stop-btn {
@@ -2394,7 +2345,7 @@
         </ul>
         <div class="nav-toggle">
             <span
-                style="font-family: var(--mono); font-size: 10px; color: #cccccc; letter-spacing: 0.1em; border: 1px solid rgba(255, 255, 255, 0.08); padding: 6px 12px; background: rgba(255, 255, 255, 0.05); font-weight: 700;">//
+                style="font-family: var(--mono); font-size: 10px; color: #00fff0; letter-spacing: 0.1em; border: 1px solid rgba(0, 255, 240, 0.3); padding: 6px 12px; background: rgba(0, 255, 240, 0.05); font-weight: 700;">//
                 INTERACTIVE TUTOR CORE ACTIVE</span>
         </div>
     </nav>
@@ -2418,9 +2369,6 @@
                 style="position:absolute; width: 8px; height: 8px; border: 1px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.8); border-radius: 50%; top: 15%; left: 50%; pointer-events: none; z-index:0;">
             </div>
 
-            <div class="hero-visual" aria-hidden="true" style="z-index:2; position:relative;">
-                <div class="chat-logo"></div>
-            </div>
             <div class="hero-eyebrow" id="hero-eyebrow" style="z-index:2;">// SYS.LOAD: PROTOCOL ENGAGED</div>
 
             <h1 class="hero-title" id="hero-title" style="z-index:2; position:relative;">
@@ -2891,7 +2839,7 @@
 
             <main class="chat-main">
                 <div class="chat-top">
-                    <div class="chat-orb" id="chat-orb" style="box-shadow: 0 0 20px rgba(255, 255, 255, 0.08); background: #111;">
+                    <div class="chat-orb" id="chat-orb" style="box-shadow: 0 0 20px #00fff0; background: #00fff0;">
                     </div>
                     <div class="chat-top-info">
                         <h2 id="chat-top-name">REN — SYSTEM CORE</h2>
