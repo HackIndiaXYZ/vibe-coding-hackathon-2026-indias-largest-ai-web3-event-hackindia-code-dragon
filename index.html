@@ -48,11 +48,13 @@
 
         body {
             font-family: var(--sans);
-            background: var(--black);
+            background: radial-gradient(circle at top left, rgba(0, 255, 240, 0.08), transparent 18%),
+                        radial-gradient(circle at bottom right, rgba(83, 121, 235, 0.08), transparent 20%),
+                        var(--black);
             color: var(--white);
             overflow-x: hidden;
-            cursor: none;
-            transition: filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            cursor: default;
+            transition: background 0.6s ease, filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         /* Theme class removed */
@@ -2004,13 +2006,249 @@
             }
         }
 
+        /* ══════════════════════════════════════
+           UI UPGRADE OVERRIDES
+        ══════════════════════════════════════ */
+        #chat-page {
+            padding-top: 48px;
+            background: linear-gradient(180deg, rgba(3, 8, 18, 0.95) 0%, rgba(0, 0, 0, 1) 100%);
+        }
+
+        .chat-layout {
+            display: flex;
+            min-height: calc(100vh - 48px);
+            max-width: 1520px;
+            margin: 0 auto;
+            padding: 0 20px;
+            gap: 18px;
+        }
+
+        .chat-sidebar {
+            width: 280px;
+            min-width: 280px;
+            background: rgba(10, 16, 28, 0.86);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 24px 18px;
+            gap: 18px;
+        }
+
+        .sb-label {
+            padding: 10px 12px 16px;
+            letter-spacing: 0.45em;
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .sb-btn {
+            border-radius: 16px;
+            padding: 14px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.7);
+            transition: transform .25s ease, background .25s ease, color .25s ease;
+        }
+
+        .sb-btn:hover,
+        .sb-btn.active {
+            background: rgba(0, 255, 240, 0.08);
+            color: #fff;
+            transform: translateX(2px);
+        }
+
+        .sb-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        .sb-btn.active .sb-dot {
+            background: #00fff0;
+            box-shadow: 0 0 20px rgba(0, 255, 240, 0.25);
+        }
+
+        .pers-panel {
+            margin-top: auto;
+            padding: 22px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .pp-name {
+            font-size: 22px;
+            color: #ffffff;
+            letter-spacing: -0.03em;
+        }
+
+        .pp-desc {
+            color: rgba(255, 255, 255, 0.42);
+            margin-top: 8px;
+        }
+
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: rgba(8, 12, 24, 0.92);
+            border-radius: 32px;
+            box-shadow: 0 40px 120px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .chat-top {
+            padding: 28px 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(18px);
+        }
+
+        .chat-orb {
+            width: 32px;
+            height: 32px;
+            background: radial-gradient(circle at 30% 30%, #00fff0, rgba(0, 255, 255, 0.55));
+            box-shadow: 0 0 20px rgba(0, 255, 240, 0.35);
+        }
+
+        .chat-top-info h2 {
+            font-size: 12px;
+            letter-spacing: 0.35em;
+        }
+
+        .chat-top-info p {
+            color: rgba(255, 255, 255, 0.45);
+            margin-top: 6px;
+        }
+
+        #messages {
+            padding: 28px 32px;
+            background: rgba(255, 255, 255, 0.01);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .welcome-center {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 40px 28px;
+            border-radius: 28px;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+        }
+
+        .wc-title {
+            font-size: 44px;
+        }
+
+        .wc-sub {
+            color: rgba(255, 255, 255, 0.45);
+            margin-top: 10px;
+        }
+
+        .chip {
+            border-radius: 999px;
+            padding: 10px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.78);
+        }
+
+        .chip:hover {
+            background: rgba(0, 255, 255, 0.08);
+            color: #fff;
+        }
+
+        .msg-row {
+            gap: 18px;
+        }
+
+        .msg-av {
+            width: 34px;
+            height: 34px;
+            font-size: 9px;
+        }
+
+        .msg-bubble {
+            max-width: 70%;
+            border-radius: 24px;
+            padding: 18px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+        }
+
+        .bubble-ren,
+        .bubble-nat,
+        .bubble-user {
+            background: rgba(15, 20, 36, 0.95);
+        }
+
+        .bubble-ren {
+            border-color: rgba(0, 255, 240, 0.12);
+        }
+
+        .bubble-nat {
+            border-color: rgba(0, 255, 204, 0.12);
+        }
+
+        .bubble-user {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .bubble-header {
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+        }
+
+        .bubble-time {
+            color: rgba(255, 255, 255, 0.28);
+            margin-top: 12px;
+        }
+
+        .chat-input-wrap {
+            padding: 22px 32px 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(18px);
+        }
+
+        .mpill {
+            border-radius: 999px;
+            padding: 8px 16px;
+        }
+
+        #chat-input {
+            border-radius: 20px;
+            border-color: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            line-height: 1.7;
+            min-height: 60px;
+            cursor: text;
+        }
+
+        #send-btn,
+        #stop-btn {
+            cursor: pointer;
+        }
+
+        #send-btn {
+            background: linear-gradient(135deg, #00f5ff, #62ffa7);
+            border-color: transparent;
+            color: #050b12;
+        }
+
+        #send-btn:hover {
+            transform: translateY(-1px);
+            background: linear-gradient(135deg, #00fff0, #76ffb8);
+        }
+
         #stop-btn {
             width: 48px;
             height: 48px;
-            background: rgba(255, 68, 68, 0.1);
-            border: 1px solid rgba(255, 68, 68, 0.3);
+            background: rgba(255, 68, 68, 0.14);
+            border: 1px solid rgba(255, 68, 68, 0.32);
             color: #ff4444;
-            cursor: none;
             display: none;
             align-items: center;
             justify-content: center;
