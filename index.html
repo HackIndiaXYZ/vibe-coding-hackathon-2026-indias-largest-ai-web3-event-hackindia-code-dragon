@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>REN---</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -2019,6 +2019,41 @@
             .chat-top-info h2 {
                 font-size: 10px;
             }
+            /* Make chat layout stack on mobile and keep input accessible */
+            .chat-layout {
+                flex-direction: column;
+                height: auto;
+                min-height: calc(100vh - 48px);
+            }
+
+            .chat-sidebar {
+                width: 100%;
+                min-width: unset;
+                order: 2;
+                border-radius: 18px;
+            }
+
+            .chat-main {
+                order: 1;
+                width: 100%;
+            }
+
+            .chat-input-wrap {
+                position: sticky;
+                bottom: 0;
+                z-index: 60;
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            #messages {
+                max-height: calc(100vh - 260px);
+                overflow-y: auto;
+            }
+
+            .input-row { align-items: center; }
+            #send-btn { width: 44px; height: 44px; }
+            #chat-input { min-height: 48px; }
         }
 
         @media (max-width:480px) {
@@ -2054,6 +2089,33 @@
                 font-size: 7px;
             }
         }
+
+        /* Touch device optimizations */
+        html.touch #cursor,
+        html.touch #cursor-ring {
+            display: none !important;
+        }
+
+        html.touch #star-canvas,
+        html.touch #bg-kanji {
+            display: none !important;
+        }
+
+        button,
+        .chip,
+        .sb-btn,
+        .hero-btn,
+        .mpill {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Safe area for devices with notches / on-screen keyboards */
+        .chat-input-wrap {
+            padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+        }
+
+        html.touch #send-btn { width: 52px; height: 52px; }
 
         /* ══════════════════════════════════════
            UI UPGRADE OVERRIDES
@@ -3524,6 +3586,68 @@
                 osc.start(); osc.stop(audioCtx.currentTime + 0.12);
             } catch (e) { }
         }
+    </script>
+    <script>
+        // Mobile & touch improvements: enter handling, touch send, viewport/keyboard adjustments
+        document.addEventListener('DOMContentLoaded', () => {
+            const html = document.documentElement;
+            const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+            if (isTouch) html.classList.add('touch');
+
+            const chatInput = document.getElementById('chat-input');
+            const messages = document.getElementById('messages');
+            const sendBtn = document.getElementById('send-btn');
+
+            // Robust Enter handling for keyboards on all devices
+            if (chatInput) {
+                const submitIfEnter = (e) => {
+                    if ((e.key === 'Enter' || e.keyCode === 13) && !e.shiftKey) {
+                        e.preventDefault();
+                        sendMessage();
+                    }
+                };
+                chatInput.addEventListener('keydown', submitIfEnter, false);
+
+                // Resize textarea and ensure it's visible when focused (mobile keyboards can obscure inputs)
+                chatInput.addEventListener('input', () => autoResize(chatInput));
+                chatInput.addEventListener('focus', () => {
+                    setTimeout(() => {
+                        if (chatInput.scrollIntoView) chatInput.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                        adjustMessagesForViewport();
+                    }, 350);
+                });
+            }
+
+            // Touch/click on send button
+            if (sendBtn) {
+                sendBtn.addEventListener('touchstart', (e) => { e.preventDefault(); sendMessage(); }, { passive: false });
+                sendBtn.addEventListener('click', (e) => { e.preventDefault(); sendMessage(); });
+            }
+
+            // When visualViewport changes (mobile keyboard open/close), adjust messages area height
+            function adjustMessagesForViewport() {
+                try {
+                    const vv = window.visualViewport;
+                    const topOffset = document.getElementById('navbar') ? document.getElementById('navbar').offsetHeight : 48;
+                    let vh = window.innerHeight;
+                    if (vv) vh = vv.height;
+                    // Reserve space for chat input area (approx)
+                    const reserve = 180; // fallback
+                    const available = Math.max(200, vh - reserve - topOffset);
+                    if (messages) messages.style.maxHeight = available + 'px';
+                } catch (e) { }
+            }
+
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', adjustMessagesForViewport);
+                window.visualViewport.addEventListener('scroll', adjustMessagesForViewport);
+            } else {
+                window.addEventListener('resize', adjustMessagesForViewport);
+            }
+
+            // Initial adjust
+            adjustMessagesForViewport();
+        });
     </script>
 </body>
 
