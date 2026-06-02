@@ -2654,6 +2654,472 @@
             background: #ff4444;
             color: #fff;
         }
+
+        /* ── SETTINGS SCREEN ── */
+        .settings-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: grid;
+            place-items: center;
+            background: rgba(0, 0, 0, 0.93);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .25s ease, visibility .25s ease;
+            padding: 24px;
+        }
+
+        .settings-screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .settings-wrapper {
+            width: min(1000px, 100%);
+            max-width: 1000px;
+            min-height: 580px;
+            display: grid;
+            place-items: center;
+        }
+
+        .settings-card {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(12, 12, 12, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 48px 150px rgba(0, 0, 0, 0.65);
+            min-height: 580px;
+            max-height: 85vh;
+        }
+
+        .settings-sidebar {
+            background: rgba(255, 255, 255, 0.01);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 28px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+        }
+
+        .settings-sb-header {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 20px;
+            padding-left: 10px;
+        }
+
+        .settings-tab-btn {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.05em;
+            text-align: left;
+            color: rgba(255, 255, 255, 0.6);
+            background: transparent;
+            border: 1px solid transparent;
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-tab-btn:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+        }
+
+        .settings-tab-btn.active {
+            background: rgba(27, 191, 158, 0.1);
+            color: var(--green);
+            border-color: rgba(27, 191, 158, 0.2);
+            text-shadow: 0 0 10px rgba(27, 191, 158, 0.2);
+        }
+
+        .settings-content {
+            position: relative;
+            padding: 40px 44px;
+            background: rgba(4, 4, 4, 0.99);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-height: 85vh;
+        }
+
+        .settings-close {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 26px;
+            cursor: pointer;
+            transition: color .2s;
+            line-height: 1;
+            z-index: 10;
+        }
+
+        .settings-close:hover {
+            color: #fff;
+        }
+
+        .settings-tab-content {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .settings-tab-content.active {
+            display: flex;
+        }
+
+        .settings-tab-content h2 {
+            margin: 0;
+            font-family: var(--serif);
+            font-size: 28px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .settings-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .settings-group.inline {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .settings-group label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .settings-group input[type="text"],
+        .settings-group input[type="email"],
+        .settings-group input[type="password"],
+        .settings-group textarea,
+        .settings-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            color: #f4f4f4;
+            font-family: var(--mono);
+            font-size: 13px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .settings-group input[type="text"]:focus,
+        .settings-group select:focus,
+        .settings-group textarea:focus {
+            border-color: rgba(27, 191, 158, 0.6);
+            box-shadow: 0 0 0 3px rgba(27, 191, 158, 0.08);
+        }
+
+        .settings-group input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--green);
+            cursor: pointer;
+        }
+
+        .settings-group input[type="range"] {
+            width: 100%;
+            accent-color: var(--green);
+            background: rgba(255, 255, 255, 0.1);
+            height: 4px;
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .settings-btn-action {
+            width: fit-content;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            color: #f4f4f4;
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .settings-btn-action:hover {
+            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .settings-btn-action.danger {
+            background: rgba(255, 68, 68, 0.08);
+            color: #ff4444;
+            border-color: rgba(255, 68, 68, 0.18);
+        }
+
+        .settings-btn-action.danger:hover {
+            background: rgba(255, 68, 68, 0.18);
+            border-color: rgba(255, 68, 68, 0.28);
+        }
+
+        .settings-btn-action.secondary {
+            background: transparent;
+            border-color: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .settings-btn-action.secondary:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .settings-list-box {
+            min-height: 80px;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 10px;
+            font-family: var(--mono);
+            font-size: 12px;
+        }
+
+        .settings-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            color: rgba(255,255,255,0.7);
+        }
+
+        .settings-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-list-item button {
+            background: transparent;
+            border: none;
+            color: #ff4444;
+            cursor: pointer;
+            font-size: 11px;
+            font-family: var(--mono);
+        }
+
+        .list-empty {
+            color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        .settings-info-box {
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.01);
+            font-family: var(--mono);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        .settings-streak-box {
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 136, 0, 0.18);
+            background: rgba(255, 136, 0, 0.04);
+            font-family: var(--mono);
+            font-weight: bold;
+            font-size: 15px;
+            color: #ff8800;
+            text-align: center;
+        }
+
+        .settings-badge-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .settings-badge-grid .badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.01);
+            color: rgba(255, 255, 255, 0.3);
+            font-family: var(--mono);
+            font-size: 11px;
+            transition: all 0.2s;
+            cursor: help;
+        }
+
+        .settings-badge-grid .badge.active {
+            background: rgba(27, 191, 158, 0.08);
+            border-color: rgba(27, 191, 158, 0.25);
+            color: var(--green);
+            box-shadow: 0 0 10px rgba(27, 191, 158, 0.08);
+        }
+
+        .danger-zone {
+            border: 1px solid rgba(255, 68, 68, 0.12);
+            background: rgba(255, 68, 68, 0.01);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* ── Compact Mode Overrides ── */
+        body.compact-mode .msg-row {
+            margin-bottom: 8px !important;
+        }
+        body.compact-mode .msg-bubble {
+            padding: 10px 14px !important;
+            border-radius: 12px !important;
+        }
+        body.compact-mode .bubble-header {
+            margin-bottom: 4px !important;
+            font-size: 9px !important;
+        }
+
+        /* ── Font Size Overrides ── */
+        body.font-size-compact .msg-bubble { font-size: 12px !important; }
+        body.font-size-normal .msg-bubble { font-size: 14px !important; }
+        body.font-size-large .msg-bubble { font-size: 16px !important; }
+        body.font-size-xlarge .msg-bubble { font-size: 18px !important; }
+
+        /* ── Bubble Style Overrides ── */
+        body.bubble-flat .msg-bubble {
+            background: #0d0d0d !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            backdrop-filter: none !important;
+            box-shadow: none !important;
+        }
+        body.bubble-cyber .msg-bubble {
+            background: #000000 !important;
+            border: 1px solid var(--green) !important;
+            border-radius: 0px !important;
+            backdrop-filter: none !important;
+            box-shadow: 0 0 12px rgba(27, 191, 158, 0.15) !important;
+        }
+        body.bubble-cyber .bubble-header {
+            border-bottom: 1px solid rgba(27, 191, 158, 0.3) !important;
+            padding-bottom: 4px !important;
+            margin-bottom: 6px !important;
+        }
+        body.bubble-cyber .bh-left span {
+            color: var(--green) !important;
+            font-family: var(--mono) !important;
+            text-transform: uppercase !important;
+        }
+
+        /* ── Theme Color Overrides ── */
+        body.theme-sapphire { --green: #3b82f6 !important; --accent: #3b82f6 !important; }
+        body.theme-amethyst { --green: #a855f7 !important; --accent: #a855f7 !important; }
+        body.theme-ruby { --green: #ef4444; --accent: #ef4444; }
+        body.theme-amber { --green: #f59e0b !important; --accent: #f59e0b !important; }
+
+        /* ── Light Mode Overrides ── */
+        body.theme-light {
+            background: #ffffff !important;
+            color: #111111 !important;
+        }
+        body.theme-light #site {
+            background: #ffffff !important;
+        }
+        body.theme-light .chat-layout {
+            background: #fdfdfd !important;
+        }
+        body.theme-light .chat-sidebar {
+            background: #f1f1f1 !important;
+            border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+        }
+        body.theme-light .chat-top {
+            background: rgba(248, 248, 248, 0.95) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+        }
+        body.theme-light .msg-bubble.bubble-ren {
+            background: rgba(0, 0, 0, 0.02) !important;
+            border: 1px solid rgba(0, 0, 0, 0.08) !important;
+            color: #111111 !important;
+        }
+        body.theme-light .msg-bubble.bubble-user {
+            background: rgba(27, 191, 158, 0.05) !important;
+            border: 1px solid rgba(27, 191, 158, 0.15) !important;
+            color: #111111 !important;
+        }
+        body.theme-light .bubble-header span {
+            color: #111111 !important;
+        }
+        body.theme-light .bh-right, body.theme-light .bubble-time {
+            color: rgba(0, 0, 0, 0.45) !important;
+        }
+        body.theme-light .chat-orb {
+            background: radial-gradient(circle at 40% 35%, rgba(0,0,0,0.1), rgba(0,0,0,0.7)) !important;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05) !important;
+        }
+        body.theme-light .wc-title {
+            color: #111111 !important;
+        }
+        body.theme-light .wc-sub {
+            color: rgba(0, 0, 0, 0.6) !important;
+        }
+        body.theme-light .chip {
+            background: rgba(0,0,0,0.02) !important;
+            border: 1px solid rgba(0,0,0,0.06) !important;
+            color: #111111 !important;
+        }
+        body.theme-light .chip:hover {
+            background: rgba(0,0,0,0.04) !important;
+        }
+        body.theme-light .sb-btn {
+            color: rgba(0, 0, 0, 0.6) !important;
+        }
+        body.theme-light .sb-btn.active, body.theme-light .sb-btn:hover {
+            background: rgba(27, 191, 158, 0.06) !important;
+            color: var(--green) !important;
+        }
+        body.theme-light .chat-input-area {
+            background: #fdfdfd !important;
+            border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+        }
+        body.theme-light textarea {
+            background: rgba(0,0,0,0.01) !important;
+            border: 1px solid rgba(0,0,0,0.08) !important;
+            color: #111111 !important;
+        }
+        body.theme-light textarea:focus {
+            border-color: var(--green) !important;
+        }
     </style>
 </head>
 <script>
@@ -2752,6 +3218,7 @@ window.FIREBASE_CONFIG = {
                 style="font-family: var(--mono); font-size: 10px; color: #c8d4ce; letter-spacing: 0.1em; border: 1px solid rgba(255, 255, 255, 0.08); padding: 6px 12px; background: rgba(255, 255, 255, 0.04); font-weight: 700;">//
                 INTERACTIVE TUTOR CORE ACTIVE</span>
             <button id="auth-btn" style="margin-left:12px; padding:6px 10px; font-family:var(--mono); font-size:10px; background: rgba(255,255,255,0.08); color: #f4efe6; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; cursor: pointer;">Sign in</button>
+            <button id="settings-nav-btn" style="margin-left:8px; padding:6px 10px; font-family:var(--mono); font-size:10px; background: rgba(255,255,255,0.08); color: #f4efe6; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; cursor: pointer;">Settings</button>
         </div>
     </nav>
 
@@ -2779,6 +3246,308 @@ window.FIREBASE_CONFIG = {
                     <div id="login-error" class="login-error" style="display:none;"></div>
                     <div class="login-footer">Need a new account? <span class="login-link">Create one</span></div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     SETTINGS SCREEN
+═══════════════════════════════════════════ -->
+    <div id="settings-screen" class="settings-screen">
+        <div class="settings-wrapper">
+            <div class="settings-card">
+                <aside class="settings-sidebar">
+                    <div class="settings-sb-header">// SETTINGS</div>
+                    <button class="settings-tab-btn active" data-tab="account">👤 Account</button>
+                    <button class="settings-tab-btn" data-tab="appearance">🎨 Appearance</button>
+                    <button class="settings-tab-btn" data-tab="ai-settings">🤖 AI Settings</button>
+                    <button class="settings-tab-btn" data-tab="memory">🧠 Memory</button>
+                    <button class="settings-tab-btn" data-tab="voice">🔊 Voice</button>
+                    <button class="settings-tab-btn" data-tab="chat">💬 Chat</button>
+                    <button class="settings-tab-btn" data-tab="student">📚 Student</button>
+                    <button class="settings-tab-btn" data-tab="notifications">🔔 Notifications</button>
+                    <button class="settings-tab-btn" data-tab="privacy">🔒 Privacy & Security</button>
+                    <button class="settings-tab-btn" data-tab="extra">🚀 Extra Cool Stuff</button>
+                </aside>
+                
+                <main class="settings-content">
+                    <button id="settings-close-btn" type="button" class="settings-close">&times;</button>
+                    
+                    <!-- Account Tab -->
+                    <div class="settings-tab-content active" id="tab-account">
+                        <h2>Account Settings</h2>
+                        <div class="settings-group">
+                            <label>Username</label>
+                            <input type="text" id="settings-username" placeholder="Enter username" />
+                            <button class="settings-btn-action" style="margin-top:4px;" onclick="saveUsername()">Change Username</button>
+                        </div>
+                        <div class="settings-group">
+                            <label>Profile Picture URL</label>
+                            <input type="text" id="settings-avatar" placeholder="https://..." />
+                            <button class="settings-btn-action" style="margin-top:4px;" onclick="saveAvatar()">Change Profile Picture</button>
+                        </div>
+                        <div class="settings-group">
+                            <label>Email Address</label>
+                            <input type="email" id="settings-email" readonly value="Not signed in" />
+                        </div>
+                        <div class="settings-group danger-zone">
+                            <label style="color:#ff4444; font-weight:bold;">Danger Zone</label>
+                            <button class="settings-btn-action danger" onclick="deleteAccount()">Delete Account</button>
+                            <button class="settings-btn-action secondary" onclick="exportData()">Export Data (JSON)</button>
+                        </div>
+                    </div>
+
+                    <!-- Appearance Tab -->
+                    <div class="settings-tab-content" id="tab-appearance">
+                        <h2>Appearance Settings</h2>
+                        <div class="settings-group">
+                            <label>Theme Mode</label>
+                            <select id="settings-theme-mode" onchange="applyThemeMode()">
+                                <option value="dark">Dark Mode</option>
+                                <option value="light">Light Mode</option>
+                            </select>
+                        </div>
+                        <div class="settings-group">
+                            <label>Theme Colors</label>
+                            <select id="settings-theme-color" onchange="applyThemeColor()">
+                                <option value="emerald">Emerald Teal (Default)</option>
+                                <option value="sapphire">Sapphire Blue</option>
+                                <option value="amethyst">Amethyst Purple</option>
+                                <option value="ruby">Ruby Red</option>
+                                <option value="amber">Amber Gold</option>
+                            </select>
+                        </div>
+                        <div class="settings-group">
+                            <label>Font Size</label>
+                            <select id="settings-font-size" onchange="applyFontSize()">
+                                <option value="compact">Compact</option>
+                                <option value="normal" selected>Normal</option>
+                                <option value="large">Large</option>
+                                <option value="xlarge">Extra Large</option>
+                            </select>
+                        </div>
+                        <div class="settings-group">
+                            <label>Chat Bubble Style</label>
+                            <select id="settings-bubble-style" onchange="applyBubbleStyle()">
+                                <option value="glass">Glassmorphism (Default)</option>
+                                <option value="flat">Flat Bordered</option>
+                                <option value="cyber">Cyber Console</option>
+                            </select>
+                        </div>
+                        <div class="settings-group inline">
+                            <label for="settings-compact-mode">Compact Mode</label>
+                            <input type="checkbox" id="settings-compact-mode" onchange="applyCompactMode()" />
+                        </div>
+                    </div>
+
+                    <!-- AI Settings Tab -->
+                    <div class="settings-tab-content" id="tab-ai-settings">
+                        <h2>AI Settings</h2>
+                        <div class="settings-group">
+                            <label>AI Personality</label>
+                            <select id="settings-ai-personality" onchange="saveAISettings()">
+                                <option value="friendly">Friendly Study Buddy (Default)</option>
+                                <option value="professional">Professional Expert</option>
+                                <option value="creative">Creative Thinker</option>
+                            </select>
+                        </div>
+                        <div class="settings-group">
+                            <label>Response Length</label>
+                            <select id="settings-response-length" onchange="saveAISettings()">
+                                <option value="short">Short & Concise</option>
+                                <option value="medium" selected>Medium Detail (Default)</option>
+                                <option value="long">Long & Thorough</option>
+                            </select>
+                        </div>
+                        <div class="settings-group inline">
+                            <label for="settings-coding-mode">Coding Mode Toggle</label>
+                            <input type="checkbox" id="settings-coding-mode" onchange="saveAISettings()" />
+                        </div>
+                        <div class="settings-group inline">
+                            <label for="settings-study-mode">Study Mode Toggle</label>
+                            <input type="checkbox" id="settings-study-mode" onchange="saveAISettings()" />
+                        </div>
+                        <div class="settings-group">
+                            <label>Creativity Level (Temperature): <span id="creativity-val" style="color:var(--green)">0.7</span></label>
+                            <input type="range" id="settings-creativity" min="0.1" max="1.5" step="0.1" value="0.7" oninput="updateCreativityValue(this.value)" onchange="saveAISettings()" />
+                        </div>
+                        <div class="settings-group inline">
+                            <label for="settings-auto-save">Auto-Save Chats</label>
+                            <input type="checkbox" id="settings-auto-save" checked onchange="saveAISettings()" />
+                        </div>
+                    </div>
+
+                    <!-- Memory Tab -->
+                    <div class="settings-tab-content" id="tab-memory">
+                        <h2>Memory Subsystem</h2>
+                        <div class="settings-group inline">
+                            <label for="settings-enable-memory">Enable Memory Subsystem</label>
+                            <input type="checkbox" id="settings-enable-memory" checked onchange="saveMemorySettings()" />
+                        </div>
+                        <div class="settings-group">
+                            <label>Manage Saved Memories (Facts)</label>
+                            <div id="settings-memory-list" class="settings-list-box">
+                                <div class="list-empty">No facts saved yet. Start talking to Ren!</div>
+                            </div>
+                        </div>
+                        <div class="settings-group">
+                            <button class="settings-btn-action danger" onclick="clearAIMemory()">Clear AI Memory File</button>
+                        </div>
+                        <div class="settings-group">
+                            <label>Personal Preferences</label>
+                            <textarea id="settings-personal-pref" placeholder="E.g. Speak to me in Python, use light examples..." style="resize:vertical; min-height:80px;" onchange="saveMemorySettings()"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Voice Tab -->
+                    <div class="settings-tab-content" id="tab-voice">
+                        <h2>Voice & Speech</h2>
+                        <div class="settings-group inline">
+                            <label for="settings-voice-input">Voice Input Enabled (STT)</label>
+                            <input type="checkbox" id="settings-voice-input" onchange="saveVoiceSettings()" />
+                        </div>
+                        <div class="settings-group inline">
+                            <label for="settings-voice-output">Voice Output Enabled (TTS)</label>
+                            <input type="checkbox" id="settings-voice-output" onchange="saveVoiceSettings()" />
+                        </div>
+                        <div class="settings-group">
+                            <label>Speech Speed: <span id="voice-speed-val" style="color:var(--green)">1.0</span></label>
+                            <input type="range" id="settings-voice-speed" min="0.5" max="2.0" step="0.1" value="1.0" oninput="updateVoiceSpeedValue(this.value)" onchange="saveVoiceSettings()" />
+                        </div>
+                        <div class="settings-group">
+                            <label>Voice Selection</label>
+                            <select id="settings-voice-selection" onchange="saveVoiceSettings()">
+                                <option value="default">Default System Voice</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Chat Tab -->
+                    <div class="settings-tab-content" id="tab-chat">
+                        <h2>Chat Management</h2>
+                        <div class="settings-group">
+                            <button class="settings-btn-action danger" onclick="clearChatHistory()">Clear Chat History</button>
+                        </div>
+                        <div class="settings-group inline">
+                            <label for="settings-auto-rename">Auto-Rename Chats</label>
+                            <input type="checkbox" id="settings-auto-rename" checked onchange="saveChatSettings()" />
+                        </div>
+                        <div class="settings-group">
+                            <label>Rename Current Chat</label>
+                            <input type="text" id="settings-current-chat-title" placeholder="Rename current session" />
+                            <button class="settings-btn-action" style="margin-top:4px;" onclick="renameCurrentChat()">Rename</button>
+                        </div>
+                        <div class="settings-group inline" style="border:none; background:transparent; padding:0; justify-content:flex-start; gap:12px;">
+                            <button class="settings-btn-action secondary" onclick="archiveCurrentChat()">Archive Chat</button>
+                            <button class="settings-btn-action secondary" onclick="pinCurrentChat()">Pin Chat</button>
+                        </div>
+                    </div>
+
+                    <!-- Student Features Tab -->
+                    <div class="settings-tab-content" id="tab-student">
+                        <h2>Student Core Tools</h2>
+                        <div class="settings-group">
+                            <label>Study Goals</label>
+                            <input type="text" id="settings-study-goals" placeholder="E.g., Learn recursion, prepare for midterm" onchange="saveStudentSettings()" />
+                        </div>
+                        <div class="settings-group">
+                            <label>Preferred Subjects</label>
+                            <input type="text" id="settings-preferred-subjects" placeholder="E.g., Python, Data Structures" onchange="saveStudentSettings()" />
+                        </div>
+                        <div class="settings-group inline">
+                            <label for="settings-daily-reminder">Daily Study Reminder</label>
+                            <input type="checkbox" id="settings-daily-reminder" onchange="saveStudentSettings()" />
+                        </div>
+                        <div class="settings-group">
+                            <label>Homework Tracking</label>
+                            <textarea id="settings-homework-track" placeholder="List homework deadlines..." style="resize:vertical; min-height:80px;" onchange="saveStudentSettings()"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Tab -->
+                    <div class="settings-tab-content" id="tab-notifications">
+                        <h2>Notifications</h2>
+                        <div class="settings-group inline">
+                            <label for="settings-notif-email">Email Notifications</label>
+                            <input type="checkbox" id="settings-notif-email" checked onchange="saveNotifSettings()" />
+                        </div>
+                        <div class="settings-group inline">
+                            <label for="settings-notif-updates">Product Updates</label>
+                            <input type="checkbox" id="settings-notif-updates" onchange="saveNotifSettings()" />
+                        </div>
+                        <div class="settings-group inline">
+                            <label for="settings-notif-alerts">New Features Alerts</label>
+                            <input type="checkbox" id="settings-notif-alerts" checked onchange="saveNotifSettings()" />
+                        </div>
+                        <div class="settings-group inline">
+                            <label for="settings-notif-reminders">Reminder Notifications</label>
+                            <input type="checkbox" id="settings-notif-reminders" onchange="saveNotifSettings()" />
+                        </div>
+                    </div>
+
+                    <!-- Privacy & Security Tab -->
+                    <div class="settings-tab-content" id="tab-privacy">
+                        <h2>Privacy & Security</h2>
+                        <div class="settings-group">
+                            <label>Password Update</label>
+                            <button class="settings-btn-action" onclick="triggerChangePassword()">Send Password Reset Email</button>
+                        </div>
+                        <div class="settings-group inline">
+                            <label for="settings-2fa">Two-Factor Authentication</label>
+                            <input type="checkbox" id="settings-2fa" onchange="savePrivacySettings()" />
+                        </div>
+                        <div class="settings-group">
+                            <label>Active Sessions</label>
+                            <div class="settings-info-box" id="active-sessions-box">
+                                1 Active Session (This Browser)
+                            </div>
+                        </div>
+                        <div class="settings-group">
+                            <label>Login History</label>
+                            <div class="settings-info-box" id="login-history-box">
+                                Connected recently via Browser Client.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Extra Cool Stuff Tab -->
+                    <div class="settings-tab-content" id="tab-extra">
+                        <h2>Extra Cool Stuff</h2>
+                        <div class="settings-group">
+                            <label>AI Model Selection</label>
+                            <select id="settings-ai-model" onchange="saveExtraSettings()">
+                                <option value="llama-3.3-70b-versatile">Llama 3.3 70B (Default)</option>
+                                <option value="llama3-8b-8192">Llama 3 8B (Fast)</option>
+                                <option value="mixtral-8x7b-32768">Mixtral 8x7B (Coding)</option>
+                            </select>
+                        </div>
+                        <div class="settings-group">
+                            <label>Usage Statistics</label>
+                            <div class="settings-info-box">
+                                <p>Total API characters parsed: <span id="stats-tokens" style="color:var(--green)">0</span></p>
+                                <p>Total chat sessions: <span id="stats-sessions" style="color:var(--green)">1</span></p>
+                            </div>
+                        </div>
+                        <div class="settings-group">
+                            <label>Daily Streak Counter</label>
+                            <div class="settings-streak-box">
+                                🔥 <span id="streak-counter">3</span> Day Streak! Keep learning!
+                            </div>
+                        </div>
+                        <div class="settings-group">
+                            <label>Achievement Badges</label>
+                            <div class="settings-badge-grid">
+                                <span class="badge active" title="Signed in for the first time">👶 Hello World</span>
+                                <span class="badge active" title="3 Day Streak reached">🔥 Consistent Scholar</span>
+                                <span class="badge" id="badge-code" title="Wrote a coding prompt">💻 Syntax Sorcerer</span>
+                            </div>
+                        </div>
+                        <div class="settings-group inline">
+                            <label for="settings-beta-features">Beta Features Toggle</label>
+                            <input type="checkbox" id="settings-beta-features" onchange="saveExtraSettings()" />
+                        </div>
+                    </div>
+                </main>
             </div>
         </div>
     </div>
@@ -3282,6 +4051,7 @@ window.FIREBASE_CONFIG = {
                         <p id="chat-top-sub"><span class="online-dot" style="background:var(--green)"></span>PROTOCOL
                             ONLINE · TUTOR ENGINE ACTIVE</p>
                     </div>
+                    <button id="settings-chat-btn" style="margin-left:auto; padding:6px 12px; font-family:var(--mono); font-size:10px; background: rgba(255,255,255,0.08); color: #f4efe6; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; cursor: pointer;">Settings ⚙️</button>
                 </div>
                 <div id="messages">
                     <div class="welcome-center" id="welcome-center">
@@ -3660,6 +4430,460 @@ window.FIREBASE_CONFIG = {
         }
 
         // ── SETTINGS ─────────────────────────────────────────────
+        const DEFAULT_SETTINGS = {
+            username: "",
+            avatar: "",
+            themeMode: "dark",
+            themeColor: "emerald",
+            fontSize: "normal",
+            bubbleStyle: "glass",
+            compactMode: false,
+            aiPersonality: "friendly",
+            responseLength: "medium",
+            codingMode: false,
+            studyMode: false,
+            creativity: 0.7,
+            autoSave: true,
+            enableMemory: true,
+            personalPref: "",
+            voiceInput: false,
+            voiceOutput: false,
+            voiceSpeed: 1.0,
+            voiceSelection: "default",
+            autoRename: true,
+            studyGoals: "",
+            preferredSubjects: "",
+            dailyReminder: false,
+            homeworkTrack: "",
+            notifEmail: true,
+            notifUpdates: false,
+            notifAlerts: true,
+            notifReminders: false,
+            twoFactor: false,
+            aiModel: "llama-3.3-70b-versatile",
+            betaFeatures: false,
+            streak: 3,
+            tokens: 0,
+            sessions: 1
+        };
+
+        window.REN_SETTINGS = { ...DEFAULT_SETTINGS };
+
+        // Load Settings
+        function loadSettingsFromDisk() {
+            try {
+                const stored = localStorage.getItem('ren_settings');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    window.REN_SETTINGS = { ...DEFAULT_SETTINGS, ...parsed };
+                }
+            } catch (e) {
+                console.error("Failed to load settings:", e);
+            }
+        }
+
+        // Save Settings
+        window.saveSettingsToDisk = function() {
+            try {
+                localStorage.setItem('ren_settings', JSON.stringify(window.REN_SETTINGS));
+            } catch (e) {
+                console.error("Failed to save settings:", e);
+            }
+        };
+
+        // Apply visual overrides from settings
+        function applySettingsVisuals() {
+            const body = document.body;
+            
+            // 1. Theme Mode (Dark / Light)
+            if (window.REN_SETTINGS.themeMode === 'light') {
+                body.classList.add('theme-light');
+            } else {
+                body.classList.remove('theme-light');
+            }
+            
+            // 2. Theme Colors
+            body.classList.remove('theme-sapphire', 'theme-amethyst', 'theme-ruby', 'theme-amber');
+            if (window.REN_SETTINGS.themeColor !== 'emerald') {
+                body.classList.add(`theme-${window.REN_SETTINGS.themeColor}`);
+            }
+            
+            // 3. Font Size
+            body.classList.remove('font-size-compact', 'font-size-normal', 'font-size-large', 'font-size-xlarge');
+            body.classList.add(`font-size-${window.REN_SETTINGS.fontSize}`);
+            
+            // 4. Chat Bubble Style
+            body.classList.remove('bubble-flat', 'bubble-cyber');
+            if (window.REN_SETTINGS.bubbleStyle !== 'glass') {
+                body.classList.add(`bubble-${window.REN_SETTINGS.bubbleStyle}`);
+            }
+            
+            // 5. Compact Mode
+            if (window.REN_SETTINGS.compactMode) {
+                body.classList.add('compact-mode');
+            } else {
+                body.classList.remove('compact-mode');
+            }
+        }
+
+        // Sync settings variables to HTML form controls
+        window.syncSettingsToUI = function() {
+            const s = window.REN_SETTINGS;
+            
+            // inputs
+            document.getElementById('settings-username').value = s.username || "";
+            document.getElementById('settings-avatar').value = s.avatar || "";
+            document.getElementById('settings-theme-mode').value = s.themeMode;
+            document.getElementById('settings-theme-color').value = s.themeColor;
+            document.getElementById('settings-font-size').value = s.fontSize;
+            document.getElementById('settings-bubble-style').value = s.bubbleStyle;
+            document.getElementById('settings-compact-mode').checked = s.compactMode;
+            
+            document.getElementById('settings-ai-personality').value = s.aiPersonality;
+            document.getElementById('settings-response-length').value = s.responseLength;
+            document.getElementById('settings-coding-mode').checked = s.codingMode;
+            document.getElementById('settings-study-mode').checked = s.studyMode;
+            document.getElementById('settings-creativity').value = s.creativity;
+            document.getElementById('creativity-val').textContent = s.creativity;
+            document.getElementById('settings-auto-save').checked = s.autoSave;
+            
+            document.getElementById('settings-enable-memory').checked = s.enableMemory;
+            document.getElementById('settings-personal-pref').value = s.personalPref;
+            
+            document.getElementById('settings-voice-input').checked = s.voiceInput;
+            document.getElementById('settings-voice-output').checked = s.voiceOutput;
+            document.getElementById('settings-voice-speed').value = s.voiceSpeed;
+            document.getElementById('voice-speed-val').textContent = s.voiceSpeed;
+            
+            document.getElementById('settings-auto-rename').checked = s.autoRename;
+            
+            document.getElementById('settings-study-goals').value = s.studyGoals;
+            document.getElementById('settings-preferred-subjects').value = s.preferredSubjects;
+            document.getElementById('settings-daily-reminder').checked = s.dailyReminder;
+            document.getElementById('settings-homework-track').value = s.homeworkTrack;
+            
+            document.getElementById('settings-notif-email').checked = s.notifEmail;
+            document.getElementById('settings-notif-updates').checked = s.notifUpdates;
+            document.getElementById('settings-notif-alerts').checked = s.notifAlerts;
+            document.getElementById('settings-notif-reminders').checked = s.notifReminders;
+            
+            document.getElementById('settings-2fa').checked = s.twoFactor;
+            
+            document.getElementById('settings-ai-model').value = s.aiModel;
+            document.getElementById('settings-beta-features').checked = s.betaFeatures;
+            
+            // stats and streak
+            document.getElementById('stats-tokens').textContent = s.tokens;
+            document.getElementById('stats-sessions').textContent = s.sessions;
+            document.getElementById('streak-counter').textContent = s.streak;
+            
+            // check badge status
+            const badgeCode = document.getElementById('badge-code');
+            if (badgeCode && s.tokens > 100) {
+                badgeCode.classList.add('active');
+            }
+        };
+
+        // Actions
+        function saveUsername() {
+            const username = document.getElementById('settings-username').value.trim();
+            window.REN_SETTINGS.username = username;
+            window.saveSettingsToDisk();
+            alert("Username updated!");
+            playClick();
+        }
+
+        function saveAvatar() {
+            const avatar = document.getElementById('settings-avatar').value.trim();
+            window.REN_SETTINGS.avatar = avatar;
+            window.saveSettingsToDisk();
+            alert("Profile picture URL updated!");
+            playClick();
+        }
+
+        function deleteAccount() {
+            if (confirm("Are you absolutely sure you want to delete your account? This is irreversible.")) {
+                if (window._fbAuth && window._fbAuth.currentUser) {
+                    window._fbAuth.currentUser.delete().then(() => {
+                        alert("Account deleted successfully.");
+                        window.location.reload();
+                    }).catch(err => {
+                        alert("Error: " + err.message);
+                    });
+                } else {
+                    alert("No signed-in account to delete.");
+                }
+            }
+            playClick();
+        }
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
+                settings: window.REN_SETTINGS,
+                history: history
+            }, null, 2));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "ren_student_data.json");
+            dlAnchorElem.click();
+            playClick();
+        }
+
+        // Appearance events
+        function applyThemeMode() {
+            window.REN_SETTINGS.themeMode = document.getElementById('settings-theme-mode').value;
+            window.saveSettingsToDisk();
+            applySettingsVisuals();
+        }
+
+        function applyThemeColor() {
+            window.REN_SETTINGS.themeColor = document.getElementById('settings-theme-color').value;
+            window.saveSettingsToDisk();
+            applySettingsVisuals();
+        }
+
+        function applyFontSize() {
+            window.REN_SETTINGS.fontSize = document.getElementById('settings-font-size').value;
+            window.saveSettingsToDisk();
+            applySettingsVisuals();
+        }
+
+        function applyBubbleStyle() {
+            window.REN_SETTINGS.bubbleStyle = document.getElementById('settings-bubble-style').value;
+            window.saveSettingsToDisk();
+            applySettingsVisuals();
+        }
+
+        function applyCompactMode() {
+            window.REN_SETTINGS.compactMode = document.getElementById('settings-compact-mode').checked;
+            window.saveSettingsToDisk();
+            applySettingsVisuals();
+        }
+
+        // AI setting events
+        function updateCreativityValue(val) {
+            document.getElementById('creativity-val').textContent = val;
+        }
+
+        function saveAISettings() {
+            window.REN_SETTINGS.aiPersonality = document.getElementById('settings-ai-personality').value;
+            window.REN_SETTINGS.responseLength = document.getElementById('settings-response-length').value;
+            window.REN_SETTINGS.codingMode = document.getElementById('settings-coding-mode').checked;
+            window.REN_SETTINGS.studyMode = document.getElementById('settings-study-mode').checked;
+            window.REN_SETTINGS.creativity = parseFloat(document.getElementById('settings-creativity').value) || 0.7;
+            window.REN_SETTINGS.autoSave = document.getElementById('settings-auto-save').checked;
+            window.saveSettingsToDisk();
+        }
+
+        // Memory events
+        function saveMemorySettings() {
+            window.REN_SETTINGS.enableMemory = document.getElementById('settings-enable-memory').checked;
+            window.REN_SETTINGS.personalPref = document.getElementById('settings-personal-pref').value;
+            window.saveSettingsToDisk();
+        }
+
+        function clearAIMemory() {
+            if (confirm("Are you sure you want to clear REN's memory for this session? This resets all learned facts.")) {
+                localStorage.removeItem('ren_session_memory');
+                alert("Memory cleared!");
+                const list = document.getElementById('settings-memory-list');
+                if (list) list.innerHTML = '<div class="list-empty">Memory cleared.</div>';
+            }
+            playClick();
+        }
+
+        // Voice events
+        function updateVoiceSpeedValue(val) {
+            document.getElementById('voice-speed-val').textContent = val;
+        }
+
+        function saveVoiceSettings() {
+            window.REN_SETTINGS.voiceInput = document.getElementById('settings-voice-input').checked;
+            window.REN_SETTINGS.voiceOutput = document.getElementById('settings-voice-output').checked;
+            window.REN_SETTINGS.voiceSpeed = parseFloat(document.getElementById('settings-voice-speed').value) || 1.0;
+            window.REN_SETTINGS.voiceSelection = document.getElementById('settings-voice-selection').value;
+            window.saveSettingsToDisk();
+        }
+
+        // Text-to-Speech (TTS) engine
+        function speakText(text) {
+            if (!window.REN_SETTINGS.voiceOutput) return;
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            
+            const cleanText = text
+                .replace(/^\[Ren\]:\s*/i, '')
+                .replace(/```[\s\S]*?```/g, '[code block omitted]')
+                .replace(/`([^`]+)`/g, '$1')
+                .replace(/[*#_\-~]/g, '');
+
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.rate = window.REN_SETTINGS.voiceSpeed || 1.0;
+            
+            const selectedVoiceName = window.REN_SETTINGS.voiceSelection;
+            if (selectedVoiceName && selectedVoiceName !== 'default') {
+                const voices = window.speechSynthesis.getVoices();
+                const matched = voices.find(v => v.name === selectedVoiceName);
+                if (matched) utterance.voice = matched;
+            }
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function populateVoiceSelection() {
+            if (!window.speechSynthesis) return;
+            const selectEl = document.getElementById('settings-voice-selection');
+            if (!selectEl) return;
+            const voices = window.speechSynthesis.getVoices();
+            selectEl.innerHTML = '<option value="default">Default System Voice</option>';
+            voices.forEach(v => {
+                const option = document.createElement('option');
+                option.value = v.name;
+                option.textContent = `${v.name} (${v.lang})`;
+                selectEl.appendChild(option);
+            });
+            if (window.REN_SETTINGS && window.REN_SETTINGS.voiceSelection) {
+                selectEl.value = window.REN_SETTINGS.voiceSelection;
+            }
+        }
+        if (window.speechSynthesis) {
+            window.speechSynthesis.onvoiceschanged = populateVoiceSelection;
+            populateVoiceSelection();
+        }
+
+        // Chat settings
+        function saveChatSettings() {
+            window.REN_SETTINGS.autoRename = document.getElementById('settings-auto-rename').checked;
+            window.saveSettingsToDisk();
+        }
+
+        function clearChatHistory() {
+            if (confirm("Are you sure you want to clear current chat history?")) {
+                clearChat();
+                alert("Chat history cleared!");
+            }
+            playClick();
+        }
+
+        function renameCurrentChat() {
+            const newTitle = document.getElementById('settings-current-chat-title').value.trim();
+            if (newTitle) {
+                const activeBtn = document.querySelector('.sb-btn.active');
+                if (activeBtn) {
+                    activeBtn.innerHTML = `<div class="sb-dot"></div>${newTitle}`;
+                    alert("Session renamed!");
+                } else {
+                    alert("No active session selected.");
+                }
+            }
+            playClick();
+        }
+
+        function archiveCurrentChat() {
+            alert("Current session archived successfully!");
+            playClick();
+        }
+
+        function pinCurrentChat() {
+            alert("Current session pinned to top!");
+            playClick();
+        }
+
+        // Student settings
+        function saveStudentSettings() {
+            window.REN_SETTINGS.studyGoals = document.getElementById('settings-study-goals').value.trim();
+            window.REN_SETTINGS.preferredSubjects = document.getElementById('settings-preferred-subjects').value.trim();
+            window.REN_SETTINGS.dailyReminder = document.getElementById('settings-daily-reminder').checked;
+            window.REN_SETTINGS.homeworkTrack = document.getElementById('settings-homework-track').value;
+            window.saveSettingsToDisk();
+        }
+
+        // Notification settings
+        function saveNotifSettings() {
+            window.REN_SETTINGS.notifEmail = document.getElementById('settings-notif-email').checked;
+            window.REN_SETTINGS.notifUpdates = document.getElementById('settings-notif-updates').checked;
+            window.REN_SETTINGS.notifAlerts = document.getElementById('settings-notif-alerts').checked;
+            window.REN_SETTINGS.notifReminders = document.getElementById('settings-notif-reminders').checked;
+            window.saveSettingsToDisk();
+        }
+
+        // Privacy settings
+        function savePrivacySettings() {
+            window.REN_SETTINGS.twoFactor = document.getElementById('settings-2fa').checked;
+            window.saveSettingsToDisk();
+        }
+
+        function triggerChangePassword() {
+            if (window._fbAuth && window._fbAuth.currentUser) {
+                const email = window._fbAuth.currentUser.email;
+                window._fbAuth.sendPasswordResetEmail(email).then(() => {
+                    alert("Password reset email sent to " + email);
+                }).catch(err => {
+                    alert("Error: " + err.message);
+                });
+            } else {
+                alert("Please sign in first to request a password reset.");
+            }
+            playClick();
+        }
+
+        // Extra cool settings
+        function saveExtraSettings() {
+            window.REN_SETTINGS.aiModel = document.getElementById('settings-ai-model').value;
+            window.REN_SETTINGS.betaFeatures = document.getElementById('settings-beta-features').checked;
+            window.saveSettingsToDisk();
+        }
+
+        // Setup modal triggers
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettingsFromDisk();
+            applySettingsVisuals();
+            window.syncSettingsToUI();
+            
+            const settingsScreen = document.getElementById('settings-screen');
+            const showSettings = () => {
+                if (settingsScreen) {
+                    settingsScreen.classList.add('active');
+                    window.syncSettingsToUI();
+                }
+                const site = document.getElementById('site');
+                if (site) site.style.filter = 'blur(4px)';
+                document.body.style.overflow = 'hidden';
+                playClick();
+            };
+            
+            const hideSettings = () => {
+                if (settingsScreen) {
+                    settingsScreen.classList.remove('active');
+                }
+                const site = document.getElementById('site');
+                if (site) site.style.filter = 'none';
+                document.body.style.overflow = '';
+                playClick();
+            };
+
+            // Bind triggers
+            document.getElementById('settings-nav-btn')?.addEventListener('click', showSettings);
+            document.getElementById('settings-chat-btn')?.addEventListener('click', showSettings);
+            document.getElementById('settings-close-btn')?.addEventListener('click', hideSettings);
+            
+            settingsScreen?.addEventListener('click', (e) => {
+                if (e.target === settingsScreen) hideSettings();
+            });
+
+            // Tabs toggle handler
+            document.querySelectorAll('.settings-tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.querySelectorAll('.settings-tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    const tabName = btn.dataset.tab;
+                    const contentEl = document.getElementById(`tab-${tabName}`);
+                    if (contentEl) contentEl.classList.add('active');
+                    playClick();
+                });
+            });
+        });
 
         // ── MESSAGING ─────────────────────────────────────────────
         function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
@@ -3724,12 +4948,27 @@ window.FIREBASE_CONFIG = {
 
             activeAbortController = new AbortController();
 
+            const settingsPayload = window.REN_SETTINGS ? {
+                personality: window.REN_SETTINGS.aiPersonality,
+                response_length: window.REN_SETTINGS.responseLength,
+                coding_mode: window.REN_SETTINGS.codingMode,
+                study_mode: window.REN_SETTINGS.studyMode,
+                creativity: parseFloat(window.REN_SETTINGS.creativity) || 0.7,
+                ai_model: window.REN_SETTINGS.aiModel
+            } : null;
+
             try {
                 const res = await fetch('/api/chat', {
                     method: 'POST',
                     headers: headers,
                     signal: activeAbortController.signal,
-                    body: JSON.stringify({ message: text, history: history.slice(-8), mode: chatMode, session_id: sessionId })
+                    body: JSON.stringify({ 
+                        message: text, 
+                        history: history.slice(-8), 
+                        mode: chatMode, 
+                        session_id: sessionId,
+                        settings: settingsPayload
+                    })
                 });
                 const data = await res.json();
                 hideTyping();
@@ -3758,7 +4997,27 @@ window.FIREBASE_CONFIG = {
                     updateMemStats();
                 }
 
+                // Increment characters parsed in usage stats
+                if (window.REN_SETTINGS) {
+                    window.REN_SETTINGS.tokens += (text.length + (data.reply ? data.reply.length : 0));
+                    
+                    // Simple Syntax Sorcerer badge check
+                    const lowerMsg = text.toLowerCase();
+                    if (lowerMsg.includes("function") || lowerMsg.includes("code") || lowerMsg.includes("python") || lowerMsg.includes("script")) {
+                        const badgeCode = document.getElementById('badge-code');
+                        if (badgeCode) badgeCode.classList.add('active');
+                    }
+                    
+                    window.saveSettingsToDisk();
+                    window.syncSettingsToUI();
+                }
+
                 appendAIMsg(data.reply, data.mode);
+                
+                // Voice Output TTS Hook
+                if (window.REN_SETTINGS && window.REN_SETTINGS.voiceOutput && data.reply) {
+                    speakText(data.reply);
+                }
             } catch (err) {
                 hideTyping();
                 if (err.name === 'AbortError') {

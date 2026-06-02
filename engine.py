@@ -48,7 +48,7 @@ class GroqInferenceEngine:
                 
         raise Exception("Max retries exceeded while calling inference engine.")
 
-    def generate_response(self, mode: str, context_messages: List[Dict[str, str]], api_key: str = None) -> str:
+    def generate_response(self, mode: str, context_messages: List[Dict[str, str]], api_key: str = None, settings: Dict[str, Any] = None) -> str:
 
         
         # 0. Set up request-specific headers
@@ -61,20 +61,54 @@ class GroqInferenceEngine:
         # 1. Compile the active message stack
         sys_prompt_content = get_system_prompt(mode)
         
+        # Adjust prompt, temperature, and model based on custom settings
+        temperature = 0.7
+        active_model = self.model
+        if settings:
+            custom_directives = []
+            personality = settings.get('personality', 'friendly')
+            if personality == 'professional':
+                custom_directives.append("Adopt an elite, professional, and strictly technical tone. Keep explanations formal, precise, and highly structured.")
+            elif personality == 'creative':
+                custom_directives.append("Adopt a creative, explanatory, and open-minded tone. Connect concepts to interesting real-world analogies and outside-the-box ideas.")
+            
+            resp_len = settings.get('response_length', 'medium')
+            if resp_len == 'short':
+                custom_directives.append("Be extremely brief, short, and concise. Avoid unnecessary preambles and keep explanations minimal.")
+            elif resp_len == 'long':
+                custom_directives.append("Be very thorough, long, and detailed. Provide comprehensive step-by-step breakdowns, detail edge cases, and elaborate fully.")
+            
+            if settings.get('coding_mode'):
+                custom_directives.append("Focus heavily on production-ready, clean, optimal code examples. Explain syntactical and architectural nuances.")
+            if settings.get('study_mode'):
+                custom_directives.append("Prioritize educational concepts, pedagogical explanations, and structured breakdowns. Use study guide principles and prompt learning checkpoints.")
+            
+            if custom_directives:
+                sys_prompt_content += "\n\n[USER CUSTOM SETTINGS DIRECTIVES]\n" + "\n".join(f"- {d}" for d in custom_directives)
+            
+            if 'creativity' in settings:
+                try:
+                    temperature = float(settings['creativity'])
+                except (ValueError, TypeError):
+                    pass
+            
+            if 'ai_model' in settings and settings['ai_model']:
+                active_model = settings['ai_model']
+        
         active_messages = [{"role": "system", "content": sys_prompt_content}]
         active_messages.extend(context_messages)
         
         # 2. Build Initial Payload
         payload = {
-            "model": self.model,
+            "model": active_model,
             "messages": active_messages,
             "tools": tools.TOOLS_SCHEMA,
             "tool_choice": "auto",
-            "temperature": 0.7,
+            "temperature": temperature,
             "max_tokens": 2048
         }
         
-        print(f"[Engine] Initiating inference sequence for mode: {mode}")
+        print(f"[Engine] Initiating inference sequence for model: {active_model} | mode: {mode}")
         
         # 3. Fire first request
         resp_data = self._execute_api_call(payload, headers=request_headers)

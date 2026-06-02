@@ -123,7 +123,8 @@ def chat_endpoint():
         context_window = memory_sys.get_context_window(session_id)
 
         # Execute Inference Sequence
-        final_reply = inference_engine.generate_response(active_mode, context_window, api_key=api_key)
+        settings = data.get('settings', {})
+        final_reply = inference_engine.generate_response(active_mode, context_window, api_key=api_key, settings=settings)
 
         # Store AI Output
         memory_sys.add_message(session_id, "assistant", final_reply)
