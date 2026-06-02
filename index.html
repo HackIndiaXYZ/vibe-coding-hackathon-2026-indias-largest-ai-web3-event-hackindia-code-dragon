@@ -29,19 +29,19 @@
         }
 
         :root {
-            --black: #080808;
-            --black2: #0d0d0d;
-            --white: #f0ece4;
-            --white2: #c8c0b0;
-            --dim: #4a4a4a;
-            --dim2: #2a2a2a;
-            --accent: #ffffff;
+            --black: #000000;
+            --black2: #050505;
+            --white: #f4f4f4;
+            --white2: #bbbbbb;
+            --dim: #7a7a7a;
+            --dim2: #4f4f4f;
+            --accent: #1bbf9e;
             --border: rgba(255, 255, 255, 0.08);
-            --border2: rgba(255, 255, 255, 0.15);
-            --green: #999999;
+            --border2: rgba(255, 255, 255, 0.12);
+            --green: #1bbf9e;
             --chat-green: #111111;
-            --chat-green-light: #2b2b2b;
-            --chat-green-bright: #3d3d3d;
+            --chat-green-light: #1f1f1f;
+            --chat-green-bright: #2c2c2c;
             /* terminal tint */
             --mono: 'JetBrains Mono', monospace;
             --serif: 'Playfair Display', serif;
@@ -51,9 +51,9 @@
 
         body {
             font-family: var(--sans);
-            background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), transparent 18%),
-                        radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.04), transparent 20%),
-                        var(--black);
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.03), transparent 16%),
+                        radial-gradient(circle at bottom right, rgba(255,255,255,0.02), transparent 18%),
+                        #000000;
             color: var(--white);
             overflow-x: hidden;
             cursor: default;
@@ -312,9 +312,9 @@
             align-items: center;
             justify-content: space-between;
             padding: 18px 40px;
-            border-bottom: 1px solid var(--border);
-            background: rgba(8, 8, 8, 0.6);
-            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: rgba(13, 45, 39, 0.82);
+            backdrop-filter: blur(10px);
         }
 
         .nav-logo {
@@ -387,10 +387,10 @@
             font-size: 10px;
             letter-spacing: 0.2em;
             padding: 8px 20px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             background: transparent;
-            color: rgba(255, 255, 255, 0.4);
-            cursor: none;
+            color: rgba(255, 255, 255, 0.75);
+            cursor: pointer;
             transition: all .3s;
         }
 
@@ -407,6 +407,282 @@
         .toggle-btn:last-child {
             border-radius: 0 1px 1px 0;
             border-left: none;
+        }
+
+        .login-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 900;
+            display: grid;
+            place-items: center;
+            background: rgba(0, 0, 0, 0.93);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .25s ease, visibility .25s ease;
+            padding: 24px;
+        }
+
+        .login-screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .login-wrapper {
+            width: min(1080px, 100%);
+            max-width: 1080px;
+            min-height: 560px;
+            display: grid;
+            place-items: center;
+        }
+
+        .login-card {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-radius: 32px;
+            overflow: hidden;
+            background: rgba(12, 12, 12, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 48px 150px rgba(0, 0, 0, 0.65);
+            min-height: 520px;
+        }
+
+        .login-side {
+            padding: 58px 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 28px;
+            background: linear-gradient(140deg, rgba(255,255,255,0.03), rgba(255,255,255,0.07));
+        }
+
+        .login-eyebrow {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.56);
+        }
+
+        .login-side h1 {
+            margin: 0;
+            font-family: var(--serif);
+            font-size: clamp(42px, 4vw, 62px);
+            color: #ffffff;
+            line-height: 1.02;
+        }
+
+        .login-desc {
+            margin: 0;
+            max-width: 420px;
+            font-family: var(--mono);
+            font-size: 14px;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.72);
+        }
+
+        .login-form {
+            position: relative;
+            padding: 52px 56px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            background: rgba(0,0,0,0.98);
+        }
+
+        .login-form h2 {
+            margin: 0;
+            font-family: var(--serif);
+            font-size: 38px;
+            color: #fff;
+        }
+
+        .login-form label {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.55);
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 16px 18px;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.03);
+            color: #f4f4f4;
+            font-family: var(--mono);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .login-form input:focus {
+            border-color: rgba(27, 191, 158, 0.65);
+            box-shadow: 0 0 0 4px rgba(27, 191, 158, 0.08);
+        }
+
+        .login-form input::placeholder {
+            color: rgba(255,255,255,0.35);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 16px 18px;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.08);
+            color: #f4f4f4;
+            font-family: var(--mono);
+            font-size: 13px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform .2s ease, background .2s ease;
+        }
+
+        .login-button:hover {
+            transform: translateY(-1px);
+            background: rgba(255,255,255,0.12);
+        }
+
+        .login-button.secondary {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        .login-google-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            width: 100%;
+            padding: 18px 22px;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(27, 191, 158, 0.14);
+            color: #e9fff8;
+            font-family: var(--mono);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform .2s ease, background .2s ease;
+        }
+
+        .login-google-btn:hover {
+            transform: translateY(-1px);
+            background: rgba(27, 191, 158, 0.24);
+        }
+
+        .login-google-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .login-error {
+            padding: 14px 18px;
+            border-radius: 16px;
+            background: rgba(255, 72, 72, 0.12);
+            border: 1px solid rgba(255, 72, 72, 0.22);
+            color: #ffb3b3;
+            font-family: var(--mono);
+            font-size: 13px;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .login-footer {
+            margin-top: 14px;
+            font-family: var(--mono);
+            font-size: 12px;
+            color: rgba(255,255,255,0.55);
+        }
+
+        .login-link {
+            color: #1bbf9e;
+            cursor: pointer;
+        }
+
+        .login-close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            font-size: 22px;
+            line-height: 0.9;
+            cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+            .login-card {
+                grid-template-columns: 1fr;
+            }
+
+            .login-side,
+            .login-form {
+                padding: 30px 28px;
+            }
+        }
+
+        .login-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+        }
+
+        .login-icon-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .login-icon-row button {
+            flex: 1;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            padding: 12px;
+            border-radius: 14px;
+            cursor: pointer;
+        }
+
+        .login-icon-row img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .login-card .login-panel .hint {
+            color: rgba(255,255,255,0.45);
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .login-card {
+                grid-template-columns: 1fr;
+            }
+
+            .login-card .login-visual {
+                padding: 28px 24px 24px;
+            }
         }
 
 
@@ -2380,7 +2656,17 @@
         }
     </style>
 </head>
-
+<script>
+window.FIREBASE_CONFIG = {
+  apiKey: "AIzaSyD769R0FALRw-VZQGq9U17YDnxvw6rbNuw",
+  authDomain: "ren-ai-92906.firebaseapp.com",
+  projectId: "ren-ai-92906",
+  storageBucket: "ren-ai-92906.firebasestorage.app",
+  messagingSenderId: "1094624403877",
+  appId: "1:1094624403877:web:733f9decfee0322b7fc84c",
+  measurementId: "G-0XT9Q1K1R7"
+};
+</script>
 <body>
 
     <!-- Custom cursor -->
@@ -2463,10 +2749,39 @@
         </ul>
         <div class="nav-toggle">
             <span
-                style="font-family: var(--mono); font-size: 10px; color: #cccccc; letter-spacing: 0.1em; border: 1px solid rgba(255, 255, 255, 0.08); padding: 6px 12px; background: rgba(255, 255, 255, 0.05); font-weight: 700;">//
+                style="font-family: var(--mono); font-size: 10px; color: #c8d4ce; letter-spacing: 0.1em; border: 1px solid rgba(255, 255, 255, 0.08); padding: 6px 12px; background: rgba(255, 255, 255, 0.04); font-weight: 700;">//
                 INTERACTIVE TUTOR CORE ACTIVE</span>
+            <button id="auth-btn" style="margin-left:12px; padding:6px 10px; font-family:var(--mono); font-size:10px; background: rgba(255,255,255,0.08); color: #f4efe6; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; cursor: pointer;">Sign in</button>
         </div>
     </nav>
+
+    <div id="login-screen" class="login-screen">
+        <div class="login-wrapper">
+            <div class="login-card">
+                <div class="login-side">
+                    <span class="login-eyebrow">Sign in</span>
+                    <h1>Welcome back</h1>
+                    <p class="login-desc">Use your Google account to continue into REN. Your chat history and personalised learning data become available as soon as you sign in.</p>
+                </div>
+                <div class="login-form">
+                    <button id="login-close-btn" type="button" class="login-close" aria-label="Close login">×</button>
+                    <h2>Login</h2>
+                    <label>Your email</label>
+                    <input id="login-email" type="email" placeholder="E.g. you@example.com" />
+                    <label>Password</label>
+                    <input id="login-password" type="password" placeholder="••••••••" />
+                    <button id="login-email-btn" type="button" class="login-button">Sign in</button>
+                    <button id="signin-google-btn" type="button" class="login-google-btn">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+                        Login with Google
+                    </button>
+                    <button id="signup-email-btn" type="button" class="login-button secondary">Create account</button>
+                    <div id="login-error" class="login-error" style="display:none;"></div>
+                    <div class="login-footer">Need a new account? <span class="login-link">Create one</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- ═══════════════════════════════════════════
      MAIN SITE (all scrollable sections)
@@ -3399,6 +3714,13 @@
             showStopButton();
 
             const headers = { 'Content-Type': 'application/json' };
+            // Attach Firebase ID token if available
+            try {
+                if (window.getIdToken) {
+                    const tkn = await window.getIdToken();
+                    if (tkn) headers['Authorization'] = 'Bearer ' + tkn;
+                }
+            } catch (e) { console.warn('Failed to attach id token', e); }
 
             activeAbortController = new AbortController();
 
@@ -3658,9 +3980,162 @@
                 window.addEventListener('resize', adjustMessagesForViewport);
             }
 
-            // Initial adjust
+        
             adjustMessagesForViewport();
         });
+    </script>
+    <script>
+        // Firebase client (optional). Replace `window.FIREBASE_CONFIG` with your project's config object.
+        (function initFirebaseClient(){
+            const FIREBASE_CONFIG = window.FIREBASE_CONFIG || null; // set this in a safe place in your hosting config
+            if (!FIREBASE_CONFIG) return;
+
+            const loadScript = (src) => new Promise((res, rej) => {
+                const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s);
+            });
+
+            Promise.resolve()
+            .then(() => loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js'))
+            .then(() => loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js'))
+            .then(() => loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js'))
+            .then(() => {
+                firebase.initializeApp(FIREBASE_CONFIG);
+                window._fbAuth = firebase.auth();
+                window._fbDb = firebase.firestore();
+
+                const authBtn = document.getElementById('auth-btn');
+                const loginScreen = document.getElementById('login-screen');
+                const closeBtn = document.getElementById('login-close-btn');
+                const googleBtn = document.getElementById('signin-google-btn');
+                const emailBtn = document.getElementById('login-email-btn');
+                const signupEmailBtn = document.getElementById('signup-email-btn');
+                const emailInput = document.getElementById('login-email');
+                const passwordInput = document.getElementById('login-password');
+                const errorBox = document.getElementById('login-error');
+                const signupLink = document.querySelector('.login-link');
+                const site = document.getElementById('site');
+
+                const showLogin = () => {
+                    if (loginScreen) loginScreen.classList.add('active');
+                    if (site) site.style.filter = 'blur(2px)';
+                    document.body.style.overflow = 'hidden';
+                };
+                const hideLogin = () => {
+                    if (loginScreen) loginScreen.classList.remove('active');
+                    if (site) site.style.filter = 'none';
+                    document.body.style.overflow = '';
+                    clearError();
+                };
+                const showError = (message) => {
+                    if (!errorBox) return;
+                    errorBox.style.display = 'block';
+                    errorBox.textContent = message;
+                };
+                const clearError = () => {
+                    if (!errorBox) return;
+                    errorBox.style.display = 'none';
+                    errorBox.textContent = '';
+                };
+
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const startGoogleAuth = () => {
+                    if (!window._fbAuth) return;
+                    clearError();
+                    window._fbAuth.signInWithPopup(provider)
+                        .then(() => hideLogin())
+                        .catch((err) => {
+                            console.error('Google auth failed:', err);
+                            if (err.code === 'auth/configuration-not-found') {
+                                showError('Firebase Google provider is not enabled. Open Firebase Console → Auth → Sign-in method and enable Google sign-in.');
+                                return;
+                            }
+                            if (err.code && err.code.includes('popup')) {
+                                return window._fbAuth.signInWithRedirect(provider);
+                            }
+                            showError(err.message || 'Google sign-in failed. Check your popup blocker or Firebase config.');
+                        });
+                };
+
+                const loginWithEmail = () => {
+                    if (!window._fbAuth) return;
+                    clearError();
+                    const email = emailInput.value.trim();
+                    const password = passwordInput.value;
+                    if (!email || !password) {
+                        showError('Enter both email and password.');
+                        return;
+                    }
+                    window._fbAuth.signInWithEmailAndPassword(email, password)
+                        .then(() => hideLogin())
+                        .catch((err) => {
+                            console.error('Email login failed:', err);
+                            showError(err.message || 'Email sign-in failed.');
+                        });
+                };
+
+                const signupWithEmail = () => {
+                    if (!window._fbAuth) return;
+                    clearError();
+                    const email = emailInput.value.trim();
+                    const password = passwordInput.value;
+                    if (!email || !password) {
+                        showError('Enter both email and password.');
+                        return;
+                    }
+                    window._fbAuth.createUserWithEmailAndPassword(email, password)
+                        .then(() => hideLogin())
+                        .catch((err) => {
+                            console.error('Signup failed:', err);
+                            showError(err.message || 'Sign-up failed.');
+                        });
+                };
+
+                authBtn && authBtn.addEventListener('click', () => {
+                    const user = window._fbAuth.currentUser;
+                    if (user) { window._fbAuth.signOut(); return; }
+                    showLogin();
+                });
+
+                closeBtn && closeBtn.addEventListener('click', hideLogin);
+                if (loginScreen) {
+                    loginScreen.addEventListener('click', (event) => {
+                        if (event.target === loginScreen) hideLogin();
+                    });
+                }
+
+                googleBtn && googleBtn.addEventListener('click', startGoogleAuth);
+                emailBtn && emailBtn.addEventListener('click', loginWithEmail);
+                signupEmailBtn && signupEmailBtn.addEventListener('click', signupWithEmail);
+                signupLink && signupLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    signupWithEmail();
+                });
+
+                window._fbAuth.getRedirectResult()
+                    .then((result) => {
+                        if (result && result.user) {
+                            hideLogin();
+                        }
+                    })
+                    .catch((err) => {
+                        console.error('Redirect auth failed:', err);
+                    });
+
+                window._fbAuth.onAuthStateChanged(async (user) => {
+                    const btn = document.getElementById('auth-btn');
+                    if (!btn) return;
+                    if (user) {
+                        btn.textContent = 'Sign out';
+                        hideLogin();
+                        window.getIdToken = async () => await user.getIdToken();
+                    } else {
+                        btn.textContent = 'Sign in';
+                        window.getIdToken = async () => null;
+                    }
+                });
+            })
+            .catch(err => { console.warn('Firebase client failed to load', err); });
+        })();
     </script>
 </body>
 

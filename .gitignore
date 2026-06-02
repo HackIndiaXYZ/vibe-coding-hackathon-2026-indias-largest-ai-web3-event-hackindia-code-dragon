@@ -3,5 +3,6 @@ __pycache__/
 data/*.json
 logs/*.log
 .env
+serviceAccount.json
 venv/
 .vscode/

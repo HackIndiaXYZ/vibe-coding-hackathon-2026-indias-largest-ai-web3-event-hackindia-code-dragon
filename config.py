@@ -27,3 +27,9 @@ SYSTEM_LOG_FILE = os.path.join(LOGS_DIR, "ren_core.log")
 
 os.makedirs(MEMORY_DIR, exist_ok=True)
 os.makedirs(LOGS_DIR, exist_ok=True)
+
+# [Firebase Configuration (Optional)]
+# Set this to the path of your Firebase service account JSON file
+# Download from: Firebase Console → Settings ⚙️ → Service Accounts → Generate New Private Key
+FIREBASE_SERVICE_ACCOUNT = os.getenv("FIREBASE_SERVICE_ACCOUNT", None)
+# Example: FIREBASE_SERVICE_ACCOUNT = 'serviceAccount.json'
