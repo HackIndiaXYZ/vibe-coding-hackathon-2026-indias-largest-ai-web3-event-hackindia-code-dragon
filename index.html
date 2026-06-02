@@ -2056,6 +2056,13 @@
             #chat-input { min-height: 48px; }
         }
 
+        /* Remove decorative orb on mobile/touch to stabilize layout */
+        @media (max-width:900px) {
+            .chat-orb { display: none !important; }
+        }
+
+        html.touch .chat-orb { display: none !important; }
+
         @media (max-width:480px) {
             .hero-title {
                 font-size: 18vw;
@@ -3064,7 +3071,13 @@
         let currentColor = new THREE.Color(0xffffff);
 
         (function initThreeBG() {
+            // Skip heavy three.js background on touch devices to avoid mobile movement/scroll issues
+            const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
             const canvas = document.getElementById('star-canvas');
+            if (isTouch || !canvas || typeof THREE === 'undefined') {
+                if (canvas) canvas.style.display = 'none';
+                return;
+            }
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
             camera.position.z = 1000;
