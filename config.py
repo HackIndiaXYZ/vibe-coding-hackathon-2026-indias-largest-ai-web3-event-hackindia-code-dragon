@@ -1,6 +1,6 @@
 import os
 
-GROQ_API_KEY = "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"
+GROQ_API_KEY = "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"
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 
