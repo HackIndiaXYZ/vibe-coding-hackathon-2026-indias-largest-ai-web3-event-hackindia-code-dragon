@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -2040,29 +2040,57 @@
 
         .mode-pills {
             display: flex;
-            gap: 6px;
-            margin-bottom: 10px;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
         }
 
         .mpill {
             font-family: var(--mono);
-            font-size: 8px;
-            letter-spacing: 0.2em;
+            font-size: 10px;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
-            padding: 5px 12px;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: rgba(255, 255, 255, 0.3);
-            cursor: none;
-            transition: all .2s;
+            padding: 8px 16px;
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            background: rgba(0, 0, 0, 0.3);
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
         }
 
-        .mpill.active,
         .mpill:hover {
-            border-color: rgba(255, 255, 255, 0.4);
-            color: #fff;
-            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
         }
+
+        /* Study Mode Styling */
+        #pill-study.active {
+            border-color: #6366f1;
+            color: #6366f1;
+            background: rgba(99, 102, 241, 0.15);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+
+        #pill-study .mode-icon { font-size: 12px; }
+        #pill-study .mode-label { font-weight: 600; }
+
+        /* Coding Mode Styling */
+        #pill-coding.active {
+            border-color: #10b981;
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.15);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+
+        #pill-coding .mode-icon { font-size: 12px; }
+        #pill-coding .mode-label { font-weight: 600; }
 
         .input-row {
             display: flex;
@@ -3123,15 +3151,42 @@
     </style>
 </head>
 <script>
-window.FIREBASE_CONFIG = {
-  apiKey: "AIzaSyD769R0FALRw-VZQGq9U17YDnxvw6rbNuw",
-  authDomain: "ren-ai-92906.firebaseapp.com",
-  projectId: "ren-ai-92906",
-  storageBucket: "ren-ai-92906.firebasestorage.app",
-  messagingSenderId: "1094624403877",
-  appId: "1:1094624403877:web:733f9decfee0322b7fc84c",
-  measurementId: "G-0XT9Q1K1R7"
+// Load Firebase config from environment or window global
+window.FIREBASE_CONFIG = window.FIREBASE_CONFIG || {
+  apiKey: globalThis.FIREBASE_API_KEY || "",
+  authDomain: globalThis.FIREBASE_AUTH_DOMAIN || "",
+  projectId: globalThis.FIREBASE_PROJECT_ID || "",
+  storageBucket: globalThis.FIREBASE_STORAGE_BUCKET || "",
+  messagingSenderId: globalThis.FIREBASE_MESSAGING_SENDER_ID || "",
+  appId: globalThis.FIREBASE_APP_ID || "",
+  measurementId: globalThis.FIREBASE_MEASUREMENT_ID || ""
 };
+
+// Warn if config is incomplete
+if (!window.FIREBASE_CONFIG.apiKey) {
+  console.warn('⚠️ Firebase config not loaded. Set FIREBASE_CONFIG environment variables.');
+}
+
+// Store reCAPTCHA Site Key for App Check
+window.RECAPTCHA_SITE_KEY = '6LdrxW8AAAAACvA4lC4TTI7eToQRpESvgWoiSG9';
+
+// Load Firebase config from API endpoint
+async function loadFirebaseConfig() {
+  try {
+    const response = await fetch('/api/config/firebase');
+    if (response.ok) {
+      window.FIREBASE_CONFIG = await response.json();
+      console.log('✅ Firebase config loaded from server');
+    } else {
+      console.error('Failed to load Firebase config:', response.status);
+    }
+  } catch (error) {
+    console.error('Error loading Firebase config:', error);
+  }
+}
+
+// Load config immediately
+loadFirebaseConfig();
 </script>
 <body>
 
@@ -4076,8 +4131,14 @@ window.FIREBASE_CONFIG = {
 
                 <div class="chat-input-wrap">
                     <div class="mode-pills">
-                        <button class="mpill active" id="pill-ren" onclick="setMode('ren')">◈ INTERACTIVE TUTOR
-                            ACTIVE</button>
+                        <button class="mpill active" id="pill-study" onclick="setMode('study')" title="Study Mode - Learn like a cool tutor">
+                            <span class="mode-icon">📚</span>
+                            <span class="mode-label">STUDY MODE</span>
+                        </button>
+                        <button class="mpill" id="pill-coding" onclick="setMode('coding')" title="Coding Mode - Code with expert explanations">
+                            <span class="mode-icon">💻</span>
+                            <span class="mode-label">CODING MODE</span>
+                        </button>
                     </div>
                     <div class="input-row">
                         <textarea id="chat-input" placeholder="Speak to the tutor..." rows="1"
@@ -4415,17 +4476,29 @@ window.FIREBASE_CONFIG = {
 
         // ── MODE PILLS ────────────────────────────────────────────
         function setMode(m) {
-            chatMode = 'ren';
+            chatMode = m;  // Store the selected mode
             const chTitle = document.getElementById('chat-top-name');
             const chSub = document.getElementById('chat-top-sub');
             const ppName = document.getElementById('pp-name');
             const ppDesc = document.getElementById('pp-desc');
 
-            if (chTitle) chTitle.textContent = 'REN — ADVANCED TUTOR CORE';
-            if (chSub) chSub.innerHTML = '<span class="online-dot" style="background:var(--green)"></span>PROTOCOL ONLINE · PEDAGOGICAL MODE';
-            if (ppName) ppName.textContent = 'REN';
-            if (ppDesc) ppDesc.textContent = 'Elite Technical Mentor & Coding Tutor Core.';
-            setPersonality('ren');
+            // Update UI buttons
+            document.querySelectorAll('.mpill').forEach(pill => pill.classList.remove('active'));
+            document.getElementById(`pill-${m}`).classList.add('active');
+
+            if (m === 'study') {
+                if (chTitle) chTitle.textContent = 'REN — STUDY MODE';
+                if (chSub) chSub.innerHTML = '<span class="online-dot" style="background:#6366f1"></span>EXPERT TEACHER · STUDY BUDDY';
+                if (ppName) ppName.textContent = 'REN';
+                if (ppDesc) ppDesc.textContent = 'Your friendly study companion. Ask anything!';
+            } else if (m === 'coding') {
+                if (chTitle) chTitle.textContent = 'REN — CODING MODE';
+                if (chSub) chSub.innerHTML = '<span class="online-dot" style="background:#10b981"></span>EXPERT CODER · CODE FIRST EXPLAINER';
+                if (ppName) ppName.textContent = 'REN';
+                if (ppDesc) ppDesc.textContent = 'Explains concepts, then provides clean code.';
+            }
+            
+            setPersonality(m);
             playClick();
         }
 
