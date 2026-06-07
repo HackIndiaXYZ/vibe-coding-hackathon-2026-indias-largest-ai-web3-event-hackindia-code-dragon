@@ -29,7 +29,7 @@ class GeminiInferenceEngine:
         
         genai.configure(api_key=self.api_key)
         self.client = genai.GenerativeModel(model_name=self.model)
-        print(f"[Engine] ✅ Gemini AI Engine initialized with model: {self.model}")
+        print(f"[Engine] [OK] Gemini AI Engine initialized with model: {self.model}")
 
     def generate_response(
         self, 
