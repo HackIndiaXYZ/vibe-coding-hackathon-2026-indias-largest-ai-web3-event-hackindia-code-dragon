@@ -3,7 +3,7 @@
 
 ---
 
-## 📁 PROJECT STRUCTURE
+## [FILES] PROJECT STRUCTURE
 
 ```
 ren-natsuki/
@@ -20,11 +20,11 @@ ren-natsuki/
 
 ---
 
-## ⚡ QUICK START
+## [LIGHTNING] QUICK START
 
 ### 1. Get a FREE Groq API Key
 Visit: https://console.groq.com/
-- Sign up → API Keys → Create Key
+- Sign up -> API Keys -> Create Key
 - Copy your key
 
 ### 2. Install Dependencies
@@ -73,13 +73,13 @@ http://localhost:5000
 
 ### Personality Detection (Auto Mode)
 The backend scores your message for keywords:
-- **Code keywords** → routes to **Ren** (hacker, precise, cold)
-- **Casual/emotion keywords** → routes to **Natsuki** (warm, creative, expressive)  
-- **Mixed/ambiguous** → routes to **Dual** (both reply)
+- **Code keywords** -> routes to **Ren** (hacker, precise, cold)
+- **Casual/emotion keywords** -> routes to **Natsuki** (warm, creative, expressive)  
+- **Mixed/ambiguous** -> routes to **Dual** (both reply)
 
 ### Manual Override
 Use the mode pills in the chat:
-- ⚡ **Auto-Detect** — AI decides
+- [LIGHTNING] **Auto-Detect** — AI decides
 - ◈ **Force Ren** — always Ren
 - ✿ **Force Natsuki** — always Natsuki
 - ∞ **Dual Mode** — always both
@@ -91,7 +91,7 @@ Switches the UI theme + 3D orb between:
 
 ---
 
-## 🔧 CUSTOMIZATION
+## [TOOLS] CUSTOMIZATION
 
 ### Switch AI Provider
 The backend uses **Groq** (free, fast). To switch:
@@ -127,7 +127,7 @@ In `app.py`, edit `REN_PROMPT` and `NATSUKI_PROMPT` to change how each character
 
 ---
 
-## 🐛 TROUBLESHOOTING
+## [BUG] TROUBLESHOOTING
 
 | Issue | Fix |
 |-------|-----|

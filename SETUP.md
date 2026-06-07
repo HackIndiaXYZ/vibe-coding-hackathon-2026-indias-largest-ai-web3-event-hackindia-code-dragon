@@ -1,6 +1,6 @@
-# 🚀 SETUP CHECKLIST - Natsuki-Ren Features
+# [ROCKET] SETUP CHECKLIST - Natsuki-Ren Features
 
-## ✅ What's Already Done
+## [OK] What's Already Done
 
 - [x] **firebase_handler.py** - All Firebase functions created
 - [x] **web_app.py** - Updated with 30+ new API endpoints
@@ -11,22 +11,22 @@
 
 ---
 
-## 🔧 REMAINING SETUP (Quick & Easy)
+## [TOOLS] REMAINING SETUP (Quick & Easy)
 
 ### **Step 1: Get Firebase Service Account** (5 min)
 ```
 1. Go to: https://console.firebase.google.com
 2. Select your project
-3. Click ⚙️ Settings → Service Accounts
+3. Click ⚙️ Settings -> Service Accounts
 4. Click "Generate New Private Key"
 5. Save as: serviceAccount.json in project root (C:\Ojas\NatsukiXRen\)
 ```
 
 ### **Step 2: Verify Firebase Rules**
 Check `firestore.rules` - allows:
-- ✅ Users read/write own data
-- ✅ Community read public data
-- ✅ Leaderboard read public
+- [OK] Users read/write own data
+- [OK] Community read public data
+- [OK] Leaderboard read public
 
 ### **Step 3: Start Server**
 ```bash
@@ -52,37 +52,37 @@ Expected output:
 http://localhost:5000
 ```
 
-Click: 💬 Chat → 📊 Dashboard → 📚 Study → etc.
+Click: [CHAT] Chat -> [DASHBOARD] Dashboard -> [BOOKS] Study -> etc.
 
 ---
 
-## 🎯 FEATURE STATUS
+## [GOAL] FEATURE STATUS
 
 | Feature | Status | API Endpoints | Frontend |
 |---------|--------|---------------|----------|
-| Dashboard | ✅ Ready | `/api/dashboard` | View with stats |
-| Study Notes | ✅ Ready | POST/GET `/api/notes` | Create & list |
-| Quizzes | ✅ Ready | `/api/quizzes*` | Create & track |
-| Flashcards | ✅ Ready | `/api/flashcards*` | Create & study |
-| Study Plans | ✅ Ready | `/api/study-plans*` | Manage schedule |
-| Code Snippets | ✅ Ready | `/api/code-snippets` | Save & browse |
-| Image Analysis | ✅ Ready | `/api/analyze-image` | Upload & analyze |
-| OCR | ✅ Ready | `/api/ocr` | Extract text |
-| Resume Review | ✅ Ready | `/api/resume-review` | Get feedback |
-| PDF Summary | ✅ Ready | `/api/pdf-summary` | Summarize docs |
-| Share Chats | ✅ Ready | `/api/share-chat*` | Public chats |
-| Prompts | ✅ Ready | `/api/prompts*` | Prompt library |
-| Marketplace | ✅ Ready | `/api/marketplace*` | Buy/sell prompts |
-| Leaderboard | ✅ Ready | `/api/leaderboard` | Top users |
-| XP System | ✅ Ready | `/api/user/xp` | Earn points |
-| Badges | ✅ Ready | `/api/user/badge` | Achievements |
-| Daily Challenges | ✅ Ready | `/api/daily-challenges*` | Complete tasks |
+| Dashboard | [OK] Ready | `/api/dashboard` | View with stats |
+| Study Notes | [OK] Ready | POST/GET `/api/notes` | Create & list |
+| Quizzes | [OK] Ready | `/api/quizzes*` | Create & track |
+| Flashcards | [OK] Ready | `/api/flashcards*` | Create & study |
+| Study Plans | [OK] Ready | `/api/study-plans*` | Manage schedule |
+| Code Snippets | [OK] Ready | `/api/code-snippets` | Save & browse |
+| Image Analysis | [OK] Ready | `/api/analyze-image` | Upload & analyze |
+| OCR | [OK] Ready | `/api/ocr` | Extract text |
+| Resume Review | [OK] Ready | `/api/resume-review` | Get feedback |
+| PDF Summary | [OK] Ready | `/api/pdf-summary` | Summarize docs |
+| Share Chats | [OK] Ready | `/api/share-chat*` | Public chats |
+| Prompts | [OK] Ready | `/api/prompts*` | Prompt library |
+| Marketplace | [OK] Ready | `/api/marketplace*` | Buy/sell prompts |
+| Leaderboard | [OK] Ready | `/api/leaderboard` | Top users |
+| XP System | [OK] Ready | `/api/user/xp` | Earn points |
+| Badges | [OK] Ready | `/api/user/badge` | Achievements |
+| Daily Challenges | [OK] Ready | `/api/daily-challenges*` | Complete tasks |
 
 *= Multiple endpoints (list, create, complete, etc.)
 
 ---
 
-## 📚 FILE STRUCTURE
+## [BOOKS] FILE STRUCTURE
 
 ```
 C:\Ojas\NatsukiXRen\
@@ -170,11 +170,11 @@ await window.NatsukiAPI.addBadge("Tester")
 
 ---
 
-## ✨ YOU'RE ALL SET!
+## [SPARKLE] YOU'RE ALL SET!
 
 Everything is ready to go. Just:
 1. Add serviceAccount.json
 2. Run: `python web_app.py`
 3. Visit: http://localhost:5000
 4. Sign in
-5. Enjoy all features! 🎉
+5. Enjoy all features! [PARTY]

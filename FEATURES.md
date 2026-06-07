@@ -1,28 +1,28 @@
-# 🎯 Natsuki-Ren AI System - COMPLETE FEATURE GUIDE
+# [GOAL] Natsuki-Ren AI System - COMPLETE FEATURE GUIDE
 
-## ✅ What's Been Built
+## [OK] What's Been Built
 
 All 6 feature modules are now **fully functional** with Firebase integration:
 
 ---
 
-## 🏗️ **ARCHITECTURE OVERVIEW**
+## [BUILD] **ARCHITECTURE OVERVIEW**
 
 ```
 Frontend (index.html + api.js)
-         ↓
+         |
     Navigation UI
-         ↓
+         |
 Backend (web_app.py + firebase_handler.py)
-         ↓
+         |
     Firebase Firestore
 ```
 
 ---
 
-## 📋 **API ENDPOINTS & FEATURES**
+## [NOTES] **API ENDPOINTS & FEATURES**
 
-### **1️⃣ DASHBOARD** 📊
+### **1) DASHBOARD** [DASHBOARD]
 Get user stats, messages, streaks, XP, level, AI usage
 
 **Endpoint:** `GET /api/dashboard`
@@ -41,41 +41,41 @@ Get user stats, messages, streaks, XP, level, AI usage
 
 ---
 
-### **2️⃣ STUDY HUB** 📚
+### **2) STUDY HUB** [BOOKS]
 
 #### **Study Notes**
 ```
-POST /api/notes          → Create note
-GET  /api/notes          → Get all notes
+POST /api/notes          -> Create note
+GET  /api/notes          -> Get all notes
 ```
 
 #### **Quizzes**
 ```
-POST /api/quizzes                      → Create quiz
-GET  /api/quizzes                      → Get all quizzes
-POST /api/quizzes/{id}/complete        → Mark complete (awards XP)
+POST /api/quizzes                      -> Create quiz
+GET  /api/quizzes                      -> Get all quizzes
+POST /api/quizzes/{id}/complete        -> Mark complete (awards XP)
 ```
 
 #### **Flashcards**
 ```
-POST /api/flashcards     → Create flashcard
-GET  /api/flashcards     → Get all flashcards
+POST /api/flashcards     -> Create flashcard
+GET  /api/flashcards     -> Get all flashcards
 ```
 
 #### **Study Plans**
 ```
-POST /api/study-plans    → Create plan
-GET  /api/study-plans    → Get all plans
+POST /api/study-plans    -> Create plan
+GET  /api/study-plans    -> Get all plans
 ```
 
 ---
 
-### **3️⃣ CODE HUB** 💻
+### **3) CODE HUB** [CODE]
 
 #### **Code Snippets**
 ```
-POST /api/code-snippets  → Save code snippet
-GET  /api/code-snippets  → Get all snippets
+POST /api/code-snippets  -> Save code snippet
+GET  /api/code-snippets  -> Get all snippets
 ```
 
 **Example:**
@@ -89,21 +89,21 @@ GET  /api/code-snippets  → Get all snippets
 
 ---
 
-### **4️⃣ AI TOOLS** 🔧
+### **4) AI TOOLS** [TOOLS]
 
 #### **Image Analysis**
 ```
-POST /api/analyze-image  → Upload & analyze image
+POST /api/analyze-image  -> Upload & analyze image
 ```
 
 #### **OCR (Text Extraction)**
 ```
-POST /api/ocr            → Extract text from image
+POST /api/ocr            -> Extract text from image
 ```
 
 #### **Resume Review**
 ```
-POST /api/resume-review  → Get feedback on resume
+POST /api/resume-review  -> Get feedback on resume
 ```
 
 **Example:**
@@ -115,34 +115,34 @@ POST /api/resume-review  → Get feedback on resume
 
 #### **PDF Summarizer**
 ```
-POST /api/pdf-summary    → Get PDF summary
+POST /api/pdf-summary    -> Get PDF summary
 ```
 
 ---
 
-### **5️⃣ COMMUNITY** 👥
+### **5) COMMUNITY** [PEOPLE]
 
 #### **Share Chats**
 ```
-POST /api/share-chat     → Share chat publicly
-GET  /api/shared-chats   → Get all shared chats
+POST /api/share-chat     -> Share chat publicly
+GET  /api/shared-chats   -> Get all shared chats
 ```
 
 #### **Public Prompts**
 ```
-POST /api/prompts        → Create public prompt
-GET  /api/prompts        → Browse prompts (sorted by usage)
+POST /api/prompts        -> Create public prompt
+GET  /api/prompts        -> Browse prompts (sorted by usage)
 ```
 
 #### **Marketplace**
 ```
-POST /api/marketplace    → List item for sale
-GET  /api/marketplace    → Browse marketplace
+POST /api/marketplace    -> List item for sale
+GET  /api/marketplace    -> Browse marketplace
 ```
 
 #### **Leaderboard**
 ```
-GET  /api/leaderboard?limit=50  → Get top users by XP
+GET  /api/leaderboard?limit=50  -> Get top users by XP
 ```
 
 **Returns:**
@@ -156,11 +156,11 @@ GET  /api/leaderboard?limit=50  → Get top users by XP
 
 ---
 
-### **6️⃣ GAMIFICATION** 🎮
+### **6) GAMIFICATION** [GAME]
 
 #### **XP & Levels**
 ```
-POST /api/user/xp        → Add XP (auto level-up at 1000 XP)
+POST /api/user/xp        -> Add XP (auto level-up at 1000 XP)
 ```
 
 **Example:**
@@ -176,7 +176,7 @@ POST /api/user/xp        → Add XP (auto level-up at 1000 XP)
 
 #### **Badges**
 ```
-POST /api/user/badge     → Award badge
+POST /api/user/badge     -> Award badge
 ```
 
 **Example:**
@@ -188,17 +188,17 @@ POST /api/user/badge     → Award badge
 
 #### **Daily Challenges**
 ```
-POST /api/daily-challenges                    → Create challenge
-GET  /api/daily-challenges                    → Get challenges
-POST /api/daily-challenges/{id}/complete      → Complete challenge
+POST /api/daily-challenges                    -> Create challenge
+GET  /api/daily-challenges                    -> Get challenges
+POST /api/daily-challenges/{id}/complete      -> Complete challenge
 ```
 
 ---
 
-## 🚀 **HOW TO USE**
+## [ROCKET] **HOW TO USE**
 
 ### **1. Frontend Navigation**
-Click tabs at top: 💬 Chat | 📊 Dashboard | 📚 Study | 💻 Code | 🔧 Tools | 👥 Community | 🎮 Gamify
+Click tabs at top: [CHAT] Chat | [DASHBOARD] Dashboard | [BOOKS] Study | [CODE] Code | [TOOLS] Tools | [PEOPLE] Community | [GAME] Gamify
 
 ### **2. JavaScript API** (in browser console)
 ```javascript
@@ -222,7 +222,7 @@ Must be logged in with Firebase. The app automatically attaches `Authorization: 
 
 ---
 
-## 📁 **FIREBASE COLLECTIONS STRUCTURE**
+## [FILES] **FIREBASE COLLECTIONS STRUCTURE**
 
 ```
 users/
@@ -284,14 +284,14 @@ Users can only read/write their own data. Community data is public. See `firesto
 
 ---
 
-## ✨ **QUICK START**
+## [SPARKLE] **QUICK START**
 
 ### **Step 1: Ensure Firebase is Connected**
 ```bash
 # Check if serviceAccount.json exists
 ls serviceAccount.json
 
-# If not, download from Firebase Console → Settings ⚙️ → Service Accounts
+# If not, download from Firebase Console -> Settings ⚙️ -> Service Accounts
 ```
 
 ### **Step 2: Start the Server**
@@ -308,15 +308,15 @@ http://localhost:5000
 Click "Sign in" button (top right)
 
 ### **Step 5: Try Features**
-- 💬 Chat normally
-- 📊 Dashboard shows your stats (updated in real-time)
-- 📚 Create study notes, quizzes, flashcards
-- 💻 Save code snippets
-- 🎮 Earn XP by using the app
+- [CHAT] Chat normally
+- [DASHBOARD] Dashboard shows your stats (updated in real-time)
+- [BOOKS] Create study notes, quizzes, flashcards
+- [CODE] Save code snippets
+- [GAME] Earn XP by using the app
 
 ---
 
-## 🎁 **DATA FLOW EXAMPLE**
+## [GIFT] **DATA FLOW EXAMPLE**
 
 **User completes a quiz:**
 
@@ -327,11 +327,11 @@ Click "Sign in" button (top right)
 5. Backend: Awards 50 XP via `add_xp(uid, score*10)`
 6. Backend: Checks if level-up (every 1000 XP)
 7. Firebase updated: `users/{uid}/xp` and `users/{uid}/level`
-8. Frontend: Shows "Level Up! 🎉"
+8. Frontend: Shows "Level Up! [PARTY]"
 
 ---
 
-## 🛠️ **EXTENDING FEATURES**
+## [TOOLS] **EXTENDING FEATURES**
 
 ### **Add New Endpoint**
 1. Create function in `firebase_handler.py`
@@ -356,43 +356,43 @@ async myFeature(data) {
 
 ---
 
-## 🐛 **TROUBLESHOOTING**
+## [BUG] **TROUBLESHOOTING**
 
 ### Firebase not connecting?
 ```
 Error: FIREBASE_SERVICE_ACCOUNT path invalid
-→ Check config.py, ensure serviceAccount.json in repo root
+-> Check config.py, ensure serviceAccount.json in repo root
 ```
 
 ### API returning 401?
 ```
 Error: Unauthorized
-→ User not logged in, or token expired
-→ Have them click "Sign in" button
+-> User not logged in, or token expired
+-> Have them click "Sign in" button
 ```
 
 ### Data not saving?
 ```
-→ Check browser console for errors
-→ Verify Firebase rules allow write access
-→ Check /logs/ren_core.log for backend errors
+-> Check browser console for errors
+-> Verify Firebase rules allow write access
+-> Check /logs/ren_core.log for backend errors
 ```
 
 ---
 
-## 📊 **FEATURE CHECKLIST**
+## [DASHBOARD] **FEATURE CHECKLIST**
 
-✅ Dashboard - Real-time stats
-✅ Study Hub - Notes, quizzes, flashcards, plans
-✅ Code Hub - Snippet storage & tools
-✅ AI Tools - Image, OCR, resume, PDF
-✅ Community - Sharing, prompts, marketplace, leaderboard
-✅ Gamification - XP, levels, badges, challenges
+[OK] Dashboard - Real-time stats
+[OK] Study Hub - Notes, quizzes, flashcards, plans
+[OK] Code Hub - Snippet storage & tools
+[OK] AI Tools - Image, OCR, resume, PDF
+[OK] Community - Sharing, prompts, marketplace, leaderboard
+[OK] Gamification - XP, levels, badges, challenges
 
 **All endpoints documented and ready to use!**
 
 ---
 
-## 🎉 **YOU'RE GOOD TO GO!**
+## [PARTY] **YOU'RE GOOD TO GO!**
 
-All features are live. Start using them now! 🚀
+All features are live. Start using them now! [ROCKET]

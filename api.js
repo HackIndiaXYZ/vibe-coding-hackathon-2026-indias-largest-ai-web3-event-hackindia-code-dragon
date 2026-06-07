@@ -265,7 +265,7 @@ class NatsukiRenUI {
                     </div>
                     <div class="stat-card">
                         <div class="stat-label">Daily Streak</div>
-                        <div class="stat-value">${data.daily_streak || 0}🔥</div>
+                        <div class="stat-value">${data.daily_streak || 0} [FIRE]</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-label">AI Usage</div>
@@ -290,4 +290,4 @@ class NatsukiRenUI {
 // Global UI instance
 window.NatsukiUI = new NatsukiRenUI();
 
-console.log('✅ Natsuki-Ren Features API loaded');
+console.log('[OK] Natsuki-Ren Features API loaded');

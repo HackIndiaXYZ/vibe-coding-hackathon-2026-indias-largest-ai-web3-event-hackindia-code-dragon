@@ -3164,7 +3164,7 @@ window.FIREBASE_CONFIG = window.FIREBASE_CONFIG || {
 
 // Warn if config is incomplete
 if (!window.FIREBASE_CONFIG.apiKey) {
-  console.warn('⚠️ Firebase config not loaded. Set FIREBASE_CONFIG environment variables.');
+  console.warn('[WARNING] Firebase config not loaded. Set FIREBASE_CONFIG environment variables.');
 }
 
 // Store reCAPTCHA Site Key for App Check
@@ -3176,7 +3176,7 @@ async function loadFirebaseConfig() {
     const response = await fetch('/api/config/firebase');
     if (response.ok) {
       window.FIREBASE_CONFIG = await response.json();
-      console.log('✅ Firebase config loaded from server');
+      console.log('[OK] Firebase config loaded from server');
     } else {
       console.error('Failed to load Firebase config:', response.status);
     }
@@ -3316,13 +3316,13 @@ loadFirebaseConfig();
                     <button class="settings-tab-btn active" data-tab="account">👤 Account</button>
                     <button class="settings-tab-btn" data-tab="appearance">🎨 Appearance</button>
                     <button class="settings-tab-btn" data-tab="ai-settings">🤖 AI Settings</button>
-                    <button class="settings-tab-btn" data-tab="memory">🧠 Memory</button>
+                    <button class="settings-tab-btn" data-tab="memory">[BRAIN] Memory</button>
                     <button class="settings-tab-btn" data-tab="voice">🔊 Voice</button>
-                    <button class="settings-tab-btn" data-tab="chat">💬 Chat</button>
-                    <button class="settings-tab-btn" data-tab="student">📚 Student</button>
+                    <button class="settings-tab-btn" data-tab="chat">[CHAT] Chat</button>
+                    <button class="settings-tab-btn" data-tab="student">[BOOKS] Student</button>
                     <button class="settings-tab-btn" data-tab="notifications">🔔 Notifications</button>
                     <button class="settings-tab-btn" data-tab="privacy">🔒 Privacy & Security</button>
-                    <button class="settings-tab-btn" data-tab="extra">🚀 Extra Cool Stuff</button>
+                    <button class="settings-tab-btn" data-tab="extra">[ROCKET] Extra Cool Stuff</button>
                 </aside>
                 
                 <main class="settings-content">
@@ -3586,15 +3586,15 @@ loadFirebaseConfig();
                         <div class="settings-group">
                             <label>Daily Streak Counter</label>
                             <div class="settings-streak-box">
-                                🔥 <span id="streak-counter">3</span> Day Streak! Keep learning!
+                                [FIRE] <span id="streak-counter">3</span> Day Streak! Keep learning!
                             </div>
                         </div>
                         <div class="settings-group">
                             <label>Achievement Badges</label>
                             <div class="settings-badge-grid">
                                 <span class="badge active" title="Signed in for the first time">👶 Hello World</span>
-                                <span class="badge active" title="3 Day Streak reached">🔥 Consistent Scholar</span>
-                                <span class="badge" id="badge-code" title="Wrote a coding prompt">💻 Syntax Sorcerer</span>
+                                <span class="badge active" title="3 Day Streak reached">[FIRE] Consistent Scholar</span>
+                                <span class="badge" id="badge-code" title="Wrote a coding prompt">[CODE] Syntax Sorcerer</span>
                             </div>
                         </div>
                         <div class="settings-group inline">
@@ -4132,11 +4132,11 @@ loadFirebaseConfig();
                 <div class="chat-input-wrap">
                     <div class="mode-pills">
                         <button class="mpill active" id="pill-study" onclick="setMode('study')" title="Study Mode - Learn like a cool tutor">
-                            <span class="mode-icon">📚</span>
+                            <span class="mode-icon">[BOOKS]</span>
                             <span class="mode-label">STUDY MODE</span>
                         </button>
                         <button class="mpill" id="pill-coding" onclick="setMode('coding')" title="Coding Mode - Code with expert explanations">
-                            <span class="mode-icon">💻</span>
+                            <span class="mode-icon">[CODE]</span>
                             <span class="mode-label">CODING MODE</span>
                         </button>
                     </div>

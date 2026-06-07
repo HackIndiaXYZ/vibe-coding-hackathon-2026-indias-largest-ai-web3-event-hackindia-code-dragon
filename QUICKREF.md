@@ -1,32 +1,32 @@
-# 🎯 FEATURE QUICK REFERENCE
+# [GOAL] FEATURE QUICK REFERENCE
 
-## 🎮 Navigation Tabs
+## [GAME] Navigation Tabs
 ```
-💬 Chat         → Talk to REN AI
-📊 Dashboard    → View your stats & progress
-📚 Study        → Create notes, quizzes, flashcards
-💻 Code         → Save code snippets & tools
-🔧 Tools        → Image analysis, OCR, resume, PDF
-👥 Community    → Share chats, prompts, marketplace
-🎮 Gamify       → XP, badges, daily challenges
+[CHAT] Chat         -> Talk to REN AI
+[DASHBOARD] Dashboard    -> View your stats & progress
+[BOOKS] Study        -> Create notes, quizzes, flashcards
+[CODE] Code         -> Save code snippets & tools
+[TOOLS] Tools        -> Image analysis, OCR, resume, PDF
+[PEOPLE] Community    -> Share chats, prompts, marketplace
+[GAME] Gamify       -> XP, badges, daily challenges
 ```
 
 ---
 
-## 📊 DASHBOARD
+## [DASHBOARD] DASHBOARD
 **What it shows:**
 - Total Chats: 0 (increases with each conversation)
 - Messages Sent: 0 (chat history)
-- Daily Streak: 0 🔥 (days you used the app)
+- Daily Streak: 0 [FIRE] (days you used the app)
 - AI Usage: 0 (API calls made)
 - Level: 1 (current level)
 - XP: 0 (experience points)
 
 ---
 
-## 📚 STUDY HUB
+## [BOOKS] STUDY HUB
 
-### 📝 Study Notes
+### [NOTE] Study Notes
 **Create notes from your conversations**
 - Title: "Python Basics"
 - Content: "Functions, loops, data types..."
@@ -53,7 +53,7 @@
 
 ---
 
-## 💻 CODE HUB
+## [CODE] CODE HUB
 
 ### 💾 Save Code
 **Store your snippets**
@@ -61,37 +61,37 @@
 - Code: Paste your code
 - Description: What it does
 
-### 🛠️ Tools
-- ⚡ Generate Code (ask AI to write code)
-- 🐛 Fix Bug (paste buggy code, get fixed version)
+### [TOOLS] Tools
+- [LIGHTNING] Generate Code (ask AI to write code)
+- [BUG] Fix Bug (paste buggy code, get fixed version)
 - 📖 Explain (understand how code works)
 - ▶️ Run Code (execute code online)
 
 ---
 
-## 🔧 AI TOOLS
+## [TOOLS] AI TOOLS
 
 ### 🖼️ Image Analyzer
-Upload image → AI describes what's in it
+Upload image -> AI describes what's in it
 
 ### 📄 OCR (Optical Character Recognition)
-Upload image with text → Extract all text as string
+Upload image with text -> Extract all text as string
 
-### 📋 Resume Reviewer
-Paste your resume → Get AI feedback on:
+### [NOTES] Resume Reviewer
+Paste your resume -> Get AI feedback on:
 - Format & structure
 - Grammar & typos
 - Content suggestions
 - ATS compatibility
 
 ### 📑 PDF Summarizer
-Upload PDF → Get concise summary
+Upload PDF -> Get concise summary
 
 ---
 
-## 👥 COMMUNITY
+## [PEOPLE] COMMUNITY
 
-### 💬 Share Chat
+### [CHAT] Share Chat
 Make your chat public
 - Others can see your conversation
 - Get likes ❤️
@@ -119,32 +119,32 @@ Make your chat public
 
 ---
 
-## 🎮 GAMIFICATION
+## [GAME] GAMIFICATION
 
 ### ⭐ Your Progress
 - **Level:** Increases every 1000 XP
 - **XP Bar:** Visual progress to next level
-- **Streak:** Days you've used the app 🔥
+- **Streak:** Days you've used the app [FIRE]
 
 ### 🏅 Badges (Achievements)
 Unlock by:
-- Completing quizzes → "Quiz Master"
-- Writing code → "Code Warrior"
-- Helping community → "Team Player"
-- Daily challenges → "Challenger"
+- Completing quizzes -> "Quiz Master"
+- Writing code -> "Code Warrior"
+- Helping community -> "Team Player"
+- Daily challenges -> "Challenger"
 
-### 📋 Daily Challenges
+### [NOTES] Daily Challenges
 **New each day:**
-- "Ask 5 questions" → +50 XP
-- "Complete a quiz" → +100 XP
-- "Write code" → +50 XP
-- "Share with community" → +50 XP
+- "Ask 5 questions" -> +50 XP
+- "Complete a quiz" -> +100 XP
+- "Write code" -> +50 XP
+- "Share with community" -> +50 XP
 
-Complete all daily challenges = **Streak maintained** 🔥
+Complete all daily challenges = **Streak maintained** [FIRE]
 
 ---
 
-## 💡 HOW TO EARN XP
+## [IDEA] HOW TO EARN XP
 
 | Activity | XP Awarded |
 |----------|-----------|
@@ -158,27 +158,27 @@ Complete all daily challenges = **Streak maintained** 🔥
 
 ---
 
-## 🎯 EXAMPLE WORKFLOWS
+## [GOAL] EXAMPLE WORKFLOWS
 
 ### 🎓 **Study for an Exam**
 1. Create Study Plan (📅) - "Math Chapter 5"
 2. Generate flashcards (🗂️) - Key terms
 3. Create quiz (❓) - Self-test
-4. Take quiz → Earn XP → Level up 🎉
+4. Take quiz -> Earn XP -> Level up [PARTY]
 
-### 💻 **Learn Python**
+### [CODE] **Learn Python**
 1. Ask REN: "Teach me Python functions"
-2. Generate Code (⚡) - Get example code
+2. Generate Code ([LIGHTNING]) - Get example code
 3. Save to Code Hub (💾) - For later
 4. Explain Code (📖) - Understand it
-5. Share on Community (💬) - Help others
+5. Share on Community ([CHAT]) - Help others
 6. Earn badges 🏅
 
-### 📚 **Research Project**
+### [BOOKS] **Research Project**
 1. Upload PDF (📑) - Get summary
-2. Create Study Notes (📝) - Key points
+2. Create Study Notes ([NOTE]) - Key points
 3. Generate Quiz (❓) - Test understanding
-4. Share findings (💬) - Community
+4. Share findings ([CHAT]) - Community
 5. Compete on Leaderboard 🏆
 
 ---
@@ -198,17 +198,17 @@ Complete all daily challenges = **Streak maintained** 🔥
 - Daily challenge progress
 
 **Is my data private?**
-- ✅ Your personal data: Private (only you see it)
-- ✅ Community posts: Public (everyone can see)
-- ✅ Leaderboard: Public (anonymous XP ranking)
+- [OK] Your personal data: Private (only you see it)
+- [OK] Community posts: Public (everyone can see)
+- [OK] Leaderboard: Public (anonymous XP ranking)
 
 ---
 
-## 🚀 TIPS & TRICKS
+## [ROCKET] TIPS & TRICKS
 
 **Pro Tips:**
-1. Complete daily challenges every day for 🔥 streak
-2. Share quizzes in community → More XP
+1. Complete daily challenges every day for [FIRE] streak
+2. Share quizzes in community -> More XP
 3. Use code hub to save useful snippets
 4. Create prompts & sell in marketplace
 5. Study regularly to level up faster
@@ -224,7 +224,7 @@ Complete all daily challenges = **Streak maintained** 🔥
 ## 🆘 HELP
 
 **Feature not working?**
-- F12 → Check Console for errors
+- F12 -> Check Console for errors
 - Try signing out & back in
 - Refresh page (Ctrl+R)
 - Check FEATURES.md for API details
@@ -241,6 +241,6 @@ Complete all daily challenges = **Streak maintained** 🔥
 
 ---
 
-## ✨ ENJOY ALL 6 FEATURES! 🎉
+## [SPARKLE] ENJOY ALL 6 FEATURES! [PARTY]
 
 Dashboard • Study • Code • Tools • Community • Gamification

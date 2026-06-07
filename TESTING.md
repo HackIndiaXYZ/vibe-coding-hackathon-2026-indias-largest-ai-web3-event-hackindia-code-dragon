@@ -171,7 +171,7 @@ console.log(completed)
 
 ---
 
-## 🛠️ Advanced Testing - Using cURL
+## [TOOLS] Advanced Testing - Using cURL
 
 ### 1. Get Dashboard
 ```bash
@@ -223,25 +223,25 @@ curl -X GET http://localhost:5000/api/leaderboard?limit=50 \
 ## 🔍 Expected Behavior
 
 ### Authentication
-- ✅ Without Bearer token: Returns 401 Unauthorized
-- ✅ With invalid token: Returns 401 Unauthorized
-- ✅ With valid token: Returns data
+- [OK] Without Bearer token: Returns 401 Unauthorized
+- [OK] With invalid token: Returns 401 Unauthorized
+- [OK] With valid token: Returns data
 
 ### Database
-- ✅ Data persists after page refresh
-- ✅ All users see their own data (private)
-- ✅ Community data visible to all
-- ✅ Leaderboard shows everyone's XP
+- [OK] Data persists after page refresh
+- [OK] All users see their own data (private)
+- [OK] Community data visible to all
+- [OK] Leaderboard shows everyone's XP
 
 ### Gamification
-- ✅ 1000 XP = 1 Level up
-- ✅ Badges accumulate (no duplicates)
-- ✅ Streak increases on daily challenges
-- ✅ Quiz score × 10 = XP awarded
+- [OK] 1000 XP = 1 Level up
+- [OK] Badges accumulate (no duplicates)
+- [OK] Streak increases on daily challenges
+- [OK] Quiz score × 10 = XP awarded
 
 ---
 
-## 🐛 Debugging Tips
+## [BUG] Debugging Tips
 
 ### Check Console for Errors
 ```javascript
@@ -255,7 +255,7 @@ window.NatsukiAPI.getDashboard()
 1. Open DevTools (F12)
 2. Go to Network tab
 3. Try an action
-4. Click the request → see status & response
+4. Click the request -> see status & response
 
 ### Common Errors
 
@@ -268,7 +268,7 @@ window.NatsukiAPI.getDashboard()
 
 ---
 
-## 📊 Test Scenarios
+## [DASHBOARD] Test Scenarios
 
 ### Scenario 1: Study Workflow
 ```javascript
@@ -317,7 +317,7 @@ console.log(leaders)
 
 ---
 
-## ✅ Full API Checklist
+## [OK] Full API Checklist
 
 ### Dashboard
 - [x] GET /api/dashboard
@@ -359,11 +359,11 @@ console.log(leaders)
 - [x] GET /api/daily-challenges
 - [x] POST /api/daily-challenges/{id}/complete
 
-**Total: 30+ endpoints** ✅
+**Total: 30+ endpoints** [OK]
 
 ---
 
-## 🎯 Performance Notes
+## [GOAL] Performance Notes
 
 - Dashboard stats: < 100ms
 - Create note: < 200ms
@@ -372,7 +372,7 @@ console.log(leaders)
 
 ---
 
-## 🚀 Ready to Test!
+## [ROCKET] Ready to Test!
 
 Start the server and try the console commands above!
 
@@ -382,4 +382,4 @@ python web_app.py
 # Run: await window.NatsukiAPI.getDashboard()
 ```
 
-Let me know if you find any issues! 🐛
+Let me know if you find any issues! [BUG]

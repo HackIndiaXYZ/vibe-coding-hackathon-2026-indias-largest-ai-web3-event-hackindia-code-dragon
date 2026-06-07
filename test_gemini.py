@@ -6,30 +6,30 @@ sys.path.insert(0, '.')
 
 from engine_gemini import GeminiInferenceEngine
 
-print("🔧 Testing Gemini Inference Engine...")
+print("[WRENCH] Testing Gemini Inference Engine...")
 print("=" * 50)
 
 try:
     # Initialize engine
     engine = GeminiInferenceEngine()
-    print("✅ Engine initialized successfully!\n")
+    print("[OK] Engine initialized successfully!\n")
     
     # Test message
     messages = [
         {"role": "user", "content": "Say hello as Ren AI in just one sentence."}
     ]
     
-    print("📤 Sending test request...")
+    print("[SEND] Sending test request...")
     response = engine.generate_response("ren", messages)
     
-    print("\n✅ Response received:")
+    print("\n[OK] Response received:")
     print("-" * 50)
     print(response)
     print("-" * 50)
-    print("\n✅ Gemini integration working perfectly!")
+    print("\n[OK] Gemini integration working perfectly!")
     
 except Exception as e:
-    print(f"\n❌ Error: {e}")
+    print(f"\n[ERROR] Error: {e}")
     print("\nTroubleshooting:")
     print("1. Check if FIREBASE_API_KEY is set in .env")
     print("2. Ensure google-generativeai is installed: pip install google-generativeai")
