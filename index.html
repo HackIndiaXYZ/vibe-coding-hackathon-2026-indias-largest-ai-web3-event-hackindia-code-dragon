@@ -5500,55 +5500,92 @@ loadFirebaseConfig();
     <script>
         // Firebase client (optional). Replace `window.FIREBASE_CONFIG` with your project's config object.
         (function initFirebaseClient(){
-            const FIREBASE_CONFIG = window.FIREBASE_CONFIG || null; // set this in a safe place in your hosting config
-            if (!FIREBASE_CONFIG) return;
-
+            let FIREBASE_CONFIG = window.FIREBASE_CONFIG || null; // set this in a safe place in your hosting config
             const loadScript = (src) => new Promise((res, rej) => {
                 const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s);
             });
 
-            Promise.resolve()
-            .then(() => loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js'))
-            .then(() => loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js'))
-            .then(() => loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js'))
-            .then(() => {
-                firebase.initializeApp(FIREBASE_CONFIG);
+            const authBtn = document.getElementById('auth-btn');
+            const loginScreen = document.getElementById('login-screen');
+            const closeBtn = document.getElementById('login-close-btn');
+            const googleBtn = document.getElementById('signin-google-btn');
+            const emailBtn = document.getElementById('login-email-btn');
+            const signupEmailBtn = document.getElementById('signup-email-btn');
+            const emailInput = document.getElementById('login-email');
+            const passwordInput = document.getElementById('login-password');
+            const errorBox = document.getElementById('login-error');
+            const signupLink = document.querySelector('.login-link');
+            const site = document.getElementById('site');
+
+            const showLogin = () => {
+                if (loginScreen) loginScreen.classList.add('active');
+                if (site) site.style.filter = 'blur(2px)';
+                document.body.style.overflow = 'hidden';
+            };
+            const hideLogin = () => {
+                if (loginScreen) loginScreen.classList.remove('active');
+                if (site) site.style.filter = 'none';
+                document.body.style.overflow = '';
+                clearError();
+            };
+            const showError = (message) => {
+                if (!errorBox) return;
+                errorBox.style.display = 'block';
+                errorBox.textContent = message;
+            };
+            const clearError = () => {
+                if (!errorBox) return;
+                errorBox.style.display = 'none';
+                errorBox.textContent = '';
+            };
+
+            const bindBasicAuthUI = () => {
+                authBtn && authBtn.addEventListener('click', () => {
+                    if (window._fbAuth && window._fbAuth.currentUser) {
+                        window._fbAuth.signOut();
+                        return;
+                    }
+                    showLogin();
+                });
+
+                closeBtn && closeBtn.addEventListener('click', hideLogin);
+                if (loginScreen) {
+                    loginScreen.addEventListener('click', (event) => {
+                        if (event.target === loginScreen) hideLogin();
+                    });
+                }
+            };
+
+            bindBasicAuthUI();
+
+            const fetchFirebaseConfig = async () => {
+                if (FIREBASE_CONFIG) return FIREBASE_CONFIG;
+                try {
+                    const res = await fetch('/api/config/firebase');
+                    if (!res.ok) throw new Error('Firebase config unavailable');
+                    const config = await res.json();
+                    FIREBASE_CONFIG = config;
+                    return config;
+                } catch (err) {
+                    console.warn('Firebase config fetch failed:', err);
+                    return null;
+                }
+            };
+
+            const initFirebase = async () => {
+                const config = await fetchFirebaseConfig();
+                if (!config) {
+                    showError('Firebase is not configured. Please set your Firebase config before using login.');
+                    return;
+                }
+
+                await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
+                await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js');
+                await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js');
+
+                firebase.initializeApp(config);
                 window._fbAuth = firebase.auth();
                 window._fbDb = firebase.firestore();
-
-                const authBtn = document.getElementById('auth-btn');
-                const loginScreen = document.getElementById('login-screen');
-                const closeBtn = document.getElementById('login-close-btn');
-                const googleBtn = document.getElementById('signin-google-btn');
-                const emailBtn = document.getElementById('login-email-btn');
-                const signupEmailBtn = document.getElementById('signup-email-btn');
-                const emailInput = document.getElementById('login-email');
-                const passwordInput = document.getElementById('login-password');
-                const errorBox = document.getElementById('login-error');
-                const signupLink = document.querySelector('.login-link');
-                const site = document.getElementById('site');
-
-                const showLogin = () => {
-                    if (loginScreen) loginScreen.classList.add('active');
-                    if (site) site.style.filter = 'blur(2px)';
-                    document.body.style.overflow = 'hidden';
-                };
-                const hideLogin = () => {
-                    if (loginScreen) loginScreen.classList.remove('active');
-                    if (site) site.style.filter = 'none';
-                    document.body.style.overflow = '';
-                    clearError();
-                };
-                const showError = (message) => {
-                    if (!errorBox) return;
-                    errorBox.style.display = 'block';
-                    errorBox.textContent = message;
-                };
-                const clearError = () => {
-                    if (!errorBox) return;
-                    errorBox.style.display = 'none';
-                    errorBox.textContent = '';
-                };
 
                 const provider = new firebase.auth.GoogleAuthProvider();
                 const startGoogleAuth = () => {
@@ -5559,13 +5596,13 @@ loadFirebaseConfig();
                         .catch((err) => {
                             console.error('Google auth failed:', err);
                             if (err.code === 'auth/configuration-not-found') {
-                                showError('Firebase Google provider is not enabled. Open Firebase Console → Auth → Sign-in method and enable Google sign-in.');
+                                showError('Firebase Google provider is not enabled. Enable Google sign-in in Firebase Console.');
                                 return;
                             }
                             if (err.code && err.code.includes('popup')) {
                                 return window._fbAuth.signInWithRedirect(provider);
                             }
-                            showError(err.message || 'Google sign-in failed. Check your popup blocker or Firebase config.');
+                            showError(err.message || 'Google sign-in failed.');
                         });
                 };
 
@@ -5603,19 +5640,6 @@ loadFirebaseConfig();
                         });
                 };
 
-                authBtn && authBtn.addEventListener('click', () => {
-                    const user = window._fbAuth.currentUser;
-                    if (user) { window._fbAuth.signOut(); return; }
-                    showLogin();
-                });
-
-                closeBtn && closeBtn.addEventListener('click', hideLogin);
-                if (loginScreen) {
-                    loginScreen.addEventListener('click', (event) => {
-                        if (event.target === loginScreen) hideLogin();
-                    });
-                }
-
                 googleBtn && googleBtn.addEventListener('click', startGoogleAuth);
                 emailBtn && emailBtn.addEventListener('click', loginWithEmail);
                 signupEmailBtn && signupEmailBtn.addEventListener('click', signupWithEmail);
@@ -5641,14 +5665,19 @@ loadFirebaseConfig();
                         btn.textContent = 'Sign out';
                         hideLogin();
                         window.getIdToken = async () => await user.getIdToken();
-                        await loadFirebaseHistory();
+                        if (typeof loadFirebaseHistory === 'function') {
+                            await loadFirebaseHistory();
+                        }
                     } else {
                         btn.textContent = 'Sign in';
                         window.getIdToken = async () => null;
                     }
                 });
-            })
-            .catch(err => { console.warn('Firebase client failed to load', err); });
+            };
+
+            initFirebase().catch(err => {
+                console.warn('Firebase client failed to initialize', err);
+            });
         })();
     </script>
 </body>
