@@ -217,7 +217,10 @@ class NatsukiRenUI {
     switchView(viewName) {
         this.currentView = viewName;
         this.hideAllViews();
-        document.getElementById(`view-${viewName}`)?.style.display = 'block';
+        const view = document.getElementById(`view-${viewName}`);
+        if (view) {
+            view.style.display = 'block';
+        }
         this.updateNavigation(viewName);
     }
 
