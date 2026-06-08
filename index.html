@@ -690,7 +690,7 @@
             position: relative;
             z-index: 10;
             min-height: 100vh;
-            padding: 120px 80px 80px;
+            padding: 80px 80px 80px;
         }
 
 
@@ -700,7 +700,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 80px 40px;
+            padding: 40px 40px;
         }
 
         .hero-eyebrow {
@@ -1726,6 +1726,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            background: #000;
         }
 
         .chat-top {
@@ -1734,7 +1735,7 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            background: rgba(8, 8, 8, 0.9);
+            background: rgba(0, 0, 0, 0.95);
         }
 
         .chat-orb {
@@ -1792,6 +1793,7 @@
             flex-direction: column;
             gap: 14px;
             scroll-behavior: smooth;
+            background: #000;
         }
 
         #messages::-webkit-scrollbar {
@@ -1913,25 +1915,25 @@
         }
 
         .bubble-ren {
-            background: #0a0c10;
-            border-color: rgba(255, 255, 255, 0.08);
-            color: rgba(200, 220, 235, 0.9);
+            background: #040404;
+            border-color: rgba(255, 255, 255, 0.05);
+            color: rgba(220, 230, 245, 0.95);
             font-family: var(--mono);
             font-size: 12px;
         }
 
         .bubble-nat {
-            background: #0a0c10;
-            border-color: rgba(255, 255, 255, 0.08);
-            color: rgba(200, 220, 235, 0.9);
+            background: #040404;
+            border-color: rgba(255, 255, 255, 0.05);
+            color: rgba(220, 230, 245, 0.95);
             font-family: var(--mono);
             font-size: 12px;
         }
 
         .bubble-user {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.8);
+            background: #070707;
+            border-color: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.9);
             font-family: var(--sans);
         }
 
@@ -2035,7 +2037,7 @@
         .chat-input-wrap {
             padding: 16px 28px 20px;
             border-top: 1px solid var(--border);
-            background: rgba(8, 8, 8, 0.9);
+            background: rgba(0, 0, 0, 0.95);
         }
 
         .mode-pills {
@@ -2100,7 +2102,7 @@
 
         #chat-input {
             flex: 1;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
             color: #fff;
             font-family: var(--sans);
@@ -3253,30 +3255,7 @@ loadFirebaseConfig();
         <div class="load-log" id="load-log"></div>
     </div>
 
-    <!-- ══════════ NAVBAR ══════════ -->
-    <nav id="navbar">
-        <div class="nav-logo">
-            <span class="bracket">[</span>REN.CORE<span class="bracket">]</span>
-            <span
-                style="font-size: 10px; margin-left: 8px; color: rgba(255,255,255,0.4); font-family: var(--mono); letter-spacing: 0.2em;">レン</span>
-            <span class="cursor-blink"></span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="#" onclick="scrollToSection('landing');return false">PROTOCOL</a></li>
-            <li><a href="#" onclick="scrollToSection('capabilities');return false">CAPABILITIES</a></li>
-            <li><a href="#" onclick="scrollToSection('identity');return false">IDENTITY</a></li>
-            <li><a href="#" onclick="scrollToSection('memory');return false">MEMORY</a></li>
-            <li><a href="#" onclick="scrollToSection('creator');return false">CREATOR</a></li>
-        </ul>
-        <div class="nav-toggle">
-            <span
-                style="font-family: var(--mono); font-size: 10px; color: #c8d4ce; letter-spacing: 0.1em; border: 1px solid rgba(255, 255, 255, 0.08); padding: 6px 12px; background: rgba(255, 255, 255, 0.04); font-weight: 700;">//
-                INTERACTIVE TUTOR CORE ACTIVE</span>
-            <button id="auth-btn" style="margin-left:12px; padding:6px 10px; font-family:var(--mono); font-size:10px; background: rgba(255,255,255,0.08); color: #f4efe6; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; cursor: pointer;">Sign in</button>
-            <button id="settings-nav-btn" style="margin-left:8px; padding:6px 10px; font-family:var(--mono); font-size:10px; background: rgba(255,255,255,0.08); color: #f4efe6; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; cursor: pointer;">Settings</button>
-        </div>
-    </nav>
-
+    <!-- ══════════ NAVBAR REMOVED ══════════ -->
     <div id="login-screen" class="login-screen">
         <div class="login-wrapper">
             <div class="login-card">
@@ -3614,7 +3593,7 @@ loadFirebaseConfig();
 
         <!-- ──── HERO ──── -->
         <section class="page-section" id="landing"
-            style="position:relative; display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 40px;">
+            style="position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; min-height:100vh; padding:40px 40px 20px;">
 
             <div
                 style="position:absolute; width: 65vh; height: 65vh; border: 1px solid rgba(255,255,255,0.06); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index:0;">
@@ -3650,6 +3629,9 @@ loadFirebaseConfig();
                 </button>
                 <button class="hero-btn secondary" onclick="scrollToSection('memory')">
                     VIEW SYSTEM LOGS &nbsp;>_
+                </button>
+                <button id="auth-btn" class="hero-btn secondary" type="button">
+                    Sign in
                 </button>
             </div>
         </section>
@@ -4080,15 +4062,10 @@ loadFirebaseConfig();
         <div class="chat-layout">
             <aside class="chat-sidebar">
                 <div class="sb-label">// SESSIONS</div>
-                <button class="sb-btn active" onclick="clearChat()">
+                <button class="sb-btn active" onclick="createNewSession()">
                     <div class="sb-dot"></div>New Session
                 </button>
-                <button class="sb-btn">
-                    <div class="sb-dot"></div>Session 001
-                </button>
-                <button class="sb-btn">
-                    <div class="sb-dot"></div>Session 002
-                </button>
+                <div id="session-list"></div>
 
                 <div class="pers-panel">
                     <div class="pp-label">// ACTIVE ENTITY</div>
@@ -4172,17 +4149,204 @@ loadFirebaseConfig();
         let history = [];
         let isTyping = false;
         let sessionId = null;
+        let activeSessionKey = null;
+        let sessionList = [];
         let memStats = { turns: 0, facts: 0 };
         let activeAbortController = null;
         let activeTypewriters = [];
 
+        function getWelcomeHTML() {
+            const welcome = document.getElementById('welcome-center');
+            return welcome ? welcome.outerHTML : `
+                <div class="welcome-center" id="welcome-center">
+                    <div class="wc-title" id="wc-title">REN.CORE</div>
+                    <div class="wc-sub">Interactive Technical Mentor & Coding Tutor</div>
+                    <div class="wc-chips">
+                        <div class="chip" onclick="quickSend('Explain the difference between SQL and NoSQL databases')">SQL vs NoSQL →</div>
+                        <div class="chip" onclick="quickSend('Explain how a React useEffect cleanup function works')">React cleanup →</div>
+                        <div class="chip" onclick="quickSend('Write a Python function to check for primes and explain it')">Primes in Python →</div>
+                        <div class="chip" onclick="quickSend('How does asynchronous programming work in JavaScript?')">Async JS →</div>
+                    </div>
+                </div>`;
+        }
+
+        function getSessionStorageKey(key) {
+            return `ren_session_${key}`;
+        }
+
+        function loadSessionList() {
+            try {
+                const rawList = localStorage.getItem('ren_session_list');
+                sessionList = rawList ? JSON.parse(rawList) : [];
+            } catch (e) {
+                console.warn('Failed to load session list', e);
+                sessionList = [];
+            }
+            activeSessionKey = localStorage.getItem('ren_active_session') || (sessionList[0] && sessionList[0].key) || null;
+        }
+
+        function saveSessionList() {
+            try {
+                localStorage.setItem('ren_session_list', JSON.stringify(sessionList));
+                localStorage.setItem('ren_active_session', activeSessionKey || '');
+            } catch (e) {
+                console.warn('Failed to save session list', e);
+            }
+        }
+
+        function saveCurrentSessionData() {
+            if (!activeSessionKey) return;
+            const session = sessionList.find(s => s.key === activeSessionKey);
+            if (session) session.updated = Date.now();
+            try {
+                localStorage.setItem(getSessionStorageKey(activeSessionKey), JSON.stringify({
+                    sessionId,
+                    title: session ? session.title : 'Session',
+                    history,
+                    updated: Date.now()
+                }));
+            } catch (e) {
+                console.warn('Failed to save current session data', e);
+            }
+            saveSessionList();
+        }
+
+        function loadCurrentSessionData() {
+            if (!activeSessionKey) return;
+            try {
+                const rawSession = localStorage.getItem(getSessionStorageKey(activeSessionKey));
+                if (!rawSession) {
+                    history = [];
+                    sessionId = null;
+                    return;
+                }
+                const parsed = JSON.parse(rawSession);
+                sessionId = parsed.sessionId || null;
+                history = Array.isArray(parsed.history) ? parsed.history : [];
+                const session = sessionList.find(s => s.key === activeSessionKey);
+                if (session && parsed.title) session.title = parsed.title;
+            } catch (e) {
+                console.warn('Failed to load current session data', e);
+                history = [];
+                sessionId = null;
+            }
+        }
+
+        function updateSessionSidebar() {
+            const listEl = document.getElementById('session-list');
+            if (!listEl) return;
+            listEl.innerHTML = '';
+            sessionList.forEach(session => {
+                const button = document.createElement('button');
+                button.className = 'sb-btn' + (session.key === activeSessionKey ? ' active' : '');
+                button.type = 'button';
+                button.innerHTML = `<div class="sb-dot"></div>${session.title}`;
+                button.addEventListener('click', () => setActiveSession(session.key));
+                listEl.appendChild(button);
+            });
+        }
+
+        function setActiveSession(key) {
+            if (activeSessionKey === key) return;
+            saveCurrentSessionData();
+            activeSessionKey = key;
+            loadCurrentSessionData();
+            updateSessionSidebar();
+            renderHistory();
+        }
+
+        function createNewSession() {
+            const title = `Session ${sessionList.length + 1}`;
+            const newKey = `session-${Date.now()}`;
+            sessionList.unshift({ key: newKey, title, updated: Date.now() });
+            activeSessionKey = newKey;
+            sessionId = null;
+            history = [];
+            saveCurrentSessionData();
+            updateSessionSidebar();
+            renderHistory();
+        }
+
+        function ensureActiveSession() {
+            if (!activeSessionKey) createNewSession();
+        }
+
+        function saveHistory() {
+            try {
+                ensureActiveSession();
+                saveCurrentSessionData();
+            } catch (e) {
+                console.warn('Failed to save chat history', e);
+            }
+        }
+
         // ── API KEY GATE ─────────────────────────────────────────
 
         // ── STORAGE ──────────────────────────────────────────────
-        function saveHistory() { }
+        function saveHistory() {
+            try {
+                localStorage.setItem('ren_chat_history', JSON.stringify({
+                    sessionId,
+                    history
+                }));
+            } catch (e) {
+                console.warn('Failed to save chat history locally', e);
+            }
+        }
+
+        function renderHistory() {
+            const msgs = document.getElementById('messages');
+            if (!msgs) return;
+            msgs.innerHTML = '';
+            if (!history || history.length === 0) {
+                msgs.innerHTML = getWelcomeHTML();
+                return;
+            }
+            history.forEach(item => {
+                if (item.sender === 'user') {
+                    appendUserMsg(item.text, false, false);
+                } else {
+                    appendAIMsg(item.text, 'ren', false, false);
+                }
+            });
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        async function loadFirebaseHistory(forceSession = null) {
+            if (!window.getIdToken) return;
+            try {
+                const token = await window.getIdToken();
+                if (!token) return;
+                const params = new URLSearchParams();
+                if (forceSession || sessionId) params.set('session_id', forceSession || sessionId);
+                const url = params.toString() ? `/api/chat/history?${params.toString()}` : '/api/chat/history';
+                const res = await fetch(url, {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (!res.ok) return;
+                const payload = await res.json();
+                if (!payload || !payload.messages) return;
+                sessionId = payload.session_id || sessionId;
+                history = payload.messages.map(msg => ({ sender: msg.sender, text: msg.text }));
+                renderHistory();
+                saveHistory();
+            } catch (e) {
+                console.warn('Failed to load Firebase chat history', e);
+            }
+        }
 
         function loadHistory() {
-            // History system removed
+            loadSessionList();
+            if (activeSessionKey && sessionList.some(s => s.key === activeSessionKey)) {
+                loadCurrentSessionData();
+            } else {
+                createNewSession();
+            }
+            updateSessionSidebar();
+            renderHistory();
+            if (window.getIdToken) {
+                loadFirebaseHistory();
+            }
         }
         document.addEventListener('DOMContentLoaded', loadHistory);
 
@@ -4839,14 +5003,19 @@ loadFirebaseConfig();
 
         function renameCurrentChat() {
             const newTitle = document.getElementById('settings-current-chat-title').value.trim();
-            if (newTitle) {
-                const activeBtn = document.querySelector('.sb-btn.active');
-                if (activeBtn) {
-                    activeBtn.innerHTML = `<div class="sb-dot"></div>${newTitle}`;
+            if (newTitle && activeSessionKey) {
+                const session = sessionList.find(s => s.key === activeSessionKey);
+                if (session) {
+                    session.title = newTitle;
+                    saveSessionList();
+                    updateSessionSidebar();
+                    saveCurrentSessionData();
                     alert("Session renamed!");
                 } else {
                     alert("No active session selected.");
                 }
+            } else {
+                alert("Enter a title and make sure a session is active.");
             }
             playClick();
         }
@@ -4998,9 +5167,11 @@ loadFirebaseConfig();
         }
 
         async function sendMessage() {
+            console.log('[DEBUG] sendMessage() called');
             const input = document.getElementById('chat-input');
             const text = input.value.trim();
-            if (!text || isTyping) return;
+            console.log('[DEBUG] text:', JSON.stringify(text), 'isTyping:', isTyping);
+            if (!text || isTyping) { console.log('[DEBUG] BLOCKED - empty text or isTyping'); return; }
             input.value = ''; input.style.height = 'auto';
 
             const ws = document.getElementById('welcome-center');
@@ -5110,7 +5281,7 @@ loadFirebaseConfig();
             if (fs) fs.textContent = memStats.facts;
         }
 
-        function appendUserMsg(text, animate = true) {
+        function appendUserMsg(text, animate = true, record = true) {
             const msgs = document.getElementById('messages');
             const row = document.createElement('div');
             row.className = 'msg-row user';
@@ -5130,13 +5301,23 @@ loadFirebaseConfig();
             } else {
                 body.textContent = text;
             }
+
+            if (record) {
+                history.push({ sender: 'user', text });
+                saveHistory();
+            }
         }
 
-        function appendAIMsg(text, mode, animate = true) {
+        function appendAIMsg(text, mode, animate = true, record = true) {
             const msgs = document.getElementById('messages');
             const clean = text.replace(/^\[Ren\]:\s*/, '');
             appendSingleAI(msgs, 'ren', clean, animate);
             msgs.scrollTop = msgs.scrollHeight;
+
+            if (record) {
+                history.push({ sender: 'ren', text: clean });
+                saveHistory();
+            }
         }
 
         function appendSingleAI(container, pers, text, animate = true) {
@@ -5460,6 +5641,7 @@ loadFirebaseConfig();
                         btn.textContent = 'Sign out';
                         hideLogin();
                         window.getIdToken = async () => await user.getIdToken();
+                        await loadFirebaseHistory();
                     } else {
                         btn.textContent = 'Sign in';
                         window.getIdToken = async () => null;
