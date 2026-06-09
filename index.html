@@ -5650,8 +5650,8 @@ loadFirebaseConfig();
                     window._fbDb = firebase.firestore();
                     console.log('[OK] Firebase initialized successfully');
 
-                    const provider = new firebase.auth.GoogleAuthProvider();
-                    provider.setCustomParameters({ prompt: 'consent' });
+                    window._googleProvider = new firebase.auth.GoogleAuthProvider();
+                    window._googleProvider.setCustomParameters({ prompt: 'consent' });
 
                     const startGoogleAuth = () => {
                         if (!window._fbAuth) {
@@ -5662,9 +5662,9 @@ loadFirebaseConfig();
                         clearError();
                         console.log('[AUTH] Starting Google sign-in...');
                         console.log('[AUTH] Firebase auth:', window._fbAuth);
-                        console.log('[AUTH] Provider:', provider);
+                        console.log('[AUTH] Provider:', window._googleProvider);
                         
-                        window._fbAuth.signInWithPopup(provider)
+                        window._fbAuth.signInWithPopup(window._googleProvider)
                             .then((result) => {
                                 console.log('[OK] Google sign-in successful');
                                 console.log('[OK] User:', result.user.email);
@@ -5678,7 +5678,7 @@ loadFirebaseConfig();
                                     showError('Google sign-in is disabled. Enable it in Firebase Console.');
                                 } else if (err.code && (err.code.includes('popup') || err.code.includes('window'))) {
                                     console.log('[AUTH] Popup blocked, trying redirect method...');
-                                    return window._fbAuth.signInWithRedirect(provider);
+                                    return window._fbAuth.signInWithRedirect(window._googleProvider);
                                 } else if (err.code === 'auth/cancelled-popup-request' || err.code === 'auth/popup-closed-by-user') {
                                     // User cancelled, no error needed
                                     return;
