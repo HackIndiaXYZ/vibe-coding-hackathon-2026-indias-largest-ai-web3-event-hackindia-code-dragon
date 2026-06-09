@@ -5,7 +5,7 @@ load_dotenv()
 
 # ========== GEMINI AI CONFIG ==========
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-GEMINI_MODEL = "gemini-pro"  # Primary AI model (stable)
+GEMINI_MODEL = "gemini-2.5-flash"  # Primary AI model (stable)
 GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
 
 # ========== FIREBASE CONFIG ==========

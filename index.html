@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -4680,56 +4680,69 @@ loadFirebaseConfig();
         window.syncSettingsToUI = function() {
             const s = window.REN_SETTINGS;
             
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.value = val;
+            };
+            const setChecked = (id, checked) => {
+                const el = document.getElementById(id);
+                if (el) el.checked = checked;
+            };
+            const setText = (id, text) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = text;
+            };
+
             // inputs
-            document.getElementById('settings-username').value = s.username || "";
-            document.getElementById('settings-avatar').value = s.avatar || "";
-            document.getElementById('settings-theme-mode').value = s.themeMode;
-            document.getElementById('settings-theme-color').value = s.themeColor;
-            document.getElementById('settings-font-size').value = s.fontSize;
-            document.getElementById('settings-bubble-style').value = s.bubbleStyle;
-            document.getElementById('settings-compact-mode').checked = s.compactMode;
+            setVal('settings-username', s.username || "");
+            setVal('settings-avatar', s.avatar || "");
+            setVal('settings-theme-mode', s.themeMode);
+            setVal('settings-theme-color', s.themeColor);
+            setVal('settings-font-size', s.fontSize);
+            setVal('settings-bubble-style', s.bubbleStyle);
+            setChecked('settings-compact-mode', s.compactMode);
             
-            document.getElementById('settings-ai-personality').value = s.aiPersonality;
-            document.getElementById('settings-response-length').value = s.responseLength;
-            document.getElementById('settings-coding-mode').checked = s.codingMode;
-            document.getElementById('settings-study-mode').checked = s.studyMode;
-            document.getElementById('settings-creativity').value = s.creativity;
-            document.getElementById('creativity-val').textContent = s.creativity;
-            document.getElementById('settings-auto-save').checked = s.autoSave;
+            setVal('settings-ai-personality', s.aiPersonality);
+            setVal('settings-response-length', s.responseLength);
+            setChecked('settings-coding-mode', s.codingMode);
+            setChecked('settings-study-mode', s.studyMode);
+            setVal('settings-creativity', s.creativity);
+            setText('creativity-val', s.creativity);
+            setChecked('settings-auto-save', s.autoSave);
             
-            document.getElementById('settings-enable-memory').checked = s.enableMemory;
-            document.getElementById('settings-personal-pref').value = s.personalPref;
+            setChecked('settings-enable-memory', s.enableMemory);
+            setVal('settings-personal-pref', s.personalPref);
             
-            document.getElementById('settings-voice-input').checked = s.voiceInput;
-            document.getElementById('settings-voice-output').checked = s.voiceOutput;
-            document.getElementById('settings-voice-speed').value = s.voiceSpeed;
-            document.getElementById('voice-speed-val').textContent = s.voiceSpeed;
+            setChecked('settings-voice-input', s.voiceInput);
+            setChecked('settings-voice-output', s.voiceOutput);
+            setVal('settings-voice-speed', s.voiceSpeed);
+            setText('voice-speed-val', s.voiceSpeed);
             
-            document.getElementById('settings-auto-rename').checked = s.autoRename;
+            setChecked('settings-auto-rename', s.autoRename);
             
-            document.getElementById('settings-study-goals').value = s.studyGoals;
-            document.getElementById('settings-preferred-subjects').value = s.preferredSubjects;
-            document.getElementById('settings-daily-reminder').checked = s.dailyReminder;
-            document.getElementById('settings-homework-track').value = s.homeworkTrack;
+            setVal('settings-study-goals', s.studyGoals);
+            setVal('settings-preferred-subjects', s.preferredSubjects);
+            setChecked('settings-daily-reminder', s.dailyReminder);
+            setVal('settings-homework-track', s.homeworkTrack);
             
-            document.getElementById('settings-notif-email').checked = s.notifEmail;
-            document.getElementById('settings-notif-updates').checked = s.notifUpdates;
-            document.getElementById('settings-notif-alerts').checked = s.notifAlerts;
-            document.getElementById('settings-notif-reminders').checked = s.notifReminders;
+            setChecked('settings-notif-email', s.notifEmail);
+            setChecked('settings-notif-updates', s.notifUpdates);
+            setChecked('settings-notif-alerts', s.notifAlerts);
+            setChecked('settings-notif-reminders', s.notifReminders);
             
-            document.getElementById('settings-2fa').checked = s.twoFactor;
+            setChecked('settings-2fa', s.twoFactor);
             
-            document.getElementById('settings-ai-model').value = s.aiModel;
-            document.getElementById('settings-beta-features').checked = s.betaFeatures;
+            setVal('settings-ai-model', s.aiModel);
+            setChecked('settings-beta-features', s.betaFeatures);
             
             // Gamification
-            document.getElementById('settings-gamif-enable').checked = s.gamifEnabled;
-            document.getElementById('settings-gamif-notifications').checked = s.gamifNotifications;
+            setChecked('settings-gamif-enable', s.gamifEnabled);
+            setChecked('settings-gamif-notifications', s.gamifNotifications);
             
             // stats and streak
-            document.getElementById('stats-tokens').textContent = s.tokens;
-            document.getElementById('stats-sessions').textContent = s.sessions;
-            document.getElementById('streak-counter').textContent = s.streak;
+            setText('stats-tokens', s.tokens);
+            setText('stats-sessions', s.sessions);
+            setText('streak-counter', s.streak);
             
             // check badge status
             const badgeCode = document.getElementById('badge-code');
