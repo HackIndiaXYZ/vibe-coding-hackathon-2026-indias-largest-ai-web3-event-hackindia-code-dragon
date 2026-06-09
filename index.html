@@ -5643,13 +5643,18 @@ loadFirebaseConfig();
                     const startGoogleAuth = () => {
                         if (!window._fbAuth) {
                             showError('Firebase not initialized');
+                            console.error('[ERROR] Firebase auth not available');
                             return;
                         }
                         clearError();
                         console.log('[AUTH] Starting Google sign-in...');
+                        console.log('[AUTH] Firebase auth:', window._fbAuth);
+                        console.log('[AUTH] Provider:', provider);
+                        
                         window._fbAuth.signInWithPopup(provider)
                             .then((result) => {
                                 console.log('[OK] Google sign-in successful');
+                                console.log('[OK] User:', result.user.email);
                                 hideLogin();
                             })
                             .catch((err) => {
@@ -5715,7 +5720,16 @@ loadFirebaseConfig();
                     };
 
                     if (googleBtn) {
-                        googleBtn.addEventListener('click', startGoogleAuth);
+                        googleBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            console.log('[CLICK] Google button clicked');
+                            if (window._fbAuth) {
+                                startGoogleAuth();
+                            } else {
+                                showError('Firebase not ready yet. Please wait...');
+                                console.warn('[WARN] Firebase not initialized when button clicked');
+                            }
+                        });
                         googleBtn.disabled = false;
                     }
                     if (emailBtn) emailBtn.addEventListener('click', loginWithEmail);
