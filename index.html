@@ -3302,6 +3302,7 @@ loadFirebaseConfig();
                     <button class="settings-tab-btn" data-tab="notifications">🔔 Notifications</button>
                     <button class="settings-tab-btn" data-tab="privacy">🔒 Privacy & Security</button>
                     <button class="settings-tab-btn" data-tab="extra">[ROCKET] Extra Cool Stuff</button>
+                    <button class="settings-tab-btn" data-tab="gamification">🏆 Gamification</button>
                 </aside>
                 
                 <main class="settings-content">
@@ -3579,6 +3580,98 @@ loadFirebaseConfig();
                         <div class="settings-group inline">
                             <label for="settings-beta-features">Beta Features Toggle</label>
                             <input type="checkbox" id="settings-beta-features" onchange="saveExtraSettings()" />
+                        </div>
+                    </div>
+
+                    <!-- Gamification Tab -->
+                    <div class="settings-tab-content" id="tab-gamification">
+                        <h2>Gamification System</h2>
+                        
+                        <div class="settings-group">
+                            <label>Your Current Level</label>
+                            <div class="settings-info-box">
+                                <p>Level: <span id="gamif-current-level" style="color:var(--green); font-size:18px; font-weight:bold;">1</span></p>
+                                <p>Total XP: <span id="gamif-total-xp" style="color:var(--yellow);">0</span></p>
+                                <p>Next Level At: <span id="gamif-next-level-xp" style="color:var(--green);">999</span> XP</p>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <label>XP Progression & Levels</label>
+                            <div class="settings-badge-grid">
+                                <div style="width:100%; background:rgba(255,255,255,0.05); padding:12px; border-radius:8px; border-left:3px solid var(--green);">
+                                    <p style="margin:0 0 8px 0; font-size:12px; color:rgba(255,255,255,0.7);">📊 Level Breakdown:</p>
+                                    <p style="margin:4px 0; font-size:11px;">🔰 Level 1: 0-999 XP (Hello World)</p>
+                                    <p style="margin:4px 0; font-size:11px;">🔥 Level 2: 1000-1999 XP (Consistent Scholar)</p>
+                                    <p style="margin:4px 0; font-size:11px;">⚙️ Level 3: 2000-2999 XP (Syntax Sorcerer)</p>
+                                    <p style="margin:4px 0; font-size:11px;">🏆 Level 4: 3000-3999 XP (Code Warrior)</p>
+                                    <p style="margin:4px 0; font-size:11px;">👑 Level 5+: 4000+ XP (Master Developer)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <label>How to Earn XP</label>
+                            <div class="settings-badge-grid">
+                                <div style="width:100%; background:rgba(255,255,255,0.05); padding:12px; border-radius:8px; border-left:3px solid var(--cyan);">
+                                    <p style="margin:0 0 8px 0; font-size:12px; color:rgba(255,255,255,0.7);">💡 XP Sources:</p>
+                                    <p style="margin:4px 0; font-size:11px;">💬 Chat Messages: +10 XP each</p>
+                                    <p style="margin:4px 0; font-size:11px;">📝 Quiz Completion: +(score × 10) XP</p>
+                                    <p style="margin:4px 0; font-size:11px;">🎯 Daily Challenges: +50-100 XP</p>
+                                    <p style="margin:4px 0; font-size:11px;">👥 Community Sharing: +25 XP</p>
+                                    <p style="margin:4px 0; font-size:11px;">🎖️ Achievement Unlock: +100 XP bonus</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <label>XP System Control</label>
+                            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                                <button class="settings-btn-action" onclick="addTestXP(50)" style="flex:1; min-width:120px;">+50 XP (Test)</button>
+                                <button class="settings-btn-action" onclick="addTestXP(100)" style="flex:1; min-width:120px;">+100 XP (Test)</button>
+                                <button class="settings-btn-action secondary" onclick="resetXPSystem()" style="flex:1; min-width:120px;">Reset XP</button>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <label>Streak Counter</label>
+                            <div class="settings-streak-box">
+                                [FIRE] <span id="gamif-streak-days">0</span> Day Streak! 
+                                <span id="gamif-streak-msg" style="color:var(--yellow); font-size:12px;">Keep learning!</span>
+                            </div>
+                            <button class="settings-btn-action secondary" onclick="extendStreak()" style="margin-top:8px;">+1 Day (Test)</button>
+                        </div>
+
+                        <div class="settings-group">
+                            <label>Achievement Badges</label>
+                            <div class="settings-badge-grid">
+                                <span class="badge active" id="badge-hello-world" title="Signed in for the first time">👶 Hello World</span>
+                                <span class="badge" id="badge-consistent" title="3 Day Streak reached">[FIRE] Consistent Scholar</span>
+                                <span class="badge" id="badge-syntax" title="Wrote a coding prompt">[CODE] Syntax Sorcerer</span>
+                                <span class="badge" id="badge-warrior" title="Reached Level 4">[WARRIOR] Code Warrior</span>
+                                <span class="badge" id="badge-master" title="Reached Level 5">👑 Master Developer</span>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <label>Daily Challenges</label>
+                            <div id="gamif-challenges-list" style="background:rgba(255,255,255,0.05); padding:12px; border-radius:8px; border-left:3px solid var(--green);">
+                                <div style="color:rgba(255,255,255,0.6); font-size:12px;">
+                                    <p>🎯 Today's Challenge: Send 5 messages</p>
+                                    <p>⏰ Resets in: <span id="gamif-reset-time">--</span></p>
+                                    <p>✅ Progress: <span id="gamif-challenge-progress">0</span>/5</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-group inline">
+                            <label for="settings-gamif-enable">Enable Gamification</label>
+                            <input type="checkbox" id="settings-gamif-enable" checked onchange="saveGamificationSettings()" />
+                        </div>
+
+                        <div class="settings-group inline">
+                            <label for="settings-gamif-notifications">Gamification Notifications</label>
+                            <input type="checkbox" id="settings-gamif-notifications" checked onchange="saveGamificationSettings()" />
                         </div>
                     </div>
                 </main>
@@ -4701,7 +4794,24 @@ loadFirebaseConfig();
             betaFeatures: false,
             streak: 3,
             tokens: 0,
-            sessions: 1
+            sessions: 1,
+            // Gamification Settings
+            gamifEnabled: true,
+            gamifNotifications: true,
+            totalXP: 0,
+            currentLevel: 1,
+            streakDays: 0,
+            lastStreakDate: new Date().toISOString().split('T')[0],
+            achievements: {
+                helloWorld: true,
+                consistent: false,
+                syntax: false,
+                warrior: false,
+                master: false
+            },
+            dailyChallengeProgress: 0,
+            dailyChallengeTarget: 5,
+            lastChallengeReset: new Date().toISOString().split('T')[0]
         };
 
         window.REN_SETTINGS = { ...DEFAULT_SETTINGS };
@@ -4808,6 +4918,10 @@ loadFirebaseConfig();
             
             document.getElementById('settings-ai-model').value = s.aiModel;
             document.getElementById('settings-beta-features').checked = s.betaFeatures;
+            
+            // Gamification
+            document.getElementById('settings-gamif-enable').checked = s.gamifEnabled;
+            document.getElementById('settings-gamif-notifications').checked = s.gamifNotifications;
             
             // stats and streak
             document.getElementById('stats-tokens').textContent = s.tokens;
@@ -5075,17 +5189,129 @@ loadFirebaseConfig();
             window.saveSettingsToDisk();
         }
 
+        // ── GAMIFICATION SYSTEM ────────────────────────────────────
+        function calculateLevel(xp) {
+            if (xp < 1000) return 1;
+            if (xp < 2000) return 2;
+            if (xp < 3000) return 3;
+            if (xp < 4000) return 4;
+            return 5;
+        }
+
+        function getXPForNextLevel(currentXP) {
+            const level = calculateLevel(currentXP);
+            const thresholds = [0, 1000, 2000, 3000, 4000];
+            return level === 5 ? currentXP + 1 : thresholds[level];
+        }
+
+        function updateGamificationUI() {
+            const xp = window.REN_SETTINGS.totalXP || 0;
+            const level = calculateLevel(xp);
+            const nextLevelXP = getXPForNextLevel(xp);
+
+            document.getElementById('gamif-current-level').textContent = level;
+            document.getElementById('gamif-total-xp').textContent = xp.toLocaleString();
+            document.getElementById('gamif-next-level-xp').textContent = nextLevelXP.toLocaleString();
+
+            // Update streak
+            const streakDays = window.REN_SETTINGS.streakDays || 0;
+            document.getElementById('gamif-streak-days').textContent = streakDays;
+            if (streakDays >= 7) {
+                document.getElementById('gamif-streak-msg').textContent = '🔥 Awesome! 🔥';
+            } else if (streakDays >= 3) {
+                document.getElementById('gamif-streak-msg').textContent = 'Great work!';
+            }
+
+            // Update badges
+            const achievements = window.REN_SETTINGS.achievements || {};
+            if (achievements.helloWorld) document.getElementById('badge-hello-world').classList.add('active');
+            if (level >= 2) {
+                document.getElementById('badge-consistent').classList.add('active');
+                achievements.consistent = true;
+            }
+            if (level >= 3 || xp > 500) {
+                document.getElementById('badge-syntax').classList.add('active');
+                achievements.syntax = true;
+            }
+            if (level >= 4) {
+                document.getElementById('badge-warrior').classList.add('active');
+                achievements.warrior = true;
+            }
+            if (level >= 5) {
+                document.getElementById('badge-master').classList.add('active');
+                achievements.master = true;
+            }
+
+            // Update challenge progress
+            const progress = window.REN_SETTINGS.dailyChallengeProgress || 0;
+            const target = window.REN_SETTINGS.dailyChallengeTarget || 5;
+            document.getElementById('gamif-challenge-progress').textContent = `${progress}/${target}`;
+            
+            // Calculate time until reset (next midnight)
+            const now = new Date();
+            const midnight = new Date(now);
+            midnight.setHours(24, 0, 0, 0);
+            const hoursUntil = Math.floor((midnight - now) / 3600000);
+            document.getElementById('gamif-reset-time').textContent = `${hoursUntil}h`;
+        }
+
+        function saveGamificationSettings() {
+            window.REN_SETTINGS.gamifEnabled = document.getElementById('settings-gamif-enable').checked;
+            window.REN_SETTINGS.gamifNotifications = document.getElementById('settings-gamif-notifications').checked;
+            window.saveSettingsToDisk();
+        }
+
+        function addTestXP(amount) {
+            window.REN_SETTINGS.totalXP = (window.REN_SETTINGS.totalXP || 0) + amount;
+            window.saveSettingsToDisk();
+            updateGamificationUI();
+            alert(`✨ +${amount} XP! Total: ${window.REN_SETTINGS.totalXP} XP`);
+            playClick();
+        }
+
+        function resetXPSystem() {
+            if (confirm("Are you sure? This will reset all XP, levels, and streaks!")) {
+                window.REN_SETTINGS.totalXP = 0;
+                window.REN_SETTINGS.currentLevel = 1;
+                window.REN_SETTINGS.streakDays = 0;
+                window.REN_SETTINGS.dailyChallengeProgress = 0;
+                window.saveSettingsToDisk();
+                updateGamificationUI();
+                alert("Gamification system reset!");
+            }
+            playClick();
+        }
+
+        function extendStreak() {
+            window.REN_SETTINGS.streakDays = (window.REN_SETTINGS.streakDays || 0) + 1;
+            window.saveSettingsToDisk();
+            updateGamificationUI();
+            alert(`🔥 Streak extended! Now at ${window.REN_SETTINGS.streakDays} days!`);
+            playClick();
+        }
+
+        // Auto-increment XP on chat messages
+        function awardXPForChat() {
+            if (!window.REN_SETTINGS.gamifEnabled) return;
+            window.REN_SETTINGS.totalXP = (window.REN_SETTINGS.totalXP || 0) + 10;
+            window.REN_SETTINGS.dailyChallengeProgress = (window.REN_SETTINGS.dailyChallengeProgress || 0) + 1;
+            window.saveSettingsToDisk();
+            updateGamificationUI();
+        }
+
         // Setup modal triggers
         document.addEventListener('DOMContentLoaded', () => {
             loadSettingsFromDisk();
             applySettingsVisuals();
             window.syncSettingsToUI();
+            updateGamificationUI();
             
             const settingsScreen = document.getElementById('settings-screen');
             const showSettings = () => {
                 if (settingsScreen) {
                     settingsScreen.classList.add('active');
                     window.syncSettingsToUI();
+                    updateGamificationUI();
                 }
                 const site = document.getElementById('site');
                 if (site) site.style.filter = 'blur(4px)';
@@ -5122,6 +5348,9 @@ loadFirebaseConfig();
                     const tabName = btn.dataset.tab;
                     const contentEl = document.getElementById(`tab-${tabName}`);
                     if (contentEl) contentEl.classList.add('active');
+                    if (tabName === 'gamification') {
+                        updateGamificationUI();
+                    }
                     playClick();
                 });
             });
@@ -5178,6 +5407,7 @@ loadFirebaseConfig();
             if (ws) ws.remove();
 
             appendUserMsg(text);
+            awardXPForChat();
             showTyping();
             showStopButton();
 
