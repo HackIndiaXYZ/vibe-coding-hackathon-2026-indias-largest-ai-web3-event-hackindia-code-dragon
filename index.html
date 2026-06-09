@@ -5259,7 +5259,7 @@ loadFirebaseConfig();
                     if (isKeyError) {
                         appendErrorMsg("CRITICAL: INVALID API KEY");
                         setTimeout(() => {
-                            appendAIMsg("[SYS]: Your API Key is invalid or missing. Please configure GROQ_API_KEY on the server.", 'ren');
+                            appendAIMsg("[SYS]: Your API Key is invalid or missing. Please configure GEMINI_API_KEY on the server.", 'ren');
                         }, 500);
                     } else {
                         appendErrorMsg(data.error);
