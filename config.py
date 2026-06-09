@@ -8,7 +8,7 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL = "gemini-1.5-pro"  # Primary AI model
 
 # ========== FIREBASE CONFIG ==========
-FIREBASE_GEMINI_API_KEY = os.getenv("FIREBASE_API_KEY", "")
+FIREBASE_GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 
 # [Server Configuration]
 HOST = os.getenv("HOST", "0.0.0.0")
