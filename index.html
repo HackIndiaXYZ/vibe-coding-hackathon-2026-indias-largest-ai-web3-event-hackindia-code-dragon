@@ -5745,7 +5745,18 @@ loadFirebaseConfig();
                         });
                         googleBtn.disabled = false;
                     }
-                    if (emailBtn) emailBtn.addEventListener('click', loginWithEmail);
+                    if (emailBtn) {
+                        emailBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            console.log('[CLICK] Sign in button clicked - triggering Google auth');
+                            if (window._fbAuth) {
+                                startGoogleAuth();
+                            } else {
+                                showError('Firebase not ready yet. Please wait...');
+                                console.warn('[WARN] Firebase not initialized when button clicked');
+                            }
+                        });
+                    }
                     if (signupEmailBtn) signupEmailBtn.addEventListener('click', signupWithEmail);
                     if (signupLink) {
                         signupLink.addEventListener('click', (e) => {
