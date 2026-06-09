@@ -5,10 +5,10 @@ load_dotenv()
 
 # ========== GEMINI AI CONFIG ==========
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-GEMINI_MODEL = "gemini-2.5-flash"  # Primary AI model
+GEMINI_MODEL = "gemini-1.5-pro"  # Primary AI model
 
-# Allow FIREBASE_API_KEY as an alias for legacy deployments.
-FIREBASE_GEMINI_API_KEY = os.getenv("FIREBASE_API_KEY", "") or GEMINI_API_KEY
+# ========== FIREBASE CONFIG ==========
+FIREBASE_GEMINI_API_KEY = os.getenv("FIREBASE_API_KEY", "")
 
 # [Server Configuration]
 HOST = os.getenv("HOST", "0.0.0.0")

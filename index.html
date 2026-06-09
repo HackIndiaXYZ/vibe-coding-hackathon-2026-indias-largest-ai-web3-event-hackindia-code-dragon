@@ -5500,7 +5500,7 @@ loadFirebaseConfig();
     <script>
         // Firebase client (optional). Replace `window.FIREBASE_CONFIG` with your project's config object.
         (function initFirebaseClient(){
-            let FIREBASE_CONFIG = window.FIREBASE_CONFIG || null; // set this in a safe place in your hosting config
+            let FIREBASE_CONFIG = window.FIREBASE_CONFIG || null;
             const loadScript = (src) => new Promise((res, rej) => {
                 const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s);
             });
@@ -5542,7 +5542,12 @@ loadFirebaseConfig();
             const bindBasicAuthUI = () => {
                 authBtn && authBtn.addEventListener('click', () => {
                     if (window._fbAuth && window._fbAuth.currentUser) {
-                        window._fbAuth.signOut();
+                        window._fbAuth.signOut().then(() => {
+                            authBtn.textContent = 'Sign in';
+                            hideLogin();
+                        }).catch(err => {
+                            console.error('Sign out failed:', err);
+                        });
                         return;
                     }
                     showLogin();
@@ -5559,124 +5564,176 @@ loadFirebaseConfig();
             bindBasicAuthUI();
 
             const fetchFirebaseConfig = async () => {
-                if (FIREBASE_CONFIG) return FIREBASE_CONFIG;
+                if (FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey) return FIREBASE_CONFIG;
                 try {
                     const res = await fetch('/api/config/firebase');
-                    if (!res.ok) throw new Error('Firebase config unavailable');
+                    if (!res.ok) throw new Error(`Firebase config error: ${res.status}`);
                     const config = await res.json();
+                    if (config.error) throw new Error(config.error);
                     FIREBASE_CONFIG = config;
+                    console.log('[OK] Firebase config loaded successfully');
                     return config;
                 } catch (err) {
-                    console.warn('Firebase config fetch failed:', err);
+                    console.error('[ERROR] Firebase config fetch failed:', err);
                     return null;
                 }
             };
 
             const initFirebase = async () => {
-                const config = await fetchFirebaseConfig();
-                if (!config) {
-                    showError('Firebase is not configured. Please set your Firebase config before using login.');
-                    return;
-                }
-
-                await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
-                await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js');
-                await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js');
-
-                firebase.initializeApp(config);
-                window._fbAuth = firebase.auth();
-                window._fbDb = firebase.firestore();
-
-                const provider = new firebase.auth.GoogleAuthProvider();
-                const startGoogleAuth = () => {
-                    if (!window._fbAuth) return;
-                    clearError();
-                    window._fbAuth.signInWithPopup(provider)
-                        .then(() => hideLogin())
-                        .catch((err) => {
-                            console.error('Google auth failed:', err);
-                            if (err.code === 'auth/configuration-not-found') {
-                                showError('Firebase Google provider is not enabled. Enable Google sign-in in Firebase Console.');
-                                return;
-                            }
-                            if (err.code && err.code.includes('popup')) {
-                                return window._fbAuth.signInWithRedirect(provider);
-                            }
-                            showError(err.message || 'Google sign-in failed.');
-                        });
-                };
-
-                const loginWithEmail = () => {
-                    if (!window._fbAuth) return;
-                    clearError();
-                    const email = emailInput.value.trim();
-                    const password = passwordInput.value;
-                    if (!email || !password) {
-                        showError('Enter both email and password.');
+                try {
+                    const config = await fetchFirebaseConfig();
+                    if (!config || !config.apiKey) {
+                        console.error('Firebase config incomplete - Google login disabled');
+                        if (googleBtn) googleBtn.disabled = true;
+                        if (googleBtn) googleBtn.title = 'Firebase not configured';
                         return;
                     }
-                    window._fbAuth.signInWithEmailAndPassword(email, password)
-                        .then(() => hideLogin())
-                        .catch((err) => {
-                            console.error('Email login failed:', err);
-                            showError(err.message || 'Email sign-in failed.');
-                        });
-                };
 
-                const signupWithEmail = () => {
-                    if (!window._fbAuth) return;
-                    clearError();
-                    const email = emailInput.value.trim();
-                    const password = passwordInput.value;
-                    if (!email || !password) {
-                        showError('Enter both email and password.');
-                        return;
+                    console.log('[FIREBASE] Loading Firebase libraries...');
+                    await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
+                    await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js');
+                    await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js');
+                    
+                    if (typeof firebase === 'undefined') {
+                        throw new Error('Firebase library failed to load');
                     }
-                    window._fbAuth.createUserWithEmailAndPassword(email, password)
-                        .then(() => hideLogin())
-                        .catch((err) => {
-                            console.error('Signup failed:', err);
-                            showError(err.message || 'Sign-up failed.');
-                        });
-                };
 
-                googleBtn && googleBtn.addEventListener('click', startGoogleAuth);
-                emailBtn && emailBtn.addEventListener('click', loginWithEmail);
-                signupEmailBtn && signupEmailBtn.addEventListener('click', signupWithEmail);
-                signupLink && signupLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    signupWithEmail();
-                });
+                    console.log('[FIREBASE] Initializing Firebase app...');
+                    firebase.initializeApp(config);
+                    window._fbAuth = firebase.auth();
+                    window._fbDb = firebase.firestore();
+                    console.log('[OK] Firebase initialized successfully');
 
-                window._fbAuth.getRedirectResult()
-                    .then((result) => {
-                        if (result && result.user) {
-                            hideLogin();
+                    const provider = new firebase.auth.GoogleAuthProvider();
+                    provider.setCustomParameters({ prompt: 'consent' });
+
+                    const startGoogleAuth = () => {
+                        if (!window._fbAuth) {
+                            showError('Firebase not initialized');
+                            return;
                         }
-                    })
-                    .catch((err) => {
-                        console.error('Redirect auth failed:', err);
+                        clearError();
+                        console.log('[AUTH] Starting Google sign-in...');
+                        window._fbAuth.signInWithPopup(provider)
+                            .then((result) => {
+                                console.log('[OK] Google sign-in successful');
+                                hideLogin();
+                            })
+                            .catch((err) => {
+                                console.error('[ERROR] Google auth failed:', err.code, err.message);
+                                if (err.code === 'auth/configuration-not-found') {
+                                    showError('Firebase: Google provider not enabled in Console.');
+                                } else if (err.code === 'auth/operation-not-allowed') {
+                                    showError('Google sign-in is disabled. Enable it in Firebase Console.');
+                                } else if (err.code && (err.code.includes('popup') || err.code.includes('window'))) {
+                                    console.log('[AUTH] Popup blocked, trying redirect method...');
+                                    return window._fbAuth.signInWithRedirect(provider);
+                                } else if (err.code === 'auth/cancelled-popup-request' || err.code === 'auth/popup-closed-by-user') {
+                                    // User cancelled, no error needed
+                                    return;
+                                } else {
+                                    showError(err.message || 'Google sign-in failed. Try again.');
+                                }
+                            });
+                    };
+
+                    const loginWithEmail = () => {
+                        if (!window._fbAuth) return;
+                        clearError();
+                        const email = emailInput.value.trim();
+                        const password = passwordInput.value;
+                        if (!email || !password) {
+                            showError('Enter both email and password.');
+                            return;
+                        }
+                        window._fbAuth.signInWithEmailAndPassword(email, password)
+                            .then(() => {
+                                console.log('[OK] Email sign-in successful');
+                                hideLogin();
+                            })
+                            .catch((err) => {
+                                console.error('[ERROR] Email login failed:', err);
+                                showError(err.message || 'Email sign-in failed.');
+                            });
+                    };
+
+                    const signupWithEmail = () => {
+                        if (!window._fbAuth) return;
+                        clearError();
+                        const email = emailInput.value.trim();
+                        const password = passwordInput.value;
+                        if (!email || !password) {
+                            showError('Enter both email and password.');
+                            return;
+                        }
+                        if (password.length < 6) {
+                            showError('Password must be at least 6 characters.');
+                            return;
+                        }
+                        window._fbAuth.createUserWithEmailAndPassword(email, password)
+                            .then(() => {
+                                console.log('[OK] Sign-up successful');
+                                hideLogin();
+                            })
+                            .catch((err) => {
+                                console.error('[ERROR] Signup failed:', err);
+                                showError(err.message || 'Sign-up failed.');
+                            });
+                    };
+
+                    if (googleBtn) {
+                        googleBtn.addEventListener('click', startGoogleAuth);
+                        googleBtn.disabled = false;
+                    }
+                    if (emailBtn) emailBtn.addEventListener('click', loginWithEmail);
+                    if (signupEmailBtn) signupEmailBtn.addEventListener('click', signupWithEmail);
+                    if (signupLink) {
+                        signupLink.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            signupWithEmail();
+                        });
+                    }
+
+                    window._fbAuth.getRedirectResult()
+                        .then((result) => {
+                            if (result && result.user) {
+                                console.log('[OK] Redirect sign-in successful');
+                                hideLogin();
+                            }
+                        })
+                        .catch((err) => {
+                            console.error('[ERROR] Redirect auth failed:', err);
+                        });
+
+                    window._fbAuth.onAuthStateChanged(async (user) => {
+                        const btn = document.getElementById('auth-btn');
+                        if (!btn) return;
+                        if (user) {
+                            btn.textContent = 'Sign out';
+                            hideLogin();
+                            window.getIdToken = async () => await user.getIdToken();
+                            if (typeof loadFirebaseHistory === 'function') {
+                                await loadFirebaseHistory();
+                            }
+                        } else {
+                            btn.textContent = 'Sign in';
+                            window.getIdToken = async () => null;
+                        }
                     });
 
-                window._fbAuth.onAuthStateChanged(async (user) => {
-                    const btn = document.getElementById('auth-btn');
-                    if (!btn) return;
-                    if (user) {
-                        btn.textContent = 'Sign out';
-                        hideLogin();
-                        window.getIdToken = async () => await user.getIdToken();
-                        if (typeof loadFirebaseHistory === 'function') {
-                            await loadFirebaseHistory();
-                        }
-                    } else {
-                        btn.textContent = 'Sign in';
-                        window.getIdToken = async () => null;
+                } catch (err) {
+                    console.error('[ERROR] Firebase initialization failed:', err);
+                    if (googleBtn) {
+                        googleBtn.disabled = true;
+                        googleBtn.title = 'Firebase failed to load';
                     }
-                });
+                    showError('Firebase initialization failed. Check console for details.');
+                }
             };
 
+            // Start Firebase initialization immediately
             initFirebase().catch(err => {
-                console.warn('Firebase client failed to initialize', err);
+                console.error('[ERROR] Firebase init caught exception:', err);
             });
         })();
     </script>

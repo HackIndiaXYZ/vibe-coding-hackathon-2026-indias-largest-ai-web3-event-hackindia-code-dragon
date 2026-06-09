@@ -103,7 +103,10 @@ def chat_endpoint():
         try:
             if db is not None and uid:
                 sess_ref = db.collection('sessions').document(session_id)
-                sess_ref.set({'owner': uid}, merge=True)
+                sess_ref.set({
+                    'owner': uid,
+                    'last_updated': firebase_firestore.SERVER_TIMESTAMP
+                }, merge=True)
                 msgs = sess_ref.collection('messages')
                 msgs.add({
                     'sender': 'user',
@@ -134,6 +137,7 @@ def chat_endpoint():
         try:
             if db is not None and uid:
                 sess_ref = db.collection('sessions').document(session_id)
+                sess_ref.set({'last_updated': firebase_firestore.SERVER_TIMESTAMP}, merge=True)
                 msgs = sess_ref.collection('messages')
                 msgs.add({
                     'sender': 'ren',
@@ -247,16 +251,6 @@ def upload_voice():
         text = ''
     return jsonify({'ok': True, 'transcript': text})
 
-if __name__ == '__main__':
-    print(f"\n===========================================")
-    print(f" REN - THE TECHNICAL TUTOR & CORE MATRIX")
-    print(f"===========================================")
-    print(f" Port: {config.PORT}")
-    print(f" Debug: {config.DEBUG_MODE}")
-    print(f" Model: {config.GEMINI_MODEL}")
-    print(f"===========================================\n")
-    
-    app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG_MODE)
 
 
 # ==================== NEW ENDPOINTS FOR FEATURES ====================
@@ -697,3 +691,56 @@ def get_firebase_config():
         return jsonify({'error': 'Firebase not configured'}), 500
     
     return jsonify(firebase_config)
+
+
+@app.route('/api/chat/history', methods=['GET'])
+def get_chat_history():
+    uid = get_uid_from_token()
+    if not uid or not firebase_handler:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    session_id = request.args.get('session_id')
+    session_ref = None
+
+    if session_id:
+        session_ref = db.collection('sessions').document(session_id)
+        session_doc = session_ref.get()
+        if not session_doc.exists:
+            return jsonify({'error': 'Session not found'}), 404
+        if session_doc.to_dict().get('owner') != uid:
+            return jsonify({'error': 'Unauthorized session access'}), 403
+    else:
+        sessions = db.collection('sessions')\
+            .where('owner', '==', uid)\
+            .order_by('last_updated', direction=firebase_firestore.Query.DESCENDING)\
+            .limit(1)\
+            .stream()
+        session_doc = next(iter(sessions), None)
+        if not session_doc:
+            return jsonify({'session_id': None, 'messages': []})
+        session_id = session_doc.id
+        session_ref = db.collection('sessions').document(session_id)
+
+    messages_query = session_ref.collection('messages').order_by('timestamp', direction=firebase_firestore.Query.ASCENDING).stream()
+    messages = []
+    for doc in messages_query:
+        msg = doc.to_dict() or {}
+        messages.append({
+            'id': doc.id,
+            'sender': msg.get('sender'),
+            'text': msg.get('text', ''),
+            'timestamp': msg.get('timestamp')
+        })
+
+    return jsonify({'session_id': session_id, 'messages': messages})
+
+if __name__ == '__main__':
+    print(f"\n===========================================")
+    print(f" REN - THE TECHNICAL TUTOR & CORE MATRIX")
+    print(f"===========================================")
+    print(f" Port: {config.PORT}")
+    print(f" Debug: {config.DEBUG_MODE}")
+    print(f" Model: {config.GEMINI_MODEL}")
+    print(f"===========================================\n")
+    
+    app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG_MODE)

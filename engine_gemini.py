@@ -21,11 +21,11 @@ class GeminiInferenceEngine:
         if not GEMINI_AVAILABLE:
             raise RuntimeError("google-generativeai library not installed")
         
-        self.api_key = config.GEMINI_API_KEY or config.FIREBASE_GEMINI_API_KEY
+        self.api_key = config.FIREBASE_GEMINI_API_KEY
         self.model = config.GEMINI_MODEL
         
         if not self.api_key:
-            raise ValueError("Gemini API key not configured in .env. Set GEMINI_API_KEY or FIREBASE_API_KEY.")
+            raise ValueError("FIREBASE_GEMINI_API_KEY not configured in .env")
         
         genai.configure(api_key=self.api_key)
         self.client = genai.GenerativeModel(model_name=self.model)
