@@ -7,13 +7,13 @@ import config
 import tools
 from personas import get_system_prompt
 
-class GroqInferenceEngine:
+class GeminiInferenceEngine:
 
 
     def __init__(self):
-        self.api_url = config.GROQ_API_URL
-        self.api_key = config.GROQ_API_KEY
-        self.model = config.MODEL_NAME
+        self.api_url = config.GEMINI_API_URL
+        self.api_key = config.GEMINI_API_KEY
+        self.model = config.GEMINI_MODEL
         
         self.headers = {
             "Authorization": f"Bearer {self.api_key}",
@@ -21,7 +21,7 @@ class GroqInferenceEngine:
         }
 
     def _execute_api_call(self, payload: Dict[str, Any], max_retries: int = 3, headers: Dict[str, str] = None) -> Dict[str, Any]:
-        """Executes the HTTP POST to Groq with exponential backoff."""
+        """Executes the HTTP POST to Gemini with exponential backoff."""
         attempt = 0
         current_headers = headers if headers else self.headers
         while attempt < max_retries:
@@ -161,7 +161,7 @@ class GroqInferenceEngine:
         return final_reply
 
 if __name__ == "__main__":
-    engine = GroqInferenceEngine()
+    engine = GeminiInferenceEngine()
     messages = [
         {"role": "user", "content": "Hello, how are you?"}
     ]

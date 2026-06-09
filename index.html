@@ -3296,12 +3296,7 @@ loadFirebaseConfig();
                     <button class="settings-tab-btn" data-tab="appearance">🎨 Appearance</button>
                     <button class="settings-tab-btn" data-tab="ai-settings">🤖 AI Settings</button>
                     <button class="settings-tab-btn" data-tab="memory">[BRAIN] Memory</button>
-                    <button class="settings-tab-btn" data-tab="voice">🔊 Voice</button>
                     <button class="settings-tab-btn" data-tab="chat">[CHAT] Chat</button>
-                    <button class="settings-tab-btn" data-tab="student">[BOOKS] Student</button>
-                    <button class="settings-tab-btn" data-tab="notifications">🔔 Notifications</button>
-                    <button class="settings-tab-btn" data-tab="privacy">🔒 Privacy & Security</button>
-                    <button class="settings-tab-btn" data-tab="extra">[ROCKET] Extra Cool Stuff</button>
                     <button class="settings-tab-btn" data-tab="gamification">🏆 Gamification</button>
                 </aside>
                 
@@ -3434,28 +3429,7 @@ loadFirebaseConfig();
                         </div>
                     </div>
 
-                    <!-- Voice Tab -->
-                    <div class="settings-tab-content" id="tab-voice">
-                        <h2>Voice & Speech</h2>
-                        <div class="settings-group inline">
-                            <label for="settings-voice-input">Voice Input Enabled (STT)</label>
-                            <input type="checkbox" id="settings-voice-input" onchange="saveVoiceSettings()" />
-                        </div>
-                        <div class="settings-group inline">
-                            <label for="settings-voice-output">Voice Output Enabled (TTS)</label>
-                            <input type="checkbox" id="settings-voice-output" onchange="saveVoiceSettings()" />
-                        </div>
-                        <div class="settings-group">
-                            <label>Speech Speed: <span id="voice-speed-val" style="color:var(--green)">1.0</span></label>
-                            <input type="range" id="settings-voice-speed" min="0.5" max="2.0" step="0.1" value="1.0" oninput="updateVoiceSpeedValue(this.value)" onchange="saveVoiceSettings()" />
-                        </div>
-                        <div class="settings-group">
-                            <label>Voice Selection</label>
-                            <select id="settings-voice-selection" onchange="saveVoiceSettings()">
-                                <option value="default">Default System Voice</option>
-                            </select>
-                        </div>
-                    </div>
+
 
                     <!-- Chat Tab -->
                     <div class="settings-tab-content" id="tab-chat">
@@ -3478,110 +3452,13 @@ loadFirebaseConfig();
                         </div>
                     </div>
 
-                    <!-- Student Features Tab -->
-                    <div class="settings-tab-content" id="tab-student">
-                        <h2>Student Core Tools</h2>
-                        <div class="settings-group">
-                            <label>Study Goals</label>
-                            <input type="text" id="settings-study-goals" placeholder="E.g., Learn recursion, prepare for midterm" onchange="saveStudentSettings()" />
-                        </div>
-                        <div class="settings-group">
-                            <label>Preferred Subjects</label>
-                            <input type="text" id="settings-preferred-subjects" placeholder="E.g., Python, Data Structures" onchange="saveStudentSettings()" />
-                        </div>
-                        <div class="settings-group inline">
-                            <label for="settings-daily-reminder">Daily Study Reminder</label>
-                            <input type="checkbox" id="settings-daily-reminder" onchange="saveStudentSettings()" />
-                        </div>
-                        <div class="settings-group">
-                            <label>Homework Tracking</label>
-                            <textarea id="settings-homework-track" placeholder="List homework deadlines..." style="resize:vertical; min-height:80px;" onchange="saveStudentSettings()"></textarea>
-                        </div>
-                    </div>
 
-                    <!-- Notifications Tab -->
-                    <div class="settings-tab-content" id="tab-notifications">
-                        <h2>Notifications</h2>
-                        <div class="settings-group inline">
-                            <label for="settings-notif-email">Email Notifications</label>
-                            <input type="checkbox" id="settings-notif-email" checked onchange="saveNotifSettings()" />
-                        </div>
-                        <div class="settings-group inline">
-                            <label for="settings-notif-updates">Product Updates</label>
-                            <input type="checkbox" id="settings-notif-updates" onchange="saveNotifSettings()" />
-                        </div>
-                        <div class="settings-group inline">
-                            <label for="settings-notif-alerts">New Features Alerts</label>
-                            <input type="checkbox" id="settings-notif-alerts" checked onchange="saveNotifSettings()" />
-                        </div>
-                        <div class="settings-group inline">
-                            <label for="settings-notif-reminders">Reminder Notifications</label>
-                            <input type="checkbox" id="settings-notif-reminders" onchange="saveNotifSettings()" />
-                        </div>
-                    </div>
 
-                    <!-- Privacy & Security Tab -->
-                    <div class="settings-tab-content" id="tab-privacy">
-                        <h2>Privacy & Security</h2>
-                        <div class="settings-group">
-                            <label>Password Update</label>
-                            <button class="settings-btn-action" onclick="triggerChangePassword()">Send Password Reset Email</button>
-                        </div>
-                        <div class="settings-group inline">
-                            <label for="settings-2fa">Two-Factor Authentication</label>
-                            <input type="checkbox" id="settings-2fa" onchange="savePrivacySettings()" />
-                        </div>
-                        <div class="settings-group">
-                            <label>Active Sessions</label>
-                            <div class="settings-info-box" id="active-sessions-box">
-                                1 Active Session (This Browser)
-                            </div>
-                        </div>
-                        <div class="settings-group">
-                            <label>Login History</label>
-                            <div class="settings-info-box" id="login-history-box">
-                                Connected recently via Browser Client.
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Extra Cool Stuff Tab -->
-                    <div class="settings-tab-content" id="tab-extra">
-                        <h2>Extra Cool Stuff</h2>
-                        <div class="settings-group">
-                            <label>AI Model Selection</label>
-                            <select id="settings-ai-model" onchange="saveExtraSettings()">
-                                <option value="llama-3.3-70b-versatile">Llama 3.3 70B (Default)</option>
-                                <option value="llama3-8b-8192">Llama 3 8B (Fast)</option>
-                                <option value="mixtral-8x7b-32768">Mixtral 8x7B (Coding)</option>
-                            </select>
-                        </div>
-                        <div class="settings-group">
-                            <label>Usage Statistics</label>
-                            <div class="settings-info-box">
-                                <p>Total API characters parsed: <span id="stats-tokens" style="color:var(--green)">0</span></p>
-                                <p>Total chat sessions: <span id="stats-sessions" style="color:var(--green)">1</span></p>
-                            </div>
-                        </div>
-                        <div class="settings-group">
-                            <label>Daily Streak Counter</label>
-                            <div class="settings-streak-box">
-                                [FIRE] <span id="streak-counter">3</span> Day Streak! Keep learning!
-                            </div>
-                        </div>
-                        <div class="settings-group">
-                            <label>Achievement Badges</label>
-                            <div class="settings-badge-grid">
-                                <span class="badge active" title="Signed in for the first time">👶 Hello World</span>
-                                <span class="badge active" title="3 Day Streak reached">[FIRE] Consistent Scholar</span>
-                                <span class="badge" id="badge-code" title="Wrote a coding prompt">[CODE] Syntax Sorcerer</span>
-                            </div>
-                        </div>
-                        <div class="settings-group inline">
-                            <label for="settings-beta-features">Beta Features Toggle</label>
-                            <input type="checkbox" id="settings-beta-features" onchange="saveExtraSettings()" />
-                        </div>
-                    </div>
+
+
+
+
 
                     <!-- Gamification Tab -->
                     <div class="settings-tab-content" id="tab-gamification">
@@ -3713,7 +3590,7 @@ loadFirebaseConfig();
 
             <p class="hero-desc" id="hero-desc" style="z-index:2; position:relative;">
                 An elite technical mentor and interactive coding tutor. Learn, understand, and master software
-                engineering. Powered by Groq. Built by Ojas from Lucknow.
+                engineering. Powered by Gemini. Built by Ojas from Lucknow.
             </p>
 
             <div class="hero-btns" id="hero-btns" style="z-index:2; position:relative;">
@@ -3834,11 +3711,10 @@ loadFirebaseConfig();
                 <div class="cap-card">
                     <span class="cap-num">09 ——</span>
                     <div class="cap-icon">⚡</div>
-                    <div class="cap-name">Groq LPU Acceleration</div>
-                    <div class="cap-desc">Powered by Groq's high-speed LPU running Llama 3 70B for near-zero latency
-                        stream output. Delivers immediate explanations without compile-lag or processing wait time.
+                    <div class="cap-name">Gemini AI Integration</div>
+                    <div class="cap-desc">Powered by Google Gemini with advanced reasoning capabilities for complex problem-solving, code generation, and real-time context understanding.
                     </div>
-                    <span class="cap-tag ren-tag">GROQ.API</span>
+                    <span class="cap-tag ren-tag">GEMINI.API</span>
                 </div>
             </div>
 
@@ -4069,79 +3945,6 @@ loadFirebaseConfig();
                 <div class="mem-stat-card">
                     <div class="msc-num">6</div>
                     <div class="msc-label">Tutor Subsystems</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ──── CREATOR ──── -->
-        <section class="page-section" id="creator">
-            <div class="sec-header">
-                <h2 class="sec-title">Creator</h2>
-                <p class="sec-sub">SYSTEM ARCHITECT // ORIGIN FILE</p>
-            </div>
-
-            <div class="creator-layout">
-                <div class="creator-left">
-                    <div class="creator-tag">BUILT BY</div>
-                    <div class="creator-name">Ojas</div>
-                    <div class="creator-title">Student & Creative Developer — Lucknow, India</div>
-
-                    <div class="creator-bio">
-                        Built by <em>Ojas</em>, a developer from <em>Lucknow, Uttar Pradesh</em> who codes at the
-                        intersection of AI systems and cinematic UI design.<br><br>
-                        REN is an advanced interactive coding tutor and technical mentor system. It is designed to
-                        change how we learn programming: instead of just delivering massive blocks of copy-pasteable
-                        code, it segments, details, and explains every functional component of the architecture,
-                        prompting user engagement and critical thinking.<br><br>
-                        The system features persistent memory analytics, automated code segment parsing, and a
-                        high-performance web search integration — all hand-crafted in Python.<br><br>
-                        <em>Edit this section with your details, links, and story.</em>
-                    </div>
-
-                    <div class="creator-links">
-                        <a class="creator-link" href="https://github.com" target="_blank">
-                            <span class="link-icon">⌥</span> GitHub — DragonOjas
-                            <span class="link-arrow">↗</span>
-                        </a>
-                        <a class="creator-link" href=" https://dragonojas.github.io/protfolio-dragon/" target="_blank">
-                            <span class="link-icon">✦</span> Portfolio — dragonojas.github.io/protfolio-dragon
-                            <span class="link-arrow">↗</span>
-                        </a>
-
-                    </div>
-                </div>
-
-                <div class="creator-right">
-                    <div class="creator-spec-title">// PROJECT SPECIFICATIONS</div>
-
-                    <div class="spec-item"><span class="spec-key">Stack</span><span class="spec-val"><em>Python</em> +
-                            Flask + Three.js + GSAP + Groq API</span></div>
-                    <div class="spec-item"><span class="spec-key">AI Model</span><span class="spec-val"><em>Llama 3
-                                70B</em> via Groq LPU inference engine</span></div>
-                    <div class="spec-item"><span class="spec-key">Personality</span><span class="spec-val"><em>REN</em>
-                            (Architect + Interactive Tutor)</span>
-                    </div>
-                    <div class="spec-item"><span class="spec-key">Pedagogical Engine</span><span
-                            class="spec-val">Segment-by-segment logic breakdowns with active concept tutoring</span>
-                    </div>
-                    <div class="spec-item"><span class="spec-key">Memory</span><span class="spec-val">Short-term context
-                            + Long-term fact persistence with user goals tracking</span></div>
-                    <div class="spec-item"><span class="spec-key">Rigor</span><span class="spec-val">100% active
-                            teaching, no blind code copy-pasting allowed</span></div>
-                    <div class="spec-item"><span class="spec-key">Routing</span><span class="spec-val">Advanced code
-                            classifier with automated tutoring flow routing</span></div>
-                    <div class="spec-item"><span class="spec-key">Origin</span><span class="spec-val"><em>Lucknow, Uttar
-                                Pradesh, India</em></span></div>
-                    <div class="spec-item"><span class="spec-key">License</span><span class="spec-val"><em>MIT</em> —
-                            open source, free to use and modify</span></div>
-
-                    <div class="creator-msg">
-                        <div class="creator-msg-label">// MESSAGE FROM THE CREATOR</div>
-                        <p>"I built REN because I wanted an AI that actually teaches you how to program and think rather
-                            than just copy-pasting code."</p>
-                    </div>
-
-
                 </div>
             </div>
         </section>
