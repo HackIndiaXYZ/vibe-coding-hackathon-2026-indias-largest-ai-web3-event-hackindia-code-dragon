@@ -5650,8 +5650,26 @@ loadFirebaseConfig();
                     window._fbDb = firebase.firestore();
                     console.log('[OK] Firebase initialized successfully');
 
-                    window._googleProvider = new firebase.auth.GoogleAuthProvider();
-                    window._googleProvider.setCustomParameters({ prompt: 'consent' });
+                    // Create and configure Google provider
+                    try {
+                        window._googleProvider = new firebase.auth.GoogleAuthProvider();
+                        // Request specific scopes for better user experience
+                        window._googleProvider.addScope('profile');
+                        window._googleProvider.addScope('email');
+                        window._googleProvider.setCustomParameters({ 
+                            prompt: 'select_account',
+                            'login_hint': ''
+                        });
+                        console.log('[OK] Google provider configured successfully');
+                    } catch (providerErr) {
+                        console.error('[ERROR] Failed to configure Google provider:', providerErr);
+                        if (googleBtn) {
+                            googleBtn.disabled = true;
+                            googleBtn.title = 'Google authentication not available';
+                        }
+                        showError('Google authentication not available. Please contact support.');
+                        throw providerErr;
+                    }
 
                     const startGoogleAuth = () => {
                         if (!window._fbAuth) {
@@ -5659,10 +5677,13 @@ loadFirebaseConfig();
                             console.error('[ERROR] Firebase auth not available');
                             return;
                         }
+                        if (!window._googleProvider) {
+                            showError('Google provider not initialized');
+                            console.error('[ERROR] Google provider not available');
+                            return;
+                        }
                         clearError();
-                        console.log('[AUTH] Starting Google sign-in...');
-                        console.log('[AUTH] Firebase auth:', window._fbAuth);
-                        console.log('[AUTH] Provider:', window._googleProvider);
+                        console.log('[AUTH] Starting Google sign-in with popup...');
                         
                         window._fbAuth.signInWithPopup(window._googleProvider)
                             .then((result) => {
@@ -5671,25 +5692,41 @@ loadFirebaseConfig();
                                 hideLogin();
                             })
                             .catch((err) => {
-                                console.error('[ERROR] Google auth failed:', err.code, err.message);
+                                console.error('[ERROR] Google auth failed:', err.code, err.message, err);
+                                
+                                // Handle specific Firebase error codes
                                 if (err.code === 'auth/configuration-not-found') {
-                                    showError('Firebase: Google provider not enabled in Console.');
+                                    showError('⚠️ Firebase not configured for Google sign-in. Check Console settings.');
                                 } else if (err.code === 'auth/operation-not-allowed') {
-                                    showError('Google sign-in is disabled. Enable it in Firebase Console.');
-                                } else if (err.code && (err.code.includes('popup') || err.code.includes('window'))) {
-                                    console.log('[AUTH] Popup blocked, trying redirect method...');
-                                    return window._fbAuth.signInWithRedirect(window._googleProvider);
-                                } else if (err.code === 'auth/cancelled-popup-request' || err.code === 'auth/popup-closed-by-user') {
+                                    showError('⚠️ Google sign-in is disabled in Firebase Console.');
+                                } else if (err.code === 'auth/popup-blocked' || err.code === 'auth/popup-closed-by-user') {
+                                    console.log('[AUTH] Popup blocked or closed, trying redirect method...');
+                                    showError('Opening sign-in via redirect...');
+                                    window._fbAuth.signInWithRedirect(window._googleProvider).catch(redirectErr => {
+                                        console.error('[ERROR] Redirect also failed:', redirectErr);
+                                        showError('Sign-in failed. Please allow popups and try again.');
+                                    });
+                                } else if (err.code === 'auth/cancelled-popup-request') {
                                     // User cancelled, no error needed
+                                    console.log('[AUTH] User cancelled popup');
                                     return;
+                                } else if (err.code === 'auth/network-request-failed') {
+                                    showError('❌ Network error. Check your internet connection.');
+                                } else if (err.code === 'auth/internal-error') {
+                                    showError('❌ Firebase internal error. Try again in a moment.');
+                                } else if (err.code && err.code.startsWith('auth/')) {
+                                    showError(`⚠️ Sign-in error: ${err.message}`);
                                 } else {
-                                    showError(err.message || 'Google sign-in failed. Try again.');
+                                    showError(err.message || '❌ Google sign-in failed. Try again.');
                                 }
                             });
                     };
 
                     const loginWithEmail = () => {
-                        if (!window._fbAuth) return;
+                        if (!window._fbAuth) {
+                            showError('Firebase not initialized. Please refresh the page.');
+                            return;
+                        }
                         clearError();
                         const email = emailInput.value.trim();
                         const password = passwordInput.value;
@@ -5697,19 +5734,36 @@ loadFirebaseConfig();
                             showError('Enter both email and password.');
                             return;
                         }
+                        
+                        console.log('[AUTH] Attempting email sign-in for:', email);
                         window._fbAuth.signInWithEmailAndPassword(email, password)
                             .then(() => {
                                 console.log('[OK] Email sign-in successful');
                                 hideLogin();
                             })
                             .catch((err) => {
-                                console.error('[ERROR] Email login failed:', err);
-                                showError(err.message || 'Email sign-in failed.');
+                                console.error('[ERROR] Email login failed:', err.code, err.message);
+                                if (err.code === 'auth/user-not-found') {
+                                    showError('User not found. Sign up or check your email.');
+                                } else if (err.code === 'auth/wrong-password') {
+                                    showError('Incorrect password. Try again.');
+                                } else if (err.code === 'auth/invalid-email') {
+                                    showError('Invalid email address.');
+                                } else if (err.code === 'auth/user-disabled') {
+                                    showError('This account has been disabled.');
+                                } else if (err.code === 'auth/network-request-failed') {
+                                    showError('Network error. Check your connection.');
+                                } else {
+                                    showError(err.message || 'Email sign-in failed. Try again.');
+                                }
                             });
                     };
 
                     const signupWithEmail = () => {
-                        if (!window._fbAuth) return;
+                        if (!window._fbAuth) {
+                            showError('Firebase not initialized. Please refresh the page.');
+                            return;
+                        }
                         clearError();
                         const email = emailInput.value.trim();
                         const password = passwordInput.value;
@@ -5721,14 +5775,26 @@ loadFirebaseConfig();
                             showError('Password must be at least 6 characters.');
                             return;
                         }
+                        
+                        console.log('[AUTH] Attempting email sign-up for:', email);
                         window._fbAuth.createUserWithEmailAndPassword(email, password)
                             .then(() => {
                                 console.log('[OK] Sign-up successful');
                                 hideLogin();
                             })
                             .catch((err) => {
-                                console.error('[ERROR] Signup failed:', err);
-                                showError(err.message || 'Sign-up failed.');
+                                console.error('[ERROR] Signup failed:', err.code, err.message);
+                                if (err.code === 'auth/email-already-in-use') {
+                                    showError('Email already registered. Try signing in or use a different email.');
+                                } else if (err.code === 'auth/invalid-email') {
+                                    showError('Invalid email address.');
+                                } else if (err.code === 'auth/weak-password') {
+                                    showError('Password is too weak. Use a stronger password.');
+                                } else if (err.code === 'auth/network-request-failed') {
+                                    showError('Network error. Check your connection.');
+                                } else {
+                                    showError(err.message || 'Sign-up failed. Try again.');
+                                }
                             });
                     };
 
@@ -5736,11 +5802,17 @@ loadFirebaseConfig();
                         googleBtn.addEventListener('click', (e) => {
                             e.preventDefault();
                             console.log('[CLICK] Google button clicked');
-                            if (window._fbAuth) {
+                            if (window._fbAuth && window._googleProvider) {
                                 startGoogleAuth();
                             } else {
-                                showError('Firebase not ready yet. Please wait...');
-                                console.warn('[WARN] Firebase not initialized when button clicked');
+                                if (!window._fbAuth) {
+                                    showError('Firebase not ready. Please refresh the page.');
+                                    console.warn('[WARN] Firebase auth not initialized when button clicked');
+                                }
+                                if (!window._googleProvider) {
+                                    showError('Google provider not configured. Please refresh the page.');
+                                    console.warn('[WARN] Google provider not initialized when button clicked');
+                                }
                             }
                         });
                         googleBtn.disabled = false;
@@ -5748,12 +5820,12 @@ loadFirebaseConfig();
                     if (emailBtn) {
                         emailBtn.addEventListener('click', (e) => {
                             e.preventDefault();
-                            console.log('[CLICK] Sign in button clicked - triggering Google auth');
+                            console.log('[CLICK] Email button clicked');
                             if (window._fbAuth) {
-                                startGoogleAuth();
+                                loginWithEmail();
                             } else {
-                                showError('Firebase not ready yet. Please wait...');
-                                console.warn('[WARN] Firebase not initialized when button clicked');
+                                showError('Firebase not ready. Please refresh the page.');
+                                console.warn('[WARN] Firebase not initialized when email button clicked');
                             }
                         });
                     }
@@ -5765,28 +5837,43 @@ loadFirebaseConfig();
                         });
                     }
 
+                    // Handle redirect results (e.g., after signInWithRedirect)
+                    console.log('[AUTH] Checking for redirect auth results...');
                     window._fbAuth.getRedirectResult()
                         .then((result) => {
                             if (result && result.user) {
                                 console.log('[OK] Redirect sign-in successful');
+                                console.log('[OK] User:', result.user.email);
                                 hideLogin();
+                            } else {
+                                console.log('[AUTH] No redirect result (first visit or normal popup flow)');
                             }
                         })
                         .catch((err) => {
-                            console.error('[ERROR] Redirect auth failed:', err);
+                            console.error('[ERROR] Redirect result check failed:', err.code, err.message);
+                            if (err.code === 'auth/network-request-failed') {
+                                console.warn('[WARN] Network error checking redirect result');
+                            }
                         });
 
+                    // Monitor auth state changes
                     window._fbAuth.onAuthStateChanged(async (user) => {
                         const btn = document.getElementById('auth-btn');
                         if (!btn) return;
                         if (user) {
+                            console.log('[OK] User logged in:', user.email);
                             btn.textContent = 'Sign out';
                             hideLogin();
                             window.getIdToken = async () => await user.getIdToken();
                             if (typeof loadFirebaseHistory === 'function') {
-                                await loadFirebaseHistory();
+                                try {
+                                    await loadFirebaseHistory();
+                                } catch (histErr) {
+                                    console.warn('[WARN] Failed to load Firebase history:', histErr);
+                                }
                             }
                         } else {
+                            console.log('[AUTH] User logged out or not authenticated');
                             btn.textContent = 'Sign in';
                             window.getIdToken = async () => null;
                         }

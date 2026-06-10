@@ -672,9 +672,11 @@ def get_firebase_config():
     """Serve Firebase public config safely from environment variables"""
     import os
     from dotenv import load_dotenv
+    from pathlib import Path
     
-    # Load from .env file
-    load_dotenv()
+    # Load from .env file in the current directory
+    env_path = Path(__file__).parent / '.env'
+    load_dotenv(dotenv_path=env_path)
     
     firebase_config = {
         'apiKey': os.getenv('FIREBASE_API_KEY', ''),
@@ -686,10 +688,15 @@ def get_firebase_config():
         'measurementId': os.getenv('FIREBASE_MEASUREMENT_ID', '')
     }
     
+    # Log the config status
+    logging.info(f'Firebase config request: apiKey present={bool(firebase_config["apiKey"])}, authDomain={firebase_config.get("authDomain", "missing")}')
+    
     # Validate config is present
     if not firebase_config['apiKey']:
-        return jsonify({'error': 'Firebase not configured'}), 500
+        logging.error('Firebase API key not configured in .env file')
+        return jsonify({'error': 'Firebase not configured. Check server .env file.'}), 500
     
+    # Don't expose API key in production, but it's needed for client-side Firebase
     return jsonify(firebase_config)
 
 
