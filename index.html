@@ -5699,6 +5699,8 @@ loadFirebaseConfig();
                                     showError('⚠️ Firebase not configured for Google sign-in. Check Console settings.');
                                 } else if (err.code === 'auth/operation-not-allowed') {
                                     showError('⚠️ Google sign-in is disabled in Firebase Console.');
+                                } else if (err.code === 'auth/unauthorized-domain') {
+                                    showError('⚠️ This domain is not authorized. Go to Firebase Console → Authentication → Settings → Authorized Domains and add "localhost".');
                                 } else if (err.code === 'auth/popup-blocked' || err.code === 'auth/popup-closed-by-user') {
                                     console.log('[AUTH] Popup blocked or closed, trying redirect method...');
                                     showError('Opening sign-in via redirect...');
